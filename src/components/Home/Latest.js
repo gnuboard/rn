@@ -1,27 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { fetchBoardNewDataRequest } from '../../services/api/ServerApi';
+import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 
 const Latest = ({ title, bo_table, rows }) => {
-  // Dummy data - replace with actual API call
-  const dummyData = Array(rows).fill().map((_, index) => ({
-    id: index,
-    title: `Post ${index + 1}`,
-    date: '7/23',
-    source: bo_table
-  }));
+  const [boardWrites, setBoardWrites] = useState([]);
+
+  async function fetchBoardNewData(bo_table, rows) {
+    try {
+      const response = await fetchBoardNewDataRequest(bo_table, { rows });
+      const data = response.data;
+      if (Array.isArray(data)) {
+        setBoardWrites(data);
+      } else {
+        console.error('API response data is not in the expected format:', data);
+      }
+    } catch(error) {
+      console.error(JSON.stringify(error));
+    }
+  }
+
+  useEffect(() => {
+    fetchBoardNewData(bo_table, rows);
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      {dummyData.map((item) => (
-        <View key={item.id} style={styles.item}>
+      {boardWrites.map((write) => (
+        <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>
             <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
-              {item.title}
+              {truncateText(write.wr_subject, 10)}
             </Text>
-            <Text style={styles.itemDate}>{item.date}</Text>
+            <Text style={styles.itemDate}>{dateToMonthDay(write.wr_datetime)}</Text>
           </View>
-          <Text style={styles.itemSource}>from {bo_table}</Text>
         </View>
       ))}
     </View>
