@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
 import Latest from '../../components/Home/Latest';
+import LatestGallery from '../../components/Home/LatestGallery';
 
 const HomeScreen = () => {
   return (
@@ -18,6 +19,7 @@ const HomeScreen = () => {
               <Latest title="공지사항" bo_table="notice" rows={2} />
             </View>
           </View>
+          <LatestGallery bo_table="gallery" view_type="write" rows={4} />
         </View>
       </ScrollView>
     </SafeAreaView>
