@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, Dimensions } from 'react-native';
 import Config from 'react-native-config';
-import { fetchBoardNewDataRequest } from '../../services/api/ServerApi';
+import { fetchBoardNewData } from '../../utils/componentsFunc';
 import { dateToMonthDay } from '../../utils/stringFunc';
 
 const { width } = Dimensions.get('window');
@@ -11,22 +11,8 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
 const LatestGallery = ({ bo_table, view_type, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
 
-  async function fetchBoardNewData(bo_table, rows) {
-    try {
-      const response = await fetchBoardNewDataRequest(bo_table, { view_type, rows });
-      const data = response.data;
-      if (Array.isArray(data)) {
-        setBoardWrites(data);
-      } else {
-        console.error('API response data is not in the expected format:', data);
-      }
-    } catch(error) {
-      console.error(JSON.stringify(error));
-    }
-  }
-
   useEffect(() => {
-    fetchBoardNewData(bo_table, rows);
+    fetchBoardNewData(bo_table, setBoardWrites, { view_type, rows} );
   }, []);
 
   const writeData = boardWrites.map((item) => ({

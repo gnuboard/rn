@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { fetchBoardNewDataRequest } from '../../services/api/ServerApi';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
+import { fetchBoardNewData } from '../../utils/componentsFunc';
 
 const Latest = ({ title, bo_table, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
 
-  async function fetchBoardNewData(bo_table, rows) {
-    try {
-      const response = await fetchBoardNewDataRequest(bo_table, { rows });
-      const data = response.data;
-      if (Array.isArray(data)) {
-        setBoardWrites(data);
-      } else {
-        console.error('API response data is not in the expected format:', data);
-      }
-    } catch(error) {
-      console.error(JSON.stringify(error));
-    }
-  }
-
   useEffect(() => {
-    fetchBoardNewData(bo_table, rows);
+    fetchBoardNewData(bo_table, setBoardWrites, { rows } );
   }, []);
 
   return (

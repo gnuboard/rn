@@ -15,7 +15,7 @@ export const fetchBoardNewDataRequest = async (bo_table, params) => {
   try {
     const response = await serverApi.get(
       `/board-new/writes/${bo_table}`,
-      { params: params},
+      { params: params },
     );
     return response;
   } catch (error) {
