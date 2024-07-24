@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
 
@@ -10,13 +11,20 @@ const HomeScreen = () => {
     navigation.navigate('Write', { bo_table, wr_id });
   }
 
+  const openDrawer = () => {
+    navigation.dispatch(DrawerActions.openDrawer());
+  }
+
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={openDrawer} style={styles.menuButton}>
+          <Icon name="menu" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.title}>그누보드</Text>
+      </View>
       <ScrollView>
         <View style={styles.content}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>그누보드</Text>
-          </View>
           <View style={styles.row}>
             <View style={styles.column}>
               <Latest title="자유게시판" bo_table="free" rows={2} onItemPress={handleItemPress} />
@@ -37,8 +45,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f0f0',
   },
-  titleContainer: {
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  menuButton: {
+    marginRight: 16,
   },
   content: {
     padding: 16,
@@ -46,7 +61,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
   },
   row: {
     flexDirection: 'row',

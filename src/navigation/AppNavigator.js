@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -7,12 +8,13 @@ import HomeStackScreen from '../screens/Home/HomeStackScreen';
 import BoardListScreen from '../screens/Board/BoardScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
+import LoginScreen from '../screens/Auth/Login/LoginScreen';
 
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
-const AppNavigator = () => {
+const TabNavigator = () => {
   return (
-    <NavigationContainer>
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -53,6 +55,16 @@ const AppNavigator = () => {
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: "프로필" }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: "환경설정" }} />
     </Tab.Navigator>
+  );
+};
+
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator>
+        <Drawer.Screen name="홈" component={TabNavigator} />
+        <Drawer.Screen name="로그인" component={LoginScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };
