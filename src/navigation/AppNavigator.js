@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import HomeScreen from '../screens/Home/HomeScreen';
+import HomeStackScreen from '../screens/Home/HomeStackScreen';
 import BoardListScreen from '../screens/Board/BoardScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
@@ -48,7 +48,7 @@ const AppNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: "메인화면" }} />
+      <Tab.Screen name="Home" component={HomeStackScreen} options={{ tabBarLabel: "메인화면" }} />
       <Tab.Screen name="Boards" component={BoardListScreen} options={{ tabBarLabel: "게시판" }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: "프로필" }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: "환경설정" }} />

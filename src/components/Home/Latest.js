@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 import { fetchBoardNewData } from '../../utils/componentsFunc';
 
-const Latest = ({ title, bo_table, rows }) => {
+const Latest = ({ title, bo_table, rows, onItemPress }) => {
   const [boardWrites, setBoardWrites] = useState([]);
 
   useEffect(() => {
@@ -14,6 +14,10 @@ const Latest = ({ title, bo_table, rows }) => {
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       {boardWrites.map((write) => (
+        <TouchableOpacity
+          key={write.wr_id}
+          onPress={() => onItemPress({ bo_table, wr_id: write.wr_id })}
+        >
         <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>
             <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
@@ -22,6 +26,7 @@ const Latest = ({ title, bo_table, rows }) => {
             <Text style={styles.itemDate}>{dateToMonthDay(write.wr_datetime)}</Text>
           </View>
         </View>
+        </TouchableOpacity>
       ))}
     </View>
   );

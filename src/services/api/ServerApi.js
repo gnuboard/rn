@@ -22,3 +22,12 @@ export const fetchBoardNewDataRequest = async (bo_table, params) => {
     throw error;
   }
 }
+
+export const fetchWriteRequest = async (bo_table, wr_id) => {
+  try {
+    const response = await serverApi.get(`/boards/${bo_table}/writes/${wr_id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

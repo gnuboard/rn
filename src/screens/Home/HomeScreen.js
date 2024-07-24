@@ -1,9 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
+  const handleItemPress = ({ bo_table, wr_id }) => {
+    navigation.navigate('Write', { bo_table, wr_id });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -13,10 +19,10 @@ const HomeScreen = () => {
           </View>
           <View style={styles.row}>
             <View style={styles.column}>
-              <Latest title="자유게시판" bo_table="free" rows={2} />
+              <Latest title="자유게시판" bo_table="free" rows={2} onItemPress={handleItemPress} />
             </View>
             <View style={styles.column}>
-              <Latest title="공지사항" bo_table="notice" rows={2} />
+              <Latest title="공지사항" bo_table="notice" rows={2} onItemPress={handleItemPress} />
             </View>
           </View>
           <LatestGallery bo_table="gallery" view_type="write" rows={4} />
