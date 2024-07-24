@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import RenderHTML from 'react-native-render-html';
 import { fetchWrite } from '../../../utils/componentsFunc';
 import Config from 'react-native-config';
 
 const WriteScreen = ({ route }) => {
   const {bo_table, wr_id} = route.params;
   const [ write, setWrite ] = useState(null);
+  const { width } = useWindowDimensions();
 
   useEffect(() => {
     fetchWrite(bo_table, wr_id, setWrite);
   }, []);
+
+  if (!write) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -26,7 +32,10 @@ const WriteScreen = ({ route }) => {
           <Text style={styles.date}>{write?.wr_datetime}</Text>
         </View>
       </View>
-      <Text style={styles.content}>{write?.wr_content}</Text>
+      <RenderHTML
+        contentWidth={width}
+        source={{ html: write?.wr_content }}
+      />
     </ScrollView>
   );
 };
