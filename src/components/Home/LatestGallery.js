@@ -1,18 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, Dimensions } from 'react-native';
+import Config from 'react-native-config';
+import { fetchBoardNewDataRequest } from '../../services/api/ServerApi';
+import { dateToMonthDay } from '../../utils/stringFunc';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
 
 const LatestGallery = ({ bo_table, view_type, rows }) => {
-  
-  // Dummy data - replace with actual API call
-  const dummyData = Array(rows).fill().map((_, index) => ({
-    id: index,
-    title: `Image ${index + 1}`,
-    imageUrl: `https://picsum.photos/seed/${index}/400/300`, // Placeholder images
-    date: '24-07-18'
+  const [boardWrites, setBoardWrites] = useState([]);
+
+  async function fetchBoardNewData(bo_table, rows) {
+    try {
+      const response = await fetchBoardNewDataRequest(bo_table, { view_type, rows });
+      const data = response.data;
+      if (Array.isArray(data)) {
+        setBoardWrites(data);
+      } else {
+        console.error('API response data is not in the expected format:', data);
+      }
+    } catch(error) {
+      console.error(JSON.stringify(error));
+    }
+  }
+
+  useEffect(() => {
+    fetchBoardNewData(bo_table, rows);
+  }, []);
+
+  const writeData = boardWrites.map((item) => ({
+    id: item.wr_id,
+    title: item.wr_subject,
+    imageUrl: `${Config.SERVER_URL}/${item.thumbnail.src}`,
+    date: dateToMonthDay(item.wr_datetime)
   }));
 
   const renderItem = ({ item }) => (
@@ -35,7 +56,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
     <View style={styles.container}>
       <Text style={styles.title}>갤러리</Text>
       <FlatList
-        data={dummyData}
+        data={writeData}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}
         horizontal
