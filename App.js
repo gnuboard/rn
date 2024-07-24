@@ -1,11 +1,11 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import HomeScreen from './src/screens/Home/HomeScreen';
+import AppNavigator from './src/navigation/AppNavigator';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <HomeScreen />
+      <AppNavigator />
     </SafeAreaView>
   );
 };
