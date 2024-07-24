@@ -315,3 +315,5 @@ def isNewArchitectureEnabled() {
 }
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
