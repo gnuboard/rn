@@ -62,8 +62,8 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="홈" component={TabNavigator} />
-        <Drawer.Screen name="로그인" component={LoginScreen} />
+        <Drawer.Screen name="홈" component={TabNavigator} options={{headerShown: false}} />
+        <Drawer.Screen name="로그인" component={LoginScreen} options={{headerShown: false}} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

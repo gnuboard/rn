@@ -48,12 +48,15 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
+    position: 'relative',
   },
   menuButton: {
-    marginRight: 16,
+    position: 'absolute',
+    left: 16,
   },
   content: {
     padding: 16,
