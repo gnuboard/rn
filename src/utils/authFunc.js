@@ -1,4 +1,5 @@
 import * as Keychain from 'react-native-keychain';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const saveCredentials = async (username, password) => {
   try {
@@ -15,5 +16,14 @@ export const saveTokens = async (access_token, refresh_token) => {
     console.log('Tokens saved successfully');
   } catch (error) {
     console.error('Error saving tokens', error);
+  }
+};
+
+export const saveLoginPreferences = async (preferences) => {
+  try {
+    await AsyncStorage.setItem('loginPreferences', JSON.stringify(preferences));
+    console.log('Login preferences saved successfully');
+  } catch (error) {
+    console.error('Error saving login preferences', error);
   }
 };

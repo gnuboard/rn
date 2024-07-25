@@ -1,24 +1,29 @@
 import React, { useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
 import { handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
-import { saveCredentials, saveTokens } from '../../../utils/authFunc';
+import { saveCredentials, saveTokens, saveLoginPreferences } from '../../../utils/authFunc';
 
 const LoginScreen = ({ navigation }) => {
   const [ formValue, setFormValue ] = useState({
     username: '',
     password: '',
   });
+  const [saveLoginInfo, setSaveLoginInfo] = useState(false);
   const passwordInputRef = useRef(null);
 
   async function login () {
     try {
       const response = await loginRequest(formValue.username, formValue.password);
       const { access_token, refresh_token } = response.data;
-      await saveCredentials(formValue.username, formValue.password);
       await saveTokens(access_token, refresh_token);
+      await saveLoginPreferences({ saveLoginInfo });
+      if (saveLoginInfo) {
+        await saveCredentials(formValue.username, formValue.password);
+      }
       navigation.navigate('Home');
     } catch (error) {
       logJson(error.response, true);
@@ -55,6 +60,13 @@ const LoginScreen = ({ navigation }) => {
             returnKeyType="done"
             onSubmitEditing={login}
           />
+          <View style={styles.checkboxContainer}>
+            <CheckBox
+              value={saveLoginInfo}
+              onValueChange={setSaveLoginInfo}
+            />
+            <Text style={styles.label}>로그인 정보 저장</Text>
+          </View>
           <TouchableOpacity style={styles.loginButton} onPress={login}>
             <Text style={styles.loginButtonText}>로그인</Text>
           </TouchableOpacity>
@@ -110,6 +122,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 3,
     width: '100%',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
+    margin: 2,
   },
   loginButton: {
     backgroundColor: '#4a90e2',
