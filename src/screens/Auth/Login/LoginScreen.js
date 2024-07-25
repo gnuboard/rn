@@ -4,6 +4,7 @@ import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
 import { handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
+import { saveCredentials, saveTokens } from '../../../utils/authFunc';
 
 const LoginScreen = ({ navigation }) => {
   const [ formValue, setFormValue ] = useState({
@@ -15,7 +16,10 @@ const LoginScreen = ({ navigation }) => {
   async function login () {
     try {
       const response = await loginRequest(formValue.username, formValue.password);
-      logJson(response);
+      const { access_token, refresh_token } = response.data;
+      await saveCredentials(formValue.username, formValue.password);
+      await saveTokens(access_token, refresh_token);
+      navigation.navigate('Home');
     } catch (error) {
       logJson(error.response, true);
     }
