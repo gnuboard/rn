@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
@@ -10,6 +10,7 @@ const LoginScreen = ({ navigation }) => {
     username: '',
     password: '',
   });
+  const passwordInputRef = useRef(null);
 
   async function login () {
     try {
@@ -32,8 +33,14 @@ const LoginScreen = ({ navigation }) => {
             required
             value={formValue.username}
             onChangeText={(text) => handleInputChange('username', text, setFormValue)}
+            autoCapitalize="none"
+            autoCorrect={false}
+            returnKeyType="next"
+            onSubmitEditing={() => passwordInputRef.current.focus()}
+            blurOnSubmit={false}
           />
           <TextInput
+            ref={passwordInputRef}
             style={styles.input}
             placeholder="비밀번호"
             placeholderTextColor="#999"
@@ -41,6 +48,8 @@ const LoginScreen = ({ navigation }) => {
             required
             value={formValue.password}
             onChangeText={(text) => handleInputChange('password', text, setFormValue)}
+            returnKeyType="done"
+            onSubmitEditing={login}
           />
           <TouchableOpacity style={styles.loginButton} onPress={login}>
             <Text style={styles.loginButtonText}>로그인</Text>
