@@ -27,3 +27,23 @@ export const saveLoginPreferences = async (preferences) => {
     console.error('Error saving login preferences', error);
   }
 };
+
+export const getLoginPreferences = async () => {
+  try {
+    const preferencesString = await AsyncStorage.getItem('loginPreferences');
+    return preferencesString ? JSON.parse(preferencesString) : null;
+  } catch (error) {
+    console.error('Error retrieving login preferences', error);
+    return null;
+  }
+};
+
+export const getCredentials = async () => {
+  try {
+    const credentials = await Keychain.getInternetCredentials('user_credentials');
+    return credentials ? { username: credentials.username, password: credentials.password } : null;
+  } catch (error) {
+    console.error('Error retrieving user credentials', error);
+    return null;
+  }
+};

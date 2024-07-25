@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
 import { handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
-import { saveCredentials, saveTokens, saveLoginPreferences } from '../../../utils/authFunc';
+import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
 
 const LoginScreen = ({ navigation }) => {
   const [ formValue, setFormValue ] = useState({
@@ -24,11 +24,34 @@ const LoginScreen = ({ navigation }) => {
       if (saveLoginInfo) {
         await saveCredentials(formValue.username, formValue.password);
       }
+      setFormValue({ username: '', password: '' });
+      setSaveLoginInfo(false);
       navigation.navigate('Home');
     } catch (error) {
       logJson(error.response, true);
     }
   }
+
+  const fillExistingCredentials = async () => {
+    const preferences = await getLoginPreferences();
+    if (!preferences || !preferences.saveLoginInfo) {
+      return;
+    }
+    
+    const storedCredentials = await getCredentials();
+    if (storedCredentials) {
+      setSaveLoginInfo(preferences.saveLoginInfo);
+      setFormValue({
+        username: storedCredentials.username,
+        password: storedCredentials.password,
+      });
+      // 필요시 자동 로그인 로직 추가
+    }
+  };
+
+  useEffect(() => {
+    fillExistingCredentials();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
