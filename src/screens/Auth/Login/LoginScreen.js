@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
+import { loginRequest } from '../../../services/api/ServerApi';
+import { handleInputChange } from '../../../utils/componentsFunc';
+import { logJson } from '../../../utils/logFunc';
 
 const LoginScreen = ({ navigation }) => {
+  const [ formValue, setFormValue ] = useState({
+    username: '',
+    password: '',
+  });
+
+  async function login () {
+    try {
+      const response = await loginRequest(formValue.username, formValue.password);
+      logJson(response);
+    } catch (error) {
+      logJson(error.response, true);
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -12,14 +29,20 @@ const LoginScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="아이디 입력"
             placeholderTextColor="#999"
+            required
+            value={formValue.username}
+            onChangeText={(text) => handleInputChange('username', text, setFormValue)}
           />
           <TextInput
             style={styles.input}
             placeholder="비밀번호"
             placeholderTextColor="#999"
             secureTextEntry
+            required
+            value={formValue.password}
+            onChangeText={(text) => handleInputChange('password', text, setFormValue)}
           />
-          <TouchableOpacity style={styles.loginButton}>
+          <TouchableOpacity style={styles.loginButton} onPress={login}>
             <Text style={styles.loginButtonText}>로그인</Text>
           </TouchableOpacity>
           <TouchableOpacity>

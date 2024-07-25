@@ -23,3 +23,10 @@ export async function fetchWrite(bo_table, wr_id, setWrite) {
     console.error(JSON.stringify(error));
   }
 }
+
+export const handleInputChange = (name, value, setFormValue) => {
+  setFormValue(prevState => ({
+    ...prevState,
+    [name]: value,
+  }));
+};

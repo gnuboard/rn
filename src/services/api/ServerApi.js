@@ -11,6 +11,18 @@ export const serverApi = axios.create({
   },
 });
 
+export const loginRequest = async (username, password) => {
+  try {
+    const response = await serverApi.post('/token',
+    { username, password },
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded'} },
+  );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchBoardNewDataRequest = async (bo_table, params) => {
   try {
     const response = await serverApi.get(
