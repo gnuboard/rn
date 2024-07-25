@@ -1,14 +1,12 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 
 const LoginScreen = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Icon name="chevron-back-sharp" size={28} color="#464646" />
-        </TouchableOpacity>
+        <HeaderBackwardArrow navigation={navigation} />
         <View style={styles.formContainer}>
           <TextInput
             style={styles.input}
