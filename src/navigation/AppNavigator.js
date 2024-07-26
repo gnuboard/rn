@@ -1,9 +1,11 @@
 import React from 'react';
+import { Alert } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import { useAuth } from '../auth/context/AuthContext';
 import HomeStackScreen from '../screens/Home/HomeStackScreen';
 import BoardListScreen from '../screens/Board/BoardScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
@@ -58,12 +60,46 @@ const TabNavigator = () => {
   );
 };
 
+const handleLogout = (logout) => {
+  Alert.alert(
+    "Logout",
+    "로그아웃 하시겠습니까?",
+    [
+      {
+        text: "Cancel",
+        style: "cancel"
+      },
+      { 
+        text: "OK", 
+        onPress: () => {
+          logout();
+        }
+      }
+    ]
+  );
+};
+
 const AppNavigator = () => {
+  const { isLoggedIn, logout } = useAuth();
+
   return (
     <NavigationContainer>
       <Drawer.Navigator>
         <Drawer.Screen name="홈" component={TabNavigator} options={{headerShown: false}} />
-        <Drawer.Screen name="로그인" component={LoginScreen} options={{headerShown: false}} />
+        {isLoggedIn
+          ? <Drawer.Screen
+              name="로그아웃"
+              component={LoginScreen}
+              options={{onPress: handleLogout}}
+              listeners={() => ({
+                drawerItemPress: (e) => {
+                  e.preventDefault();
+                  handleLogout((logout));
+                }
+              })}
+            />
+          : <Drawer.Screen name="로그인" component={LoginScreen} options={{headerShown: false}} />
+        }
       </Drawer.Navigator>
     </NavigationContainer>
   );
