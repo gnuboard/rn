@@ -11,3 +11,11 @@ export const dateToMonthDay = (dateString) => {
   const day = date.getDate().toString().padStart(2, '0');
   return `${month}/${day}`;
 };
+
+export const removeQuotes = (value) => {
+  // 단어의 시작과 끝에 따옴표가 있는 경우 제거
+  if (typeof value === 'string') {
+    return value.replace(/^"(.*)"$/, '$1');
+  }
+  return value;
+};
