@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkLoginStatus();
-  }, []);
+  }, [isLoggedIn]);
 
   const checkLoginStatus = async () => {
     try {
@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
         isLoggedIn,
         loading,
         logout,
+        setIsLoggedIn,
       }}
     >
       {children}

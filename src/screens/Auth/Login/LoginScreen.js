@@ -7,8 +7,10 @@ import { loginRequest, fetchPersonalInfoRequest } from '../../../services/api/Se
 import { handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
 import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
+import { useAuth } from '../../../auth/context/AuthContext';
 
 const LoginScreen = ({ navigation }) => {
+  const { setIsLoggedIn } = useAuth();
   const [ formValue, setFormValue ] = useState({
     username: '',
     password: '',
@@ -49,6 +51,7 @@ const LoginScreen = ({ navigation }) => {
         logJson(error.response.data, true);
       }
 
+      setIsLoggedIn(true);
       setFormValue({ username: '', password: '' });
       setSaveLoginInfo(false);
       navigation.navigate('Home');
