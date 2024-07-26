@@ -89,6 +89,15 @@ export const renewTokenRequest = async (refresh_token) =>{
   });
 }
 
+export const fetchPersonalInfoRequest = async () => {
+  try {
+    const response = await serverApi.get('/members/me');
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchBoardNewDataRequest = async (bo_table, params) => {
   try {
     const response = await serverApi.get(

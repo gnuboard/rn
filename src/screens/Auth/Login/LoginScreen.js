@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
-import { loginRequest } from '../../../services/api/ServerApi';
+import { loginRequest, fetchPersonalInfoRequest } from '../../../services/api/ServerApi';
 import { handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
 import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
@@ -19,11 +20,35 @@ const LoginScreen = ({ navigation }) => {
     try {
       const response = await loginRequest(formValue.username, formValue.password);
       const { access_token, refresh_token } = response.data;
-      await saveTokens(access_token, refresh_token);
+      if (!access_token) {
+        console.error('Failed to login - !access_token');
+        return;
+      }
+
+      const saveTokenResult = await saveTokens(access_token, refresh_token);
+      if (!saveTokenResult.isSuccess) {
+        console.error('Failed to save tokens');
+        return;
+      }
+
       await saveLoginPreferences({ saveLoginInfo });
       if (saveLoginInfo) {
         await saveCredentials(formValue.username, formValue.password);
       }
+
+      try {
+        const meInfoResponse = await fetchPersonalInfoRequest();
+        const userData = meInfoResponse.data;
+        const keys = Object.keys(userData);
+        const promises = keys.map(key => 
+          AsyncStorage.setItem(key, JSON.stringify(userData[key]))
+        );
+        await Promise.all(promises);
+      } catch (error) {
+        console.error('Failed to fetch personal info');
+        logJson(error.response.data, true);
+      }
+
       setFormValue({ username: '', password: '' });
       setSaveLoginInfo(false);
       navigation.navigate('Home');
