@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, SafeAreaView } from 'react-native';
+import {
+  View, Text, StyleSheet, Image, ScrollView,
+  SafeAreaView, TouchableOpacity
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 import { removeQuotes } from '../../utils/stringFunc';
+import { useAuth } from '../../auth/context/AuthContext';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
+  const { isLoggedIn } = useAuth();
   const [profileData, setProfileData] = useState(null);
 
   useEffect(() => {
@@ -33,7 +38,18 @@ const ProfileScreen = () => {
     };
 
     fetchProfileData();
-  }, []);
+  }, [isLoggedIn]);
+
+  if (!isLoggedIn) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>로그인이 필요합니다.</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('로그인')}>
+          <Text style={styles.buttonText}>로그인하러 가기</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   if (!profileData) {
     return (
@@ -195,6 +211,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
+  button: {
+    backgroundColor: '#4a90e2',
+    padding: 10,
+    borderRadius: 3,
+    marginTop: 10,
+  },
+  buttonText: {
+    color: 'white',
+  }
 });
 
 export default ProfileScreen;
