@@ -11,6 +11,7 @@ import BoardListScreen from '../screens/Board/BoardScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
 import LoginScreen from '../screens/Auth/Login/LoginScreen';
+import SignupScreen from '../screens/Auth/Signup/SignupScreen';
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -98,7 +99,12 @@ const AppNavigator = () => {
                 }
               })}
             />
-          : <Drawer.Screen name="로그인" component={LoginScreen} options={{headerShown: false}} />
+          : (
+            <>
+              <Drawer.Screen name="로그인" component={LoginScreen} options={{headerShown: false}} />
+              <Drawer.Screen name="회원가입" component={SignupScreen} options={{headerShown: false}} />
+            </>
+          )
         }
       </Drawer.Navigator>
     </NavigationContainer>
