@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import { signupRequest } from '../../../services/api/ServerApi';
 
 export const Agreement = ({ 
   allAgreed, setAllAgreed, policySignup, setPolicySignup, policyPrivacy, setPolicyPrivacy
@@ -64,8 +65,8 @@ export const Agreement = ({
   );
 };
 
-export const SignupForm = () => {
-  const [formData, setFormData] = useState({
+export const SignupForm = ({ navigation }) => {
+  const initalFormData = {
     mb_id: '',
     mb_password: '',
     mb_password_re: '',
@@ -74,13 +75,71 @@ export const SignupForm = () => {
     mb_email: '',
     mb_mailling: false,
     mb_open: false,
-  });
+  };
+
+  const [formData, setFormData] = useState(initalFormData);
+  const [isSignupLoading, setIsSignupLoading] = useState(false);
+  const [idError, setIdError] = useState('');
+  const [nickError, setNickError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
   const handleInputChange = (name, value) => {
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSignupLoading(true);
+    setIdError('');
+    setNickError('');
+    setEmailError('');
+    console.log(formData);
+    try {
+      const response = await signupRequest(formData);
+      if (response.status === 201) {
+        setFormData(initalFormData);
+        Alert.alert(
+          "Confirmation",
+          response.data.message,
+          [
+            { 
+              text: "OK", 
+              onPress: () => {
+                navigation.navigate('로그인');
+              }
+            }
+          ],
+          { cancelable: false }
+        );
+      } else {
+        alert(response.status);
+      }
+    } catch (error) {
+      console.error('Error creating member:', error);
+      if (error.response.data.detail) {
+        if (Array.isArray(error.response.data.detail)) {
+          for (let detail of error.response.data.detail) {
+            alert(detail.msg);
+          }
+        } else {
+          const errorMsg = error.response.data.detail;
+          if (errorMsg == "이미 가입된 아이디입니다.") {
+            setIdError(errorMsg);
+          } else if (errorMsg == "이미 존재하는 닉네임입니다.") {
+            setNickError(errorMsg);
+          } else if (errorMsg == "이미 가입된 이메일입니다.") {
+            setEmailError(errorMsg);
+          }
+        }
+      } else {
+        alert(error);
+      }
+    } finally {
+      setIsSignupLoading(false);
+    }
   };
 
   return (
@@ -92,6 +151,7 @@ export const SignupForm = () => {
         value={formData.mb_id}
         onChangeText={(text) => handleInputChange('mb_id', text)}
       />
+      {idError && <Text style={styles.errorText}>{idError}</Text>}
       <TextInput
         style={styles.input}
         placeholder="비밀번호 (필수)*"
@@ -120,6 +180,7 @@ export const SignupForm = () => {
         value={formData.mb_nick}
         onChangeText={(text) => handleInputChange('mb_nick', text)}
       />
+      {nickError && <Text style={styles.errorText}>{nickError}</Text>}
       <TextInput
         style={styles.input}
         placeholder="E-mail (필수)*"
@@ -127,6 +188,7 @@ export const SignupForm = () => {
         onChangeText={(text) => handleInputChange('mb_email', text)}
         keyboardType="email-address"
       />
+      {emailError && <Text style={styles.errorText}>{emailError}</Text>}
 
       <Text style={styles.sectionTitle}>기타 개인정보 설정</Text>
       <View style={styles.checkboxContainer}>
@@ -147,7 +209,7 @@ export const SignupForm = () => {
           다른분들이 나의 정보를 {'\n'}볼 수 있도록 합니다.
         </Text>
       </View>
-      <TouchableOpacity style={[styles.button]}>
+      <TouchableOpacity style={[styles.button, isSignupLoading && styles.disabledButton]} onPress={handleSubmit} disabled={isSignupLoading}>
         <Text style={styles.buttonText}>회원가입</Text>
       </TouchableOpacity>
     </View>
@@ -257,5 +319,13 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  disabledButton: {
+    backgroundColor: '#cccccc',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginBottom: 10,
   },
 });

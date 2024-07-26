@@ -60,6 +60,15 @@ serverApi.interceptors.response.use(
   }
 );
 
+export const signupRequest = async (formData) => {
+  try {
+    const response = await serverApi.post('/members', formData);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const loginRequest = async (username, password) => {
   try {
     const response = await serverApi.post('/token',

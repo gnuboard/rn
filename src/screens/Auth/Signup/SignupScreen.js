@@ -18,7 +18,7 @@ const SignupScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.formContainer}>
           {togglePressed ? (
-            <SignupForm />
+            <SignupForm navigation={navigation} />
           ) : (
             <Agreement
               allAgreed={allAgreed}
