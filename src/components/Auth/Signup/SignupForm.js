@@ -80,7 +80,6 @@ export const SignupForm = ({ navigation }) => {
   const [formData, setFormData] = useState(initalFormData);
   const [isSignupLoading, setIsSignupLoading] = useState(false);
   const [idError, setIdError] = useState('');
-  const [nickError, setNickError] = useState('');
   const [emailError, setEmailError] = useState('');
 
   const handleInputChange = (name, value) => {
@@ -94,9 +93,7 @@ export const SignupForm = ({ navigation }) => {
     e.preventDefault();
     setIsSignupLoading(true);
     setIdError('');
-    setNickError('');
     setEmailError('');
-    console.log(formData);
     try {
       const response = await signupRequest(formData);
       if (response.status === 201) {
@@ -128,8 +125,6 @@ export const SignupForm = ({ navigation }) => {
           const errorMsg = error.response.data.detail;
           if (errorMsg == "이미 가입된 아이디입니다.") {
             setIdError(errorMsg);
-          } else if (errorMsg == "이미 존재하는 닉네임입니다.") {
-            setNickError(errorMsg);
           } else if (errorMsg == "이미 가입된 이메일입니다.") {
             setEmailError(errorMsg);
           }
@@ -149,7 +144,10 @@ export const SignupForm = ({ navigation }) => {
         style={styles.input}
         placeholder="아이디 (필수)*"
         value={formData.mb_id}
-        onChangeText={(text) => handleInputChange('mb_id', text)}
+        onChangeText={(text) => {
+          handleInputChange('mb_id', text);
+          handleInputChange('mb_nick', text);
+        }}
       />
       {idError && <Text style={styles.errorText}>{idError}</Text>}
       <TextInput
@@ -167,20 +165,6 @@ export const SignupForm = ({ navigation }) => {
         onChangeText={(text) => handleInputChange('mb_password_re', text)}
       />
 
-      <Text style={styles.sectionTitle}>개인정보 입력</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="이름 (필수)*"
-        value={formData.mb_name}
-        onChangeText={(text) => handleInputChange('mb_name', text)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="닉네임 (필수)*"
-        value={formData.mb_nick}
-        onChangeText={(text) => handleInputChange('mb_nick', text)}
-      />
-      {nickError && <Text style={styles.errorText}>{nickError}</Text>}
       <TextInput
         style={styles.input}
         placeholder="E-mail (필수)*"
