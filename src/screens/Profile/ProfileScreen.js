@@ -107,7 +107,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.loadingContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProfileUpdate')}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProfileUpdate', profileData)}>
             <Text style={styles.buttonText}>정보 수정하기</Text>
           </TouchableOpacity>
         </View>

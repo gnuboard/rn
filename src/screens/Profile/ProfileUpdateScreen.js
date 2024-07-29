@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 
-const ProfileUpdateScreen = ({ navigation }) => {
+const ProfileUpdateScreen = ({ navigation, route}) => {
+  const profileData = route.params;
   const [formValue, setFormValue] = useState({
-    mb_nick: '',
-    mb_email: '',
-    mb_name: '',
+    mb_nick: profileData.mb_nick,
+    mb_email: profileData.mb_email,
+    mb_name: profileData.mb_name,
     mb_hp: '',
     mb_zip: '',
     mb_addr1: '',
     mb_addr2: '',
-    mb_profile: '',
+    mb_profile: profileData.mb_profile,
     mb_open: false,
     mb_alarm: false,
     mb_dummy_data: false,
