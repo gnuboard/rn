@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest } from '../../services/api/ServerApi';
@@ -8,16 +8,16 @@ import { fetchPersonalInfo } from '../../utils/componentsFunc';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
   const { setIsLoggedIn } = useAuth();
-  const profileData = route.params;
   const [formValue, setFormValue] = useState({
-    mb_nick: profileData.mb_nick,
-    mb_email: profileData.mb_email,
-    mb_name: profileData.mb_name,
+    mb_nick: route.params.mb_nick,
+    mb_email: route.params.mb_email,
+    mb_name: route.params.mb_name,
     mb_hp: '',
     mb_zip: '',
+    mb_addr_jibeon: '',
     mb_addr1: '',
     mb_addr2: '',
-    mb_profile: profileData.mb_profile,
+    mb_profile: route.params.mb_profile,
     mb_open: false,
     mb_alarm: false,
     mb_dummy_data: false,
@@ -32,6 +32,17 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_9: '',
     mb_10: '',
   });
+
+  useEffect(() => {
+    if (route.params.zonecode) {
+      setFormValue(prevState => ({
+        ...prevState,
+        mb_zip: route.params.zonecode,
+        mb_addr_jibeon: route.params.jibunAddress,
+        mb_addr1: route.params.address,
+      }));
+    }
+  }, [route]);
 
   const handleChange = (name, value) => {
     setFormValue(prevState => ({
@@ -100,8 +111,9 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           placeholder="우편번호"
           value={formValue.mb_zip}
           onChangeText={(value) => handleChange('mb_zip', value)}
+          editable={false}
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Zip')}>
           <Text style={styles.buttonText}>주소검색</Text>
         </TouchableOpacity>
       </View>
