@@ -106,6 +106,11 @@ const ProfileScreen = ({ navigation }) => {
             </View>
           </View>
         </View>
+        <View style={styles.loadingContainer}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ProfileUpdate')}>
+            <Text style={styles.buttonText}>정보 수정하기</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

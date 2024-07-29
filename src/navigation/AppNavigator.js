@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -12,9 +13,20 @@ import ProfileScreen from '../screens/Profile/ProfileScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
 import LoginScreen from '../screens/Auth/Login/LoginScreen';
 import SignupScreen from '../screens/Auth/Signup/SignupScreen';
+import ProfileUpdateScreen from '../screens/Profile/ProfileUpdateScreen';
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+const MainStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="MainTabs" component={TabNavigator} options={{headerShown: false}} />
+      <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} options={{headerShown: false}} />
+    </Stack.Navigator>
+  );
+};
 
 const TabNavigator = () => {
   return (
@@ -86,7 +98,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="홈" component={TabNavigator} options={{headerShown: false}} />
+        <Drawer.Screen name="홈" component={MainStack} options={{headerShown: false}} />
         {isLoggedIn
           ? <Drawer.Screen
               name="로그아웃"
