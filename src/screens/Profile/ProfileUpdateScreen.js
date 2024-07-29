@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
+import { updatePersonalInfoRequest } from '../../services/api/ServerApi';
+import { logJson } from '../../utils/logFunc';
+import { useAuth } from '../../auth/context/AuthContext';
+import { fetchPersonalInfo } from '../../utils/componentsFunc';
 
-const ProfileUpdateScreen = ({ navigation, route}) => {
+const ProfileUpdateScreen = ({ navigation, route }) => {
+  const { setIsLoggedIn } = useAuth();
   const profileData = route.params;
   const [formValue, setFormValue] = useState({
     mb_nick: profileData.mb_nick,
@@ -16,6 +21,16 @@ const ProfileUpdateScreen = ({ navigation, route}) => {
     mb_open: false,
     mb_alarm: false,
     mb_dummy_data: false,
+    mb_1: '',
+    mb_2: '',
+    mb_3: '',
+    mb_4: '',
+    mb_5: '',
+    mb_6: '',
+    mb_7: '',
+    mb_8: '',
+    mb_9: '',
+    mb_10: '',
   });
 
   const handleChange = (name, value) => {
@@ -25,8 +40,19 @@ const ProfileUpdateScreen = ({ navigation, route}) => {
     }));
   };
 
-  const handleSubmit = () => {
-    console.log('Form submitted', formValue);
+  const handleSubmit = async () => {
+    try {
+      const response = await updatePersonalInfoRequest(formValue);
+      if (response.status === 200) {
+        fetchPersonalInfo().then(() => {
+          setIsLoggedIn(false);
+          setIsLoggedIn(true);
+          navigation.navigate('Profile');
+        });
+      }
+    } catch (error) {
+      logJson(error, true);
+    }
   };
 
   return (

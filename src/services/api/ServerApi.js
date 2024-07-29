@@ -107,6 +107,15 @@ export const fetchPersonalInfoRequest = async () => {
   }
 }
 
+export const updatePersonalInfoRequest = async (data) => {
+  try {
+    const response = await serverApi.put('/member', data);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchBoardNewDataRequest = async (bo_table, params) => {
   try {
     const response = await serverApi.get(
