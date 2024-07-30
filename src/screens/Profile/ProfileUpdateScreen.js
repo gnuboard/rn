@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+import Config from 'react-native-config';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
@@ -17,6 +19,8 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_addr_jibeon: '',
     mb_addr1: '',
     mb_addr2: '',
+    mb_icon_path: route.params.mb_icon_path,
+    mb_image_path: route.params.mb_image_path,
     mb_profile: route.params.mb_profile,
     mb_open: false,
     mb_alarm: false,
@@ -31,6 +35,10 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_8: '',
     mb_9: '',
     mb_10: '',
+  });
+  const [ mbImages, setMbImages ] = useState({
+    mb_icon: route.params.mb_icon_path ? `${Config.SERVER_URL}${route.params.mb_icon_path}` : '',
+    mb_img: route.params.mb_image_path ? `${Config.SERVER_URL}${route.params.mb_image_path}` : '',
   });
 
   useEffect(() => {
@@ -49,6 +57,29 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleFileChange = (name, value) => {
+    setMbImages(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleFilePick = async (fieldName) => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      });
+      handleChange(fieldName, res[0].name);
+      handleFileChange(fieldName, res[0]);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker
+      } else {
+        throw err;
+      }
+    }
   };
 
   const handleSubmit = async () => {
@@ -129,20 +160,42 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         value={formValue.mb_addr2}
         onChangeText={(value) => handleChange('mb_addr2', value)}
       />
-      <TouchableOpacity 
-        style={styles.fileButton} 
-      >
-        <Text style={styles.fileButtonText}>
-          회원 아이콘: {formValue.itemFile ? formValue.itemFile.name : '선택된 파일 없음'}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.fileButton} 
-      >
-        <Text style={styles.fileButtonText}>
-          회원 이미지: {formValue.imageFile ? formValue.imageFile.name : '선택된 파일 없음'}
-        </Text>
-      </TouchableOpacity>
+      <View style={styles.fileContainer}>
+        <TouchableOpacity 
+          style={styles.fileButton} 
+          onPress={() => handleFilePick('mb_icon')}
+        >
+          <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
+            회원 아이콘: {formValue.mb_icon_path ? formValue.mb_icon_path : '선택된 파일 없음'}
+          </Text>
+        </TouchableOpacity>
+        {
+          mbImages.mb_icon && (
+            <Image
+              source={{ uri: mbImages.mb_icon.uri ? mbImages.mb_icon.uri : mbImages.mb_icon }}
+              style={styles.previewImage}
+            />
+          )
+        }
+      </View>
+      <View style={styles.fileContainer}>
+        <TouchableOpacity 
+          style={styles.fileButton} 
+          onPress={() => handleFilePick('mb_img')}
+        >
+          <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
+            회원 이미지: {formValue.mb_image_path ? formValue.mb_image_path : '선택된 파일 없음'}
+          </Text>
+        </TouchableOpacity>
+        {
+          mbImages.mb_img && (
+            <Image
+              source={{ uri: mbImages.mb_img.uri ? mbImages.mb_img.uri : mbImages.mb_img }}
+              style={styles.previewImage}
+            />
+          )
+        }
+      </View>
       <TextInput 
         style={[styles.input, styles.multilineInput]} 
         placeholder="자기소개"
@@ -231,11 +284,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
   },
+  fileContainer: {
+    flexDirection: 'row',
+  },
+  previewImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+  },
   fileButton: {
     backgroundColor: '#f0f0f0',
     padding: 15,
     borderRadius: 5,
     marginBottom: 10,
+    marginRight: 10,
+    width: '80%',
   },
   fileButtonText: {
     color: '#333',
