@@ -7,6 +7,8 @@ import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/ap
 import { logJson } from '../../utils/logFunc';
 import { useAuth } from '../../auth/context/AuthContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
+import { ImageWithDeleteButton } from '../../components/Common/Delete';
+import { emptyAvatarUri } from '../../constants/theme';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
   const imgFormData = new FormData();
@@ -40,6 +42,8 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
   const [ mbImages, setMbImages ] = useState({
     mb_icon: route.params.mb_icon_path ? `${Config.SERVER_URL}${route.params.mb_icon_path}` : '',
     mb_img: route.params.mb_image_path ? `${Config.SERVER_URL}${route.params.mb_image_path}` : '',
+    del_mb_icon: 0,
+    del_mb_img: 0,
   });
 
   useEffect(() => {
@@ -54,6 +58,9 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
   }, [route]);
 
   const handleChange = (name, value) => {
+    if (name === 'mb_img_path') {
+      name = 'mb_image_path';
+    }
     setFormValue(prevState => ({
       ...prevState,
       [name]: value,
@@ -65,6 +72,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       ...prevState,
       [name]: value,
     }));
+    handleChange(name + '_path', value.uri);
   };
 
   const handleFilePick = async (fieldName) => {
@@ -104,16 +112,16 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
   };
 
   const handleImgSubmit = async () => {
-    imgFormData.append('del_mb_icon', 0);
-    imgFormData.append('del_mb_img', 0);
-    if (mbImages.mb_icon.uri) {
+    imgFormData.append('del_mb_icon', mbImages.del_mb_icon);
+    imgFormData.append('del_mb_img', mbImages.del_mb_img);
+    if (mbImages.mb_icon?.uri && mbImages.mb_icon.uri != emptyAvatarUri) {
       imgFormData.append('mb_icon', {
         name: mbImages.mb_icon.name,
         type: mbImages.mb_icon.type,
         uri: mbImages.mb_icon.uri,
       });
     }
-    if (mbImages.mb_img.uri) {
+    if (mbImages.mb_img?.uri && mbImages.mb_img.uri != emptyAvatarUri) {
       imgFormData.append('mb_img', {
         name: mbImages.mb_img.name,
         type: mbImages.mb_img.type,
@@ -130,6 +138,28 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         alert(error.response.data.detail);
       }
     }
+  }
+
+  onDeleteIcon = () => {
+    handleChange('mb_icon_path', '');
+    setMbImages(prevState => ({
+      ...prevState,
+      del_mb_icon: 1,
+    }));
+    handleFileChange('mb_icon', {
+      uri: emptyAvatarUri,
+    });
+  }
+
+  onDeleteImg = () => {
+    handleChange('mb_image_path', '');
+    setMbImages(prevState => ({
+      ...prevState,
+      del_mb_img: 1,
+    }));
+    handleFileChange('mb_img', {
+      uri: emptyAvatarUri,
+    });
   }
 
   return (
@@ -206,9 +236,9 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         {
           mbImages.mb_icon && (
-            <Image
-              source={{ uri: mbImages.mb_icon.uri ? mbImages.mb_icon.uri : mbImages.mb_icon }}
-              style={styles.previewImage}
+            <ImageWithDeleteButton
+              imageUri={mbImages.mb_icon.uri ? mbImages.mb_icon.uri : mbImages.mb_icon}
+              onDelete={onDeleteIcon}
             />
           )
         }
@@ -224,9 +254,9 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         {
           mbImages.mb_img && (
-            <Image
-              source={{ uri: mbImages.mb_img.uri ? mbImages.mb_img.uri : mbImages.mb_img }}
-              style={styles.previewImage}
+            <ImageWithDeleteButton
+              imageUri={mbImages.mb_img.uri ? mbImages.mb_img.uri : mbImages.mb_img}
+              onDelete={onDeleteImg}
             />
           )
         }
@@ -321,11 +351,6 @@ const styles = StyleSheet.create({
   },
   fileContainer: {
     flexDirection: 'row',
-  },
-  previewImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
   },
   fileButton: {
     backgroundColor: '#f0f0f0',
