@@ -116,6 +116,19 @@ export const updatePersonalInfoRequest = async (data) => {
   }
 }
 
+export const updateMbImgRequest = async (formData) => {
+  try {
+    const response = await serverApi.put(
+      '/member/image',
+      formData,
+      { headers: { 'Content-Type': 'multipart/form-data' } },
+    )
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchBoardNewDataRequest = async (bo_table, params) => {
   try {
     const response = await serverApi.get(

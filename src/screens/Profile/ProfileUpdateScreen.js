@@ -3,12 +3,13 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image 
 import DocumentPicker from 'react-native-document-picker';
 import Config from 'react-native-config';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
-import { updatePersonalInfoRequest } from '../../services/api/ServerApi';
+import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
 import { useAuth } from '../../auth/context/AuthContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
+  const imgFormData = new FormData();
   const { setIsLoggedIn } = useAuth();
   const [formValue, setFormValue] = useState({
     mb_nick: route.params.mb_nick,
@@ -84,18 +85,52 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
 
   const handleSubmit = async () => {
     try {
+      const imgSubmitSuccess = handleImgSubmit();
+      if (!imgSubmitSuccess) {
+        alert('이미지 업로드에 실패했습니다.');
+        return;
+      }
       const response = await updatePersonalInfoRequest(formValue);
       if (response.status === 200) {
         fetchPersonalInfo().then(() => {
           setIsLoggedIn(false);
           setIsLoggedIn(true);
-          navigation.navigate('Profile');
-        });
+        })
+        .then(() => {navigation.navigate('Profile')});
       }
     } catch (error) {
       logJson(error, true);
     }
   };
+
+  const handleImgSubmit = async () => {
+    imgFormData.append('del_mb_icon', 0);
+    imgFormData.append('del_mb_img', 0);
+    if (mbImages.mb_icon.uri) {
+      imgFormData.append('mb_icon', {
+        name: mbImages.mb_icon.name,
+        type: mbImages.mb_icon.type,
+        uri: mbImages.mb_icon.uri,
+      });
+    }
+    if (mbImages.mb_img.uri) {
+      imgFormData.append('mb_img', {
+        name: mbImages.mb_img.name,
+        type: mbImages.mb_img.type,
+        uri: mbImages.mb_img.uri,
+      });
+    }
+    try {
+      const response = await updateMbImgRequest(imgFormData);
+      if (response.status === 200) {
+        return {'imgSubmitSuccess': true}
+      }
+    } catch (error) {
+      if (error.response.status === 400) {
+        alert(error.response.data.detail);
+      }
+    }
+  }
 
   return (
     <>
