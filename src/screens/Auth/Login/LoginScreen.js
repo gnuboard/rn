@@ -109,7 +109,7 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.loginButton} onPress={login}>
             <Text style={styles.loginButtonText}>로그인</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('회원가입')}>
             <Text style={styles.forgotPassword}>계정이 없으신가요? 회원가입</Text>
           </TouchableOpacity>
         </View>
