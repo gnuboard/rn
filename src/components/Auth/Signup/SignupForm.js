@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { signupRequest } from '../../../services/api/ServerApi';
+import { Colors } from '../../../constants/theme';
 
 export const Agreement = ({ 
   allAgreed, setAllAgreed, policySignup, setPolicySignup, policyPrivacy, setPolicyPrivacy
@@ -293,14 +294,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   button: {
-    backgroundColor: '#4a90e2',
+    backgroundColor: Colors.btn_blue,
     padding: 10,
     borderRadius: 3,
     marginTop: 10,
     width: '100%',
   },
   buttonText: {
-    color: 'white',
+    color: Colors.btn_text_white,
     textAlign: 'center',
     fontWeight: 'bold',
   },

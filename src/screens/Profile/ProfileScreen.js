@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 import { removeQuotes } from '../../utils/stringFunc';
 import { useAuth } from '../../auth/context/AuthContext';
+import { Colors } from '../../constants/theme';
 
 const ProfileScreen = ({ navigation }) => {
   const { isLoggedIn } = useAuth();
@@ -217,13 +218,13 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   button: {
-    backgroundColor: '#4a90e2',
+    backgroundColor: Colors.btn_blue,
     padding: 10,
     borderRadius: 3,
     marginTop: 10,
   },
   buttonText: {
-    color: 'white',
+    color: Colors.btn_text_white,
   }
 });
 

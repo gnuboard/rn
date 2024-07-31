@@ -8,7 +8,7 @@ import { logJson } from '../../utils/logFunc';
 import { useAuth } from '../../auth/context/AuthContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
-import { emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
+import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
   const imgFormData = new FormData();
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   submitButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: Colors.btn_blue,
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',

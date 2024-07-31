@@ -4,6 +4,7 @@ import {
   Keyboard, ScrollView
 } from 'react-native';
 import { Agreement, SignupForm } from '../../../components/Auth/Signup/SignupForm';
+import { Colors } from '../../../constants/theme';
 
 const SignupScreen = ({ navigation }) => {
   const [allAgreed, setAllAgreed] = useState(false);
@@ -79,14 +80,14 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   button: {
-    backgroundColor: '#4a90e2',
+    backgroundColor: Colors.btn_blue,
     padding: 10,
     borderRadius: 3,
     marginTop: 10,
     width: '100%',
   },
   buttonText: {
-    color: 'white',
+    color: Colors.btn_text_white,
     textAlign: 'center',
     fontWeight: 'bold',
   },
@@ -95,11 +96,11 @@ const styles = StyleSheet.create({
   },
   outlineButton: {
     backgroundColor: 'transparent',
-    borderColor: '#4a90e2',
+    borderColor: Colors.btn_blue,
     borderWidth: 1,
   },
   outlineButtonText: {
-    color: '#4a90e2',
+    color: Colors.btn_blue,
     textAlign: 'center',
     fontWeight: 'bold',
   },

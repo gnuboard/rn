@@ -7,6 +7,7 @@ import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsF
 import { logJson } from '../../../utils/logFunc';
 import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
 import { useAuth } from '../../../auth/context/AuthContext';
+import { Colors } from '../../../constants/theme';
 
 const LoginScreen = ({ navigation }) => {
   const { setIsLoggedIn } = useAuth();
@@ -170,19 +171,19 @@ const styles = StyleSheet.create({
     margin: 2,
   },
   loginButton: {
-    backgroundColor: '#4a90e2',
+    backgroundColor: Colors.btn_blue,
     padding: 10,
     borderRadius: 3,
     marginTop: 10,
     width: '100%',
   },
   loginButtonText: {
-    color: 'white',
+    color: Colors.btn_text_white,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   forgotPassword: {
-    color: '#4a90e2',
+    color: Colors.btn_blue,
     textAlign: 'center',
     marginTop: 15,
     fontSize: 12,
