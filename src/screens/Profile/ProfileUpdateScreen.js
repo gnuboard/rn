@@ -8,7 +8,7 @@ import { logJson } from '../../utils/logFunc';
 import { useAuth } from '../../auth/context/AuthContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
-import { emptyAvatarUri } from '../../constants/theme';
+import { emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
   const imgFormData = new FormData();
@@ -74,7 +74,11 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       ...prevState,
       [name]: file,
     }));
-    handleChange(name + '_path', file.uri);
+    if (isEmptyAvatar(file.uri)) {
+      handleChange(name + '_path', '선택된 파일 없음');
+    } else {
+      handleChange(name + '_path', file.uri);
+    }
   };
 
   const handleFilePick = async (fieldName) => {
@@ -248,7 +252,11 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           onPress={() => handleFilePick('mb_icon')}
         >
           <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
-            회원 아이콘: {formValue.mb_icon_path ? formValue.mb_icon_path : '선택된 파일 없음'}
+            회원 아이콘: {
+              formValue.mb_icon_path
+              ? (isEmptyAvatar(formValue.mb_icon_path) ? '선택된 파일 없음' : formValue.mb_icon_path )
+              : '선택된 파일 없음'
+            }
           </Text>
         </TouchableOpacity>
         {
@@ -266,7 +274,11 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           onPress={() => handleFilePick('mb_img')}
         >
           <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
-            회원 이미지: {formValue.mb_image_path ? formValue.mb_image_path : '선택된 파일 없음'}
+            회원 이미지: {
+              formValue.mb_image_path
+              ? (isEmptyAvatar(formValue.mb_image_path) ? '선택된 파일 없음' : formValue.mb_image_path )
+              : '선택된 파일 없음'
+            }
           </Text>
         </TouchableOpacity>
         {
@@ -320,6 +332,10 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     </>
   );
 };
+
+function isEmptyAvatar(uri) {
+  return uri.includes(emptyAvatarPath);
+}
 
 const styles = StyleSheet.create({
   contentContainer: {
