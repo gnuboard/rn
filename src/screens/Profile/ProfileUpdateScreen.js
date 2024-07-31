@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import Config from 'react-native-config';
+import { debounce } from 'lodash';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
@@ -45,6 +46,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     del_mb_icon: 0,
     del_mb_img: 0,
   });
+  const [isSubmitReady, setIsSubmitReady] = useState(true);
 
   useEffect(() => {
     if (route.params.zonecode) {
@@ -56,6 +58,13 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       }));
     }
   }, [route]);
+
+  const debouncedSetSubmitReady = useCallback(
+    debounce(() => {
+      setIsSubmitReady(true);
+    }, 3000), // delay
+    []
+  );
 
   const handleChange = (name, value) => {
     if (name === 'mb_img_path') {
@@ -73,6 +82,8 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       [name]: value,
     }));
     handleChange(name + '_path', value.uri);
+    setIsSubmitReady(false);
+    debouncedSetSubmitReady();
   };
 
   const handleFilePick = async (fieldName) => {
@@ -93,7 +104,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
 
   const handleSubmit = async () => {
     try {
-      const imgSubmitSuccess = handleImgSubmit();
+      const imgSubmitSuccess = await handleImgSubmit();
       if (!imgSubmitSuccess) {
         alert('이미지 업로드에 실패했습니다.');
         return;
@@ -161,6 +172,8 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       uri: emptyAvatarUri,
     });
   }
+
+  const DyanamicTouchView = isSubmitReady ? TouchableOpacity : TouchableOpacity;
 
   return (
     <>
@@ -296,9 +309,9 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         <Text style={styles.checkboxLabel}>더미데이터 동의 (내글을 다른분들이 사용할수 있습니다)</Text>
       </View>
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+      <DyanamicTouchView disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>수정하기</Text>
-      </TouchableOpacity>
+      </DyanamicTouchView>
     </ScrollView>
     </>
   );
@@ -400,6 +413,10 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#fff',
     fontSize: 18,
+  },
+  disabledButton: {
+    backgroundColor: '#A9A9A9',
+    opacity: 0.6,
   },
 });
 
