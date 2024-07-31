@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import Config from 'react-native-config';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
