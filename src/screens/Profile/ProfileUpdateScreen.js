@@ -76,12 +76,12 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     }));
   };
 
-  const handleFileChange = (name, value) => {
+  const handleFileChange = (name, file) => {
     setMbImages(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: file,
     }));
-    handleChange(name + '_path', value.uri);
+    handleChange(name + '_path', file.uri);
     setIsSubmitReady(false);
     debouncedSetSubmitReady();
   };
