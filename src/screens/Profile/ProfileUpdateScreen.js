@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import Config from 'react-native-config';
-import { debounce } from 'lodash';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
@@ -47,6 +46,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     del_mb_img: 0,
   });
   const [isSubmitReady, setIsSubmitReady] = useState(true);
+  let retryCount = 0;
 
   useEffect(() => {
     if (route.params.zonecode) {
@@ -58,13 +58,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       }));
     }
   }, [route]);
-
-  const debouncedSetSubmitReady = useCallback(
-    debounce(() => {
-      setIsSubmitReady(true);
-    }, 3000), // delay
-    []
-  );
 
   const handleChange = (name, value) => {
     if (name === 'mb_img_path') {
@@ -82,8 +75,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       [name]: file,
     }));
     handleChange(name + '_path', file.uri);
-    setIsSubmitReady(false);
-    debouncedSetSubmitReady();
   };
 
   const handleFilePick = async (fieldName) => {
@@ -106,7 +97,15 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     try {
       const imgSubmitSuccess = await handleImgSubmit();
       if (!imgSubmitSuccess) {
-        alert('이미지 업로드에 실패했습니다.');
+        setIsSubmitReady(false);
+        retryCount += 1;
+        if (retryCount > 10) {
+          alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
+          return;
+        }
+        setTimeout(() => {
+          handleSubmit();
+        }, 50);
         return;
       }
       const response = await updatePersonalInfoRequest(formValue);
