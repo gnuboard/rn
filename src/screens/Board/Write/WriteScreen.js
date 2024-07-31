@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions, TouchableOpacity } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import { fetchWrite } from '../../../utils/componentsFunc';
 import Config from 'react-native-config';
+import { Colors } from '../../../constants/theme';
 
-const WriteScreen = ({ route }) => {
+const WriteScreen = ({ navigation, route }) => {
   const {bo_table, wr_id} = route.params;
   const [ write, setWrite ] = useState(null);
   const { width } = useWindowDimensions();
@@ -19,7 +20,12 @@ const WriteScreen = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>{write?.wr_subject}</Text>
+      <View style={styles.subjectWithButton}>
+        <Text style={styles.title}>{write?.wr_subject}</Text>
+        <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={wr_id: wr_id})}>
+          <Text style={styles.updateButtonText}>수정하기</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.metaContainer}>
         <View style={styles.authorAvatar}>
           <Image 
@@ -45,6 +51,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f0f0',
     padding: 16,
+  },
+  subjectWithButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  updateButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.btn_blue,
+    borderRadius: 4,
+    marginBottom: 16,
+  },
+  updateButtonText: {
+    color: Colors.btn_text_white,
   },
   title: {
     fontSize: 24,
