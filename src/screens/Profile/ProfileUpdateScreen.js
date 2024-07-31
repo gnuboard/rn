@@ -109,14 +109,17 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         return;
       }
       const response = await updatePersonalInfoRequest(formValue);
-      if (response.status === 200) {
+      if (response.status && response.status === 200) {
         fetchPersonalInfo().then(() => {
           setIsLoggedIn(false);
           setIsLoggedIn(true);
         })
         .then(() => {navigation.navigate('Profile')});
+      } else {
+        console.log("handleSubmit log - ProfileUpdateScreen", response);
       }
     } catch (error) {
+      console.error("handleSubmit error - ProfileUpdateScreen", error);
       logJson(error, true);
     }
   };
@@ -144,8 +147,10 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         return {'imgSubmitSuccess': true}
       }
     } catch (error) {
-      if (error.response.status === 400) {
+      if (error.response && error.response.status && error.response.status === 400) {
         alert(error.response.data.detail);
+      } else {
+        console.error("handleImgSubmit error - ProfileUpdateScreen", error);
       }
     }
   }

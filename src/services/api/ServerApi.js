@@ -29,6 +29,14 @@ serverApi.interceptors.response.use(
 
   async (error) => {
     const originalRequest = error.config;
+
+    if (axios.isAxiosError(error)) {
+      if (error.message === 'Network Error') {
+        console.error("axios response interceptors: Network Error");
+        throw error;
+      }
+    };
+    
     const tokens = await getTokens();
 
     if (error.response.status === 401 && tokens && tokens.refresh_token) {
