@@ -134,6 +134,12 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', '../../src/assets']
+        }
+    }
+
     defaultConfig {
         applicationId "com.gnuboard_react_native"
         minSdkVersion rootProject.ext.minSdkVersion
