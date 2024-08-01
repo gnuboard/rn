@@ -24,6 +24,11 @@
             cloudServices_uploadUrl: ''
         });
 
+        CKEDITOR.on('instanceReady', function(event) {
+            editor = event.editor;
+            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'ready' }));
+        });
+
         CKEDITOR.instances.editor.on('change', function() {
             window.ReactNativeWebView.postMessage(JSON.stringify({
                 type: 'content',

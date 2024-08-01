@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
@@ -15,12 +15,6 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 const CKEditorForm = ({ write }) => {
   const webViewRef = useRef(null);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setContent(write.wr_content);
-    }, 1500);
-  }, []);
-
   const getContent = () => {
     webViewRef.current.injectJavaScript('window.ReactNativeWebView.postMessage(getEditorContent());');
   };
@@ -30,7 +24,18 @@ const CKEditorForm = ({ write }) => {
   };
 
   const handleMessage = (event) => {
-    console.log('Content from CKEditor:', event.nativeEvent.data);
+    try {
+      const message = JSON.parse(event.nativeEvent.data);
+      switch (message.type) {
+        case 'ready':
+          setContent(write.wr_content);
+          break;
+        default:
+          console.log('Received message from CKEditor:', message);
+      }
+    } catch (error) {
+      console.error('Error parsing event data:', error);
+    }
   };
 
   return (
