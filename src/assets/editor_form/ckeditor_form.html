@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKEditor Form</title>
+    <script src="../lib/ckeditor/ckeditor.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        #editor { margin-top: 20px; }
+        .cke_notification_warning { display: none !important; }
+    </style>
+</head>
+<body>
+    <h1>CKEditor Form</h1>
+    <form>
+        <textarea name="editor" id="editor"></textarea>
+    </form>
+
+    <script>
+        CKEDITOR.replace('editor', {
+            removePlugins: 'easyimage,cloudservices',
+            cloudServices_tokenUrl: '',
+            cloudServices_uploadUrl: ''
+        });
+
+        CKEDITOR.instances.editor.on('change', function() {
+            window.ReactNativeWebView.postMessage(JSON.stringify({
+                type: 'content',
+                data: CKEDITOR.instances.editor.getData()
+            }));
+        });
+
+        function getEditorContent() {
+            return CKEDITOR.instances.editor.getData();
+        }
+
+        function setEditorContent(content) {
+            CKEDITOR.instances.editor.setData(content);
+        }
+    </script>
+</body>
+</html>
