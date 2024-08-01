@@ -25,11 +25,19 @@ const CKEditorForm = ({ write }) => {
 
   const handleMessage = (event) => {
     try {
-      const message = JSON.parse(event.nativeEvent.data);
+      const eventData = event.nativeEvent.data;
+      if (eventData === 'undefined') {
+        return;
+      }
+
+      const message = JSON.parse(eventData);
       switch (message.type) {
         case 'ready':
           setContent(write.wr_content);
           break;
+        case 'submit':
+          console.log('Received content from CKEditor:', message.type, message.data.slice(0, 5));
+          break
         default:
           console.log('Received message from CKEditor:', message);
       }
@@ -46,8 +54,7 @@ const CKEditorForm = ({ write }) => {
         onMessage={handleMessage}
         style={styles.webViewContainer}
       />
-      <Button title="Get Content" onPress={getContent} />
-      <Button title="Set Content" onPress={() => {setContent(write.wr_content);}} />
+      <Button title="수정하기" onPress={getContent} />
     </>
   );
 }

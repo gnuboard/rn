@@ -29,15 +29,11 @@
             window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'ready' }));
         });
 
-        CKEDITOR.instances.editor.on('change', function() {
+        function getEditorContent() {
             window.ReactNativeWebView.postMessage(JSON.stringify({
-                type: 'content',
+                type: 'submit',
                 data: CKEDITOR.instances.editor.getData()
             }));
-        });
-
-        function getEditorContent() {
-            return CKEDITOR.instances.editor.getData();
         }
 
         function setEditorContent(content) {
