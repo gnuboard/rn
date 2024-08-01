@@ -6,8 +6,8 @@ import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 const WriteUpdateScreen = ({ navigation, route }) => {
   return (
     <>
-    <HeaderBackwardArrow navigation={navigation} />
-    <CKEditorForm write={route.params.write} />
+      <HeaderBackwardArrow navigation={navigation} />
+      <CKEditorForm write={route.params.write} />
     </>
   );
 }

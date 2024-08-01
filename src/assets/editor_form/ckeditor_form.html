@@ -181,28 +181,28 @@
 		</div>
 	</form>
 
-    <script>
-        CKEDITOR.replace('editor', {
-            removePlugins: 'easyimage,cloudservices',
-            cloudServices_tokenUrl: '',
-            cloudServices_uploadUrl: ''
-        });
+	<script>
+		CKEDITOR.replace('editor', {
+			removePlugins: 'easyimage,cloudservices',
+			cloudServices_tokenUrl: '',
+			cloudServices_uploadUrl: ''
+		});
 
-        CKEDITOR.on('instanceReady', function(event) {
-            editor = event.editor;
-            window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'ready' }));
-        });
+		CKEDITOR.on('instanceReady', function(event) {
+			editor = event.editor;
+			window.ReactNativeWebView.postMessage(JSON.stringify({ type: 'ready' }));
+		});
 
-        function getEditorContent() {
-            window.ReactNativeWebView.postMessage(JSON.stringify({
-                type: 'submit',
-                data: CKEDITOR.instances.editor.getData()
-            }));
-        }
+		function getEditorContent() {
+			window.ReactNativeWebView.postMessage(JSON.stringify({
+				type: 'submit',
+				data: CKEDITOR.instances.editor.getData()
+			}));
+		}
 
-        function setEditorContent(content) {
-            CKEDITOR.instances.editor.setData(content);
-        }
-    </script>
+		function setEditorContent(content) {
+			CKEDITOR.instances.editor.setData(content);
+		}
+	</script>
 </body>
 </html>
