@@ -22,7 +22,7 @@ const WriteScreen = ({ navigation, route }) => {
     <ScrollView style={styles.container}>
       <View style={styles.subjectWithButton}>
         <Text style={styles.title}>{write?.wr_subject}</Text>
-        <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={wr_id: wr_id})}>
+        <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={write})}>
           <Text style={styles.updateButtonText}>수정하기</Text>
         </TouchableOpacity>
       </View>

@@ -1,27 +1,32 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
-  console.log(route);
   return (
     <>
     <HeaderBackwardArrow navigation={navigation} />
-    <CKEditorForm />
+    <CKEditorForm write={route.params.write} />
     </>
   );
 }
 
-const CKEditorForm = () => {
+const CKEditorForm = ({ write }) => {
   const webViewRef = useRef(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setContent(write.wr_content);
+    }, 1500);
+  }, []);
 
   const getContent = () => {
     webViewRef.current.injectJavaScript('window.ReactNativeWebView.postMessage(getEditorContent());');
   };
 
   const setContent = (content) => {
-    webViewRef.current.injectJavaScript(`setEditorContent("${content}");`);
+    webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
   };
 
   const handleMessage = (event) => {
@@ -37,7 +42,7 @@ const CKEditorForm = () => {
         style={styles.webViewContainer}
       />
       <Button title="Get Content" onPress={getContent} />
-      <Button title="Set Content" onPress={() => setContent('Hello from React Native!')} />
+      <Button title="Set Content" onPress={() => {setContent(write.wr_content);}} />
     </>
   );
 }
