@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Button, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 
@@ -14,10 +14,6 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 
 const CKEditorForm = ({ write }) => {
   const webViewRef = useRef(null);
-
-  const getContent = () => {
-    webViewRef.current.injectJavaScript('window.ReactNativeWebView.postMessage(getEditorContent());');
-  };
 
   const setContent = (content) => {
     webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
@@ -47,15 +43,12 @@ const CKEditorForm = ({ write }) => {
   };
 
   return (
-    <>
-      <WebView
-        ref={webViewRef}
-        source={{ uri: 'file:///android_asset/editor_form/ckeditor_form.html' }}
-        onMessage={handleMessage}
-        style={styles.webViewContainer}
-      />
-      <Button title="수정하기" onPress={getContent} />
-    </>
+    <WebView
+      ref={webViewRef}
+      source={{ uri: 'file:///android_asset/editor_form/ckeditor_form.html' }}
+      onMessage={handleMessage}
+      style={styles.webViewContainer}
+    />
   );
 }
 
