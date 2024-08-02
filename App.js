@@ -2,14 +2,17 @@ import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/auth/context/AuthContext';
+import { RefreshProvider } from './src/auth/context/RefreshContext';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <SafeAreaView style={styles.container}>
-        <AppNavigator />
-      </SafeAreaView>
-    </AuthProvider>
+    <RefreshProvider>
+      <AuthProvider>
+        <SafeAreaView style={styles.container}>
+          <AppNavigator />
+        </SafeAreaView>
+      </AuthProvider>
+    </RefreshProvider>
   );
 };
 
