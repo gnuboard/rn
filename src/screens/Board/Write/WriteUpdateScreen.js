@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
-import { fetchBoardConfigRequest, updateWriteRequest } from '../../../services/api/ServerApi';
+import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
 import { useRefresh } from '../../../auth/context/RefreshContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
@@ -55,14 +55,35 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
           setWriteFormData(write);
           break;
         case 'submit':
-          try {
-            const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
-            if (response.status === 200) {
-              setRefreshing(!refreshing);
-              navigation.goBack();
+          if (!message.data.wr_subject) {
+            alert('제목을 입력해주세요.');
+            return;
+          } else if (!message.data.wr_content) {
+            alert('내용을 입력해주세요.');
+            return;
+          }
+          if (!write) {
+            // 새게시글 작성
+            try {
+              const response = await createWriteRequest(bo_table, message.data);
+              if (response.status === 200) {
+                const wr_id = response.data.wr_id;
+                navigation.navigate('Write', { bo_table, wr_id });
+              }
+            } catch (error) {
+              console.error('Error creating new write:', error.response);
             }
-          } catch (error) {
-            console.error('Error updating write:', error);
+          } else {
+            // 게시글 수정
+            try {
+              const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
+              if (response.status === 200) {
+                setRefreshing(!refreshing);
+                navigation.goBack();
+              }
+            } catch (error) {
+              console.error('Error updating write:', error);
+            }
           }
           break
         case 'error':

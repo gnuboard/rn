@@ -18,7 +18,8 @@ const fetchPosts = async (page) => {
   });
 };
 
-const WriteListScreen = () => {
+const WriteListScreen = ({ route }) => {
+  const bo_table = route.params.bo_table;
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -56,7 +57,7 @@ const WriteListScreen = () => {
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
-      <WriteListToolbar />
+      <WriteListToolbar bo_table={bo_table} />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id.toString()}
