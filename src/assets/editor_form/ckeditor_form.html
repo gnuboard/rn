@@ -248,6 +248,11 @@
 				}
 				document.getElementById('ca_name').innerHTML = selctOptions;
 
+				// 공지글 여부 체크
+				if (data.notice) {
+					document.getElementById('notice').checked = true;
+				}
+
 				// 비밀글 여부 체크
 				if (data.wr_option.includes('secret')) {
 					document.getElementById('secret').checked = true;

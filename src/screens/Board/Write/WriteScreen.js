@@ -18,8 +18,11 @@ const WriteScreen = ({ navigation, route }) => {
     .then(() => {
       fetchBoardConfigRequest(bo_table)
         .then(response => {
+          const noticeArray = response.data.bo_notice.split(',');
+          const notice = noticeArray.includes(String(wr_id));
           setWrite(prevState => ({
             ...prevState,
+            notice: notice,
             bo_use_category: response.data.bo_use_category,
             bo_category_list: response.data.bo_category_list,
           }))
