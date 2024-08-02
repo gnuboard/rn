@@ -19,6 +19,10 @@ const CKEditorForm = ({ write }) => {
     webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
   };
 
+  const setWriteFormData = (write) => {
+    webViewRef.current.injectJavaScript(`setWriteFormData(${JSON.stringify(write)});`);
+  }
+
   const handleMessage = (event) => {
     try {
       const eventData = event.nativeEvent.data;
@@ -30,10 +34,14 @@ const CKEditorForm = ({ write }) => {
       switch (message.type) {
         case 'ready':
           setContent(write.wr_content);
+          setWriteFormData(write);
           break;
         case 'submit':
           console.log('Received content from CKEditor:', message.type, message.data.slice(0, 5));
           break
+        case 'error':
+          console.error('ERROR from CKEditor:', message);
+          break;
         default:
           console.log('Received message from CKEditor:', message);
       }

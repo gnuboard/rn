@@ -203,6 +203,46 @@
 		function setEditorContent(content) {
 			CKEDITOR.instances.editor.setData(content);
 		}
+
+		function setWriteFormData(data) {
+			try {
+				document.getElementById('wr_name').value = data.wr_name;
+				document.getElementById('wr_email').value = data.wr_email;
+				document.getElementById('wr_homepage').value = data.wr_homepage;
+				document.getElementById('wr_subject').value = data.wr_subject;
+				document.getElementById('wr_link1').value = data.wr_link1;
+				document.getElementById('wr_link2').value = data.wr_link2;
+
+				// 비밀글 여부 체크
+				if (data.wr_option.includes('secret')) {
+					document.getElementById('secret').checked = true;
+				}
+
+				// 첨부파일 표시
+				const fileArray = [];
+				for (let file of data.images) {
+					fileArray.push(new File([''], file.bf_source, { type: 'text/plain' }));
+				}
+				for (let file of data.normal_files) {
+					fileArray.push(new File([''], file.bf_source, { type: 'text/plain' }));
+				}
+				if (fileArray.length >= 1) {
+					const dataTransfer = new DataTransfer();
+					dataTransfer.items.add(fileArray[0]);
+					document.getElementById('file1').files = dataTransfer.files;
+				}
+				if (fileArray.length >= 2) {
+					const dataTransfer2 = new DataTransfer();
+					dataTransfer2.items.add(fileArray[1]);
+					document.getElementById('file2').files = dataTransfer2.files;
+				}				
+			} catch (error) {
+				window.ReactNativeWebView.postMessage(JSON.stringify({
+					type: 'error',
+					data: error
+				}));
+			}
+		}
 	</script>
 </body>
 </html>
