@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, useWindowDimensions, TouchableOpacity } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import { fetchWrite } from '../../../utils/componentsFunc';
+import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
 import { useRefresh } from '../../../auth/context/RefreshContext';
@@ -13,7 +14,19 @@ const WriteScreen = ({ navigation, route }) => {
   const { width } = useWindowDimensions();
 
   useEffect(() => {
-    fetchWrite(bo_table, wr_id, setWrite);
+    fetchWrite(bo_table, wr_id, setWrite)
+    .then(() => {
+      fetchBoardConfigRequest(bo_table)
+        .then(response => {
+          setWrite(prevState => ({
+            ...prevState,
+            bo_use_category: response.data.bo_use_category,
+            bo_category_list: response.data.bo_category_list,
+          }))
+        })
+        .catch(error =>console.error("fetchBoardConfigRequest", error));
+    })
+    .catch(error => console.error("fetchWirte", error));
   }, [refreshing]);
 
   if (!write) {

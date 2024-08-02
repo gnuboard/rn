@@ -137,6 +137,15 @@ export const updateMbImgRequest = async (formData) => {
   }
 }
 
+export const fetchBoardConfigRequest = async (bo_table) => {
+  try {
+    const response = await serverApi.get(`/boards/${bo_table}/config`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchBoardNewDataRequest = async (bo_table, params) => {
   try {
     const response = await serverApi.get(

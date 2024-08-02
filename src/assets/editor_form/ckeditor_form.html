@@ -129,9 +129,7 @@
 <body>
 	<form>
 		<div class="form-group">
-			<select id="board" name="ca_name">
-				<option value="free">자유게시판</option>
-			</select>
+			<select id="ca_name" name="ca_name"></select>
 		</div>
 		<div class="form-row">
 			<div class="form-group half">
@@ -240,6 +238,15 @@
 				document.getElementById('wr_subject').value = data.wr_subject;
 				document.getElementById('wr_link1').value = data.wr_link1;
 				document.getElementById('wr_link2').value = data.wr_link2;
+
+				// 분류 설정
+				const boCategories = data.bo_category_list;
+				const boCategoryList = boCategories ? boCategories.split('|') : [];
+				let selctOptions = '';
+				for (let i = 0; i < boCategoryList.length; i++) {
+					selctOptions += `<option value="${boCategoryList[i]}">${boCategoryList[i]}</option>`;
+				}
+				document.getElementById('ca_name').innerHTML = selctOptions;
 
 				// 비밀글 여부 체크
 				if (data.wr_option.includes('secret')) {
