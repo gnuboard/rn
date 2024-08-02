@@ -1,22 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
+import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 
 const PAGE_SIZE = 10;
-
-const fetchPosts = async (page) => {
-  // Replace this with your actual data fetching logic
-  // Example: return fetch(`https://api.example.com/posts?page=${page}&limit=${PAGE_SIZE}`)
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const newPosts = Array.from({ length: PAGE_SIZE }, (_, i) => ({
-        id: (page - 1) * PAGE_SIZE + i + 1,
-        title: `Post ${(page - 1) * PAGE_SIZE + i + 1}`,
-      }));
-      resolve(newPosts);
-    }, 1000);
-  });
-};
 
 const WriteListScreen = ({ route }) => {
   const bo_table = route.params.bo_table;
@@ -35,14 +22,21 @@ const WriteListScreen = ({ route }) => {
     }
 
     setLoading(true);
-    const newPosts = await fetchPosts(page);
-    if (newPosts.length > 0) {
-      setPosts((prevPosts) => [...prevPosts, ...newPosts]);
-      setPage((prevPage) => prevPage + 1);
-    } else {
-      setHasMore(false);
+    try {
+      const response = await fetchWriteListRequest(
+        bo_table, { page: page, per_page: PAGE_SIZE }
+      );
+      const newPosts = response.data.writes;
+      if (newPosts.length > 0) {
+        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+        setPage((prevPage) => prevPage + 1);
+      } else {
+        setHasMore(false);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error('fetchWriteListRequest - WriteListScreen', error);
     }
-    setLoading(false);
   };
 
   const renderFooter = () => {
@@ -60,10 +54,10 @@ const WriteListScreen = ({ route }) => {
       <WriteListToolbar bo_table={bo_table} />
       <FlatList
         data={posts}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.wr_id.toString()}
         renderItem={({ item }) => (
           <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-            <Text>{item.title}</Text>
+            <Text>{item.wr_subject}</Text>
           </View>
         )}
         onEndReached={loadMorePosts}

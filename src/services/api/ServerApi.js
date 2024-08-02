@@ -167,6 +167,17 @@ export const fetchWriteRequest = async (bo_table, wr_id) => {
   }
 }
 
+export const fetchWriteListRequest = async (bo_table, params) => {
+  try {
+    const response = await serverApi.get(`/boards/${bo_table}/writes`, {
+      params: params,
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const createWriteRequest = async (bo_table, data) => {
   try {
     const response = await serverApi.post(
