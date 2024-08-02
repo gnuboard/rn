@@ -202,6 +202,16 @@
 			CKEDITOR.instances.editor.setData(content);
 		}
 
+		function setByLoginStatus(isLoggedIn) {
+			if (isLoggedIn) {
+				document.getElementById('wr_name').style.display = 'none';
+				document.getElementById('wr_password').style.display = 'none';
+			} else {
+				document.getElementById('notice').style.display = 'none';
+				document.querySelector('label[for="notice"]').style.display = 'none';
+			}
+		}
+
 		function submitForm() {
 			const form = document.querySelector('form');
 			const formData = new FormData(form);

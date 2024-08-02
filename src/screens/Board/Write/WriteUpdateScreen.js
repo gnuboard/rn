@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
 import { useRefresh } from '../../../auth/context/RefreshContext';
+import { useAuth } from '../../../auth/context/AuthContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   return (
@@ -17,6 +18,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 const CKEditorForm = ({ navigation, bo_table, write }) => {
   const webViewRef = useRef(null);
   const { refreshing, setRefreshing } = useRefresh();
+  const { isLoggedIn } = useAuth();
   const category = { bo_use_category: 0, bo_category_list: '' }
 
   const setContent = (content) => {
@@ -25,6 +27,10 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
 
   const setWriteFormData = (write) => {
     webViewRef.current.injectJavaScript(`setWriteFormData(${JSON.stringify(write)});`);
+  }
+
+  const setbyLoginStatus = (isLoggedIn) => {
+    webViewRef.current.injectJavaScript(`setByLoginStatus(${isLoggedIn});`);
   }
 
   const handleMessage = async (event) => {
@@ -37,6 +43,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
       const message = JSON.parse(eventData);
       switch (message.type) {
         case 'ready':
+          setbyLoginStatus(isLoggedIn);
           fetchBoardConfigRequest(bo_table)
             .then(response => {
               category.bo_use_category = response.data.bo_use_category;
@@ -55,6 +62,15 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
           setWriteFormData(write);
           break;
         case 'submit':
+          if (!isLoggedIn) {
+            if (!message.data.wr_name) {
+              alert('비회원 글쓰기시 이름을 기재해야 합니다.');
+              return;
+            } else if (!message.data.wr_password) {
+              alert('비회원 글쓰기시 비밀번호를 기재해야 합니다.');
+              return;
+            }
+          }
           if (!message.data.wr_subject) {
             alert('제목을 입력해주세요.');
             return;
@@ -82,7 +98,11 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
                 navigation.goBack();
               }
             } catch (error) {
-              console.error('Error updating write:', error);
+              if (error.response.status === 403) {
+                alert(error.response.data.detail);
+              } else {
+                console.error('Error updating write:', error);
+              }
             }
           }
           break
