@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
-import { updateWriteRequest } from '../../../services/api/ServerApi';
+import { fetchBoardConfigRequest, updateWriteRequest } from '../../../services/api/ServerApi';
 import { useRefresh } from '../../../auth/context/RefreshContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
@@ -17,6 +17,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 const CKEditorForm = ({ navigation, bo_table, write }) => {
   const webViewRef = useRef(null);
   const { refreshing, setRefreshing } = useRefresh();
+  const category = { bo_use_category: 0, bo_category_list: '' }
 
   const setContent = (content) => {
     webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
@@ -36,6 +37,20 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
       const message = JSON.parse(eventData);
       switch (message.type) {
         case 'ready':
+          fetchBoardConfigRequest(bo_table)
+            .then(response => {
+              category.bo_use_category = response.data.bo_use_category;
+              category.bo_category_list = response.data.bo_category_list;
+            })
+            .then(() => {
+              webViewRef.current.injectJavaScript(`setCategoryList(${JSON.stringify(category)});`);
+            })
+            .catch(error => console.error('fetchBoardConfigReques - CKEditorForm', error));
+
+            if (!write) {
+            break;
+          }
+
           setContent(write.wr_content);
           setWriteFormData(write);
           break;

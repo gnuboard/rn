@@ -230,6 +230,16 @@
 			}));
 		}
 
+		function setCategoryList(data) {
+			// 분류 설정
+			const boCategoryList = data.bo_category_list.split('|');
+			let selctOptions = '';
+			for (let i = 0; i < boCategoryList.length; i++) {
+				selctOptions += `<option value="${boCategoryList[i]}">${boCategoryList[i]}</option>`;
+			}
+			document.getElementById('ca_name').innerHTML = selctOptions;
+		}
+
 		function setWriteFormData(data) {
 			try {
 				document.getElementById('wr_name').value = data.wr_name;
@@ -238,15 +248,6 @@
 				document.getElementById('wr_subject').value = data.wr_subject;
 				document.getElementById('wr_link1').value = data.wr_link1;
 				document.getElementById('wr_link2').value = data.wr_link2;
-
-				// 분류 설정
-				const boCategories = data.bo_category_list;
-				const boCategoryList = boCategories ? boCategories.split('|') : [];
-				let selctOptions = '';
-				for (let i = 0; i < boCategoryList.length; i++) {
-					selctOptions += `<option value="${boCategoryList[i]}">${boCategoryList[i]}</option>`;
-				}
-				document.getElementById('ca_name').innerHTML = selctOptions;
 
 				// 공지글 여부 체크
 				if (data.notice) {

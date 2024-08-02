@@ -23,8 +23,6 @@ const WriteScreen = ({ navigation, route }) => {
           setWrite(prevState => ({
             ...prevState,
             notice: notice,
-            bo_use_category: response.data.bo_use_category,
-            bo_category_list: response.data.bo_category_list,
           }))
         })
         .catch(error =>console.error("fetchBoardConfigRequest", error));
