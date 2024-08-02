@@ -8,7 +8,7 @@ import { Colors } from '../../../constants/theme';
 import { useRefresh } from '../../../auth/context/RefreshContext';
 
 const WriteScreen = ({ navigation, route }) => {
-  const {bo_table, wr_id} = route.params;
+  const { bo_table, wr_id } = route.params;
   const [ write, setWrite ] = useState(null);
   const { refreshing } = useRefresh();
   const { width } = useWindowDimensions();
