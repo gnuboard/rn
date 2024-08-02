@@ -157,3 +157,15 @@ export const fetchWriteRequest = async (bo_table, wr_id) => {
     throw error;
   }
 }
+
+export const updateWriteRequest = async (bo_table, wr_id, data) => {
+  try {
+    const response = await serverApi.put(
+      `/boards/${bo_table}/writes/${wr_id}`,
+      data,
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

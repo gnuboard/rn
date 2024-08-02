@@ -2,18 +2,21 @@ import React, { useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
+import { updateWriteRequest } from '../../../services/api/ServerApi';
+import { useRefresh } from '../../../auth/context/RefreshContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   return (
     <>
       <HeaderBackwardArrow navigation={navigation} />
-      <CKEditorForm write={route.params.write} />
+      <CKEditorForm navigation={navigation} bo_table={route.params.bo_table} write={route.params.write} />
     </>
   );
 }
 
-const CKEditorForm = ({ write }) => {
+const CKEditorForm = ({ navigation, bo_table, write }) => {
   const webViewRef = useRef(null);
+  const { refreshing, setRefreshing } = useRefresh();
 
   const setContent = (content) => {
     webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
@@ -23,7 +26,7 @@ const CKEditorForm = ({ write }) => {
     webViewRef.current.injectJavaScript(`setWriteFormData(${JSON.stringify(write)});`);
   }
 
-  const handleMessage = (event) => {
+  const handleMessage = async (event) => {
     try {
       const eventData = event.nativeEvent.data;
       if (eventData === 'undefined') {
@@ -37,7 +40,15 @@ const CKEditorForm = ({ write }) => {
           setWriteFormData(write);
           break;
         case 'submit':
-          console.log('Received content from CKEditor:', message.type, message.data.slice(0, 5));
+          try {
+            const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
+            if (response.status === 200) {
+              setRefreshing(!refreshing);
+              navigation.goBack();
+            }
+          } catch (error) {
+            console.error('Error updating write:', error);
+          }
           break
         case 'error':
           console.error('ERROR from CKEditor:', message);

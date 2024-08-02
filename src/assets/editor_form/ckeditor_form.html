@@ -177,7 +177,7 @@
 		</div>
 		<div class="button-group">
 			<button type="button" class="button cancel">취소</button>
-			<button type="button" class="button" onclick="getEditorContent()">작성완료</button>
+			<button type="button" class="button" onclick="submitForm()">작성완료</button>
 		</div>
 	</form>
 
@@ -202,6 +202,34 @@
 
 		function setEditorContent(content) {
 			CKEDITOR.instances.editor.setData(content);
+		}
+
+		function submitForm() {
+			const form = document.querySelector('form');
+			const formData = new FormData(form);
+			const secret = document.getElementById('secret').checked ? 'secret' : 'html1';
+			const notice = document.getElementById('notice').checked;
+			const data = {'wr_content': CKEDITOR.instances.editor.getData()};
+
+			for (let [key, value] of formData.entries()) {
+				if (form.elements[key].type === 'file') {
+					const files = form.elements[key].files;
+					data[key] = Array.from(files).map(file => ({
+						name: file.name,
+						type: file.type,
+						size: file.size
+					}));
+				} else {
+					data[key] = value;
+				}
+			}
+			data['secret'] = secret;
+			data['notice'] = notice;
+
+			window.ReactNativeWebView.postMessage(JSON.stringify({
+				type: 'submit',
+				data: data
+			}));
 		}
 
 		function setWriteFormData(data) {

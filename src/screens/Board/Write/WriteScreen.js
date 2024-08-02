@@ -4,15 +4,17 @@ import RenderHTML from 'react-native-render-html';
 import { fetchWrite } from '../../../utils/componentsFunc';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
+import { useRefresh } from '../../../auth/context/RefreshContext';
 
 const WriteScreen = ({ navigation, route }) => {
   const {bo_table, wr_id} = route.params;
   const [ write, setWrite ] = useState(null);
+  const { refreshing } = useRefresh();
   const { width } = useWindowDimensions();
 
   useEffect(() => {
     fetchWrite(bo_table, wr_id, setWrite);
-  }, []);
+  }, [refreshing]);
 
   if (!write) {
     return <Text>Loading...</Text>;
@@ -22,7 +24,7 @@ const WriteScreen = ({ navigation, route }) => {
     <ScrollView style={styles.container}>
       <View style={styles.subjectWithButton}>
         <Text style={styles.title}>{write?.wr_subject}</Text>
-        <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={write})}>
+        <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
           <Text style={styles.updateButtonText}>수정하기</Text>
         </TouchableOpacity>
       </View>
