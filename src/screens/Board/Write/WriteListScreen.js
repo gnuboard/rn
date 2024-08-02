@@ -26,9 +26,9 @@ const WriteListScreen = ({ route }) => {
       const response = await fetchWriteListRequest(
         bo_table, { page: page, per_page: PAGE_SIZE }
       );
-      const newPosts = response.data.writes;
-      if (newPosts.length > 0) {
-        setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+      const newWrites = response.data.writes;
+      if (newWrites.length > 0) {
+        setPosts((prevPosts) => [...prevPosts, ...newWrites]);
         setPage((prevPage) => prevPage + 1);
       } else {
         setHasMore(false);
