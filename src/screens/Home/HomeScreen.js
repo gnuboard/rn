@@ -26,14 +26,28 @@ const HomeScreen = () => {
       <ScrollView>
         <View style={styles.content}>
           <View style={styles.row}>
-            <View style={styles.column}>
+            <TouchableOpacity
+              style={styles.column}
+              onPress={() => navigation.navigate('WriteList', params={'bo_table': 'free'})}
+              activeOpacity={1}
+            >
               <Latest title="자유게시판" bo_table="free" rows={2} onItemPress={handleItemPress} />
-            </View>
-            <View style={styles.column}>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.column}
+              onPress={() => navigation.navigate('WriteList', params={'bo_table': 'notice'})}
+              activeOpacity={1}
+            >
               <Latest title="공지사항" bo_table="notice" rows={2} onItemPress={handleItemPress} />
-            </View>
+            </TouchableOpacity>
           </View>
-          <LatestGallery bo_table="gallery" view_type="write" rows={4} />
+          <TouchableOpacity
+            style={styles.column}
+            onPress={() => navigation.navigate('WriteList', params={'bo_table': 'gallery'})}
+            activeOpacity={1}
+          >
+            <LatestGallery bo_table="gallery" view_type="write" rows={4} />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
