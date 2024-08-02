@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { WriteListToolbar } from '../../../components/Common/Toolbar';
 
 const PAGE_SIZE = 10;
 
@@ -55,6 +56,7 @@ const WriteListScreen = () => {
 
   return (
     <View style={{ flex: 1, padding: 10 }}>
+      <WriteListToolbar />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id.toString()}
