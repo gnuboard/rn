@@ -232,6 +232,11 @@
 
 		function setCategoryList(data) {
 			// 분류 설정
+			if (!data.bo_use_category) {
+				document.getElementById('ca_name').style.display = 'none';
+				return;
+			}
+
 			const boCategoryList = data.bo_category_list.split('|');
 			let selctOptions = '';
 			for (let i = 0; i < boCategoryList.length; i++) {
