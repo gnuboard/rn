@@ -6,6 +6,7 @@ import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
 import { useRefresh } from '../../../auth/context/RefreshContext';
+import Comment from '../../../components/Write/Comment/Comment';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id } = route.params;
@@ -58,6 +59,14 @@ const WriteScreen = ({ navigation, route }) => {
         contentWidth={width}
         source={{ html: write?.wr_content }}
       />
+      <View style={styles.commentContainer}>
+        <Text style={styles.commentHeaderText}>댓글</Text>
+        {write.comments.length > 0
+        ? write.comments.map((comment, index) => (
+            <Comment key={index} comment={comment} />
+          ))
+        : <Text style={styles.noCommentText}>등록된 댓글이 없습니다.</Text>}
+      </View>
     </ScrollView>
   );
 };
@@ -127,6 +136,17 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 16,
     lineHeight: 24,
+  },
+  commentContainer: {
+    marginTop: 50,
+    paddingBottom: 100,
+  },
+  commentHeaderText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  noCommentText: {
+    textAlign: 'center'
   },
 });
 
