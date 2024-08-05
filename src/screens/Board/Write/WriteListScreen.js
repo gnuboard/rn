@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 
 const PAGE_SIZE = 10;
 
-const WriteListScreen = ({ route }) => {
+const WriteListScreen = ({ navigation, route }) => {
   const bo_table = route.params.bo_table;
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
@@ -57,7 +57,10 @@ const WriteListScreen = ({ route }) => {
         data={posts}
         keyExtractor={(item) => item.wr_id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.writeContainer}>
+          <TouchableOpacity
+            style={styles.writeContainer}
+            onPress={() => navigation.navigate('Write', {bo_table, 'wr_id': item.wr_id})}
+          >
             <View style={styles.writeMainContainer}>
               {item.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
               <Text style={styles.wrMainArg}>{item.wr_subject}</Text>
@@ -77,7 +80,7 @@ const WriteListScreen = ({ route }) => {
                 })()}
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
         onEndReached={loadMorePosts}
         onEndReachedThreshold={0.5}
