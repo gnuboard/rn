@@ -201,3 +201,15 @@ export const updateWriteRequest = async (bo_table, wr_id, data) => {
     throw error;
   }
 }
+
+export const createCommentRequest = async (bo_table, wr_id, data) => {
+  try {
+    const response = await serverApi.post(
+      `/boards/${bo_table}/writes/${wr_id}/comments`,
+      data,
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

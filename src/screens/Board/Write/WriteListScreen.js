@@ -3,6 +3,7 @@ import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
+import { useRefresh } from '../../../auth/context/RefreshContext';
 
 const PAGE_SIZE = 10;
 
@@ -12,10 +13,11 @@ const WriteListScreen = ({ route }) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const { refreshing } = useRefresh();
 
   useEffect(() => {
     loadMorePosts();
-  }, []);
+  }, [refreshing]);
 
   const loadMorePosts = async () => {
     if (loading || !hasMore) {

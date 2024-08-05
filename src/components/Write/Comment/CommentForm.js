@@ -4,9 +4,12 @@ import {
 } from 'react-native';
 import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../auth/context/AuthContext';
+import { useRefresh } from '../../../auth/context/RefreshContext';
+import { createCommentRequest } from '../../../services/api/ServerApi';
 
 export function CommentForm({ bo_table, wr_id }) {
   const { isLoggedIn } = useAuth();
+  const { refreshing, setRefreshing } = useRefresh();
   const [error, setError] = useState('');
   const [commentFormValue, setCommentFormValue] = useState({
     wr_content: '',
@@ -36,6 +39,27 @@ export function CommentForm({ bo_table, wr_id }) {
     if (!dataToSend.wr_content) {
       setError('댓글을 입력해주세요.');
       return;
+    }
+
+    try {
+      const response = await createCommentRequest(bo_table, wr_id, dataToSend);
+      setCommentFormValue({
+        wr_content: '',
+        wr_name: '',
+        wr_password: '',
+        wr_secret_checked: false,
+        comment_id: 0,
+      });
+      setError('');
+      setRefreshing(!refreshing);
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 429) {
+        setError(error.response.data.message);
+      } else {
+        setError('댓글 등록에 실패했습니다.');
+      }
+      console.error("submitComment - CommentForm", error);
     }
   }
 
