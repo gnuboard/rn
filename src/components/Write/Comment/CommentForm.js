@@ -3,8 +3,11 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, Switch
 } from 'react-native';
 import { Colors } from '../../../constants/theme';
+import { useAuth } from '../../../auth/context/AuthContext';
 
 export function CommentForm({ bo_table, wr_id }) {
+  const { isLoggedIn } = useAuth();
+  const [error, setError] = useState('');
   const [commentFormValue, setCommentFormValue] = useState({
     wr_content: '',
     wr_name: '',
@@ -14,7 +17,26 @@ export function CommentForm({ bo_table, wr_id }) {
   });
 
   async function submitComment() {
-    console.log("댓글등록 함수 필요");
+    const dataToSend = {
+      ...commentFormValue,
+      wr_option: commentFormValue.wr_secret_checked ? 'secret' : 'html1',
+    }
+
+    if (!isLoggedIn) {
+      if (!dataToSend.wr_name) {
+        setError('작성자 이름을 입력해주세요.');
+        return;
+      }
+      if(!dataToSend.wr_password) {
+        setError('비밀번호를 입력해주세요.');
+        return;
+      }
+    }
+
+    if (!dataToSend.wr_content) {
+      setError('댓글을 입력해주세요.');
+      return;
+    }
   }
 
   return (
@@ -32,27 +54,30 @@ export function CommentForm({ bo_table, wr_id }) {
         })}
       />
       <View style={styles.formFooter}>
-        <View style={styles.nonLoginInputs}>
-          <TextInput
-            style={styles.smallInput}
-            placeholder="작성자 이름"
-            value={commentFormValue.wr_name}
-            onChangeText={(text) => setCommentFormValue({
-              ...commentFormValue,
-              wr_name: text
-            })}
-          />
-          <TextInput
-            style={styles.smallInput}
-            placeholder="비밀번호"
-            secureTextEntry
-            value={commentFormValue.wr_password}
-            onChangeText={(text) => setCommentFormValue({
-              ...commentFormValue,
-              wr_password: text
-            })}
-          />
-        </View>
+        {!isLoggedIn && (
+          <View style={styles.nonLoginInputs}>
+            <TextInput
+              style={styles.smallInput}
+              placeholder="작성자 이름"
+              value={commentFormValue.wr_name}
+              onChangeText={(text) => setCommentFormValue({
+                ...commentFormValue,
+                wr_name: text
+              })}
+            />
+            <TextInput
+              style={styles.smallInput}
+              placeholder="비밀번호"
+              secureTextEntry
+              value={commentFormValue.wr_password}
+              onChangeText={(text) => setCommentFormValue({
+                ...commentFormValue,
+                wr_password: text
+              })}
+            />
+          </View>
+        )}
+        {error && <Text style={styles.errorText}>{error}</Text>}
         <View style={styles.formActions}>
           <View style={styles.secretCommentContainer}>
             <Switch
@@ -106,6 +131,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     width: '48%',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   formActions: {
     flexDirection: 'row',
