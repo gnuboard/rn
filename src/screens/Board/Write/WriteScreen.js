@@ -7,6 +7,7 @@ import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
 import { useRefresh } from '../../../auth/context/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
+import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id } = route.params;
@@ -66,6 +67,7 @@ const WriteScreen = ({ navigation, route }) => {
             <Comment key={index} comment={comment} />
           ))
         : <Text style={styles.noCommentText}>등록된 댓글이 없습니다.</Text>}
+        <CommentForm bo_table={bo_table} wr_id={wr_id} />
       </View>
     </ScrollView>
   );
