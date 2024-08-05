@@ -41,13 +41,9 @@ const HomeScreen = () => {
               <Latest title="공지사항" bo_table="notice" rows={2} onItemPress={handleItemPress} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={styles.column}
-            onPress={() => navigation.navigate('WriteList', params={'bo_table': 'gallery'})}
-            activeOpacity={1}
-          >
+          <View style={styles.column}>
             <LatestGallery bo_table="gallery" view_type="write" rows={4} />
-          </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

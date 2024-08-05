@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Config from 'react-native-config';
 import { fetchBoardNewData } from '../../utils/componentsFunc';
 import { dateToMonthDay } from '../../utils/stringFunc';
+import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -10,46 +11,58 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
 
 const LatestGallery = ({ bo_table, view_type, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchBoardNewData(bo_table, setBoardWrites, { view_type, rows} );
   }, []);
 
   const writeData = boardWrites.map((item) => ({
-    id: item.wr_id,
-    title: item.wr_subject,
+    wr_id: item.wr_id,
+    wr_subject: item.wr_subject,
     imageUrl: `${Config.SERVER_URL}/${item.thumbnail.src}`,
     date: dateToMonthDay(item.wr_datetime)
   }));
 
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <Image
-        source={{ uri: item.imageUrl }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-      <View style={styles.textContainer}>
-        <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
-          {item.title}
-        </Text>
-        <Text style={styles.itemDate}>{item.date}</Text>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('Write', {bo_table, 'wr_id': item.wr_id})}
+      activeOpacity={1}
+    >
+      <View style={styles.itemContainer}>
+        <Image
+          source={{ uri: item.imageUrl }}
+          style={styles.image}
+          resizeMode="cover"
+        />
+        <View style={styles.textContainer}>
+          <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
+            {item.wr_subject}
+          </Text>
+          <Text style={styles.itemDate}>{item.date}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>갤러리</Text>
+      <TouchableOpacity
+        onPress = {() => navigation.navigate('WriteList', { bo_table })}
+        activeOpacity={1}
+      >
+        <Text style={styles.title}>갤러리</Text>
+      </TouchableOpacity>
       <FlatList
         data={writeData}
         renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
+        keyExtractor={item => item.wr_id.toString()}
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToInterval={ITEM_WIDTH + 10} // Width + marginRight
         decelerationRate="fast"
         pagingEnabled
+        onPress = {() => navigation.navigate('Write', {bo_table, 'wr_id': item.wr_id})}
       />
     </View>
   );
