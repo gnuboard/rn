@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
+import { useNavigation } from '@react-navigation/native';
 
 const PAGE_SIZE = 5;
 
@@ -16,10 +17,10 @@ const BoardListScreen = () => {
       const qaResponse = await fetchWriteListRequest('qa', { page: 1, per_page: PAGE_SIZE });
       
       setBoardWrites([
-        { title: "자유게시판", data: freeResponse.data.writes },
-        { title: "공지사항", data: noticeResponse.data.writes },
-        { title: "갤러리", data: galleryResponse.data.writes },
-        { title: "Q&A", data: qaResponse.data.writes },
+        { title: "자유게시판", bo_table: "free", data: freeResponse.data.writes },
+        { title: "공지사항", bo_table: "notice", data: noticeResponse.data.writes },
+        { title: "갤러리", bo_table: "gallery", data: galleryResponse.data.writes },
+        { title: "Q&A", bo_table: "qa", data: qaResponse.data.writes },
       ]);
     } catch (error) {
       console.error('getAllBoardWrites - BoardListScreen', error);
@@ -43,19 +44,26 @@ const BoardListScreen = () => {
       style={styles.container}
       data={boardWrites}
       keyExtractor={(item, index) => index.toString()}
-      renderItem={({ item }) => <BoardWrites title={item.title} data={item.data} />}
+      renderItem={({ item }) => <BoardWrites title={item.title} bo_table={item.bo_table} data={item.data} />}
     />
   );
 };
 
-const BoardWrites = ({ title, data }) => {
+const BoardWrites = ({ title, bo_table, data }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>{title}</Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('WriteList', { bo_table })}
+      >
+        <Text style={styles.sectionTitle}>{title}</Text>
+      </TouchableOpacity>
       {data.map((item) => (
         <TouchableOpacity
           key={item.wr_id.toString()}
           style={styles.writeContainer}
+          onPress={() => navigation.navigate('Write', {bo_table, 'wr_id': item.wr_id})}
         >
           <View style={styles.writeMainContainer}>
             {item.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
