@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 
@@ -42,7 +43,7 @@ const WriteListScreen = ({ route }) => {
   const renderFooter = () => {
     return (
       loading && (
-        <View style={{ padding: 10 }}>
+        <View style={styles.indicatorFooter}>
           <ActivityIndicator size="large" />
         </View>
       )
@@ -50,14 +51,32 @@ const WriteListScreen = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
+    <View style={styles.container}>
       <WriteListToolbar bo_table={bo_table} />
       <FlatList
         data={posts}
         keyExtractor={(item) => item.wr_id.toString()}
         renderItem={({ item }) => (
-          <View style={{ padding: 20, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-            <Text>{item.wr_subject}</Text>
+          <View style={styles.writeContainer}>
+            <View style={styles.writeMainContainer}>
+              {item.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
+              <Text style={styles.wrMainArg}>{item.wr_subject}</Text>
+              {item.wr_comment > 0 && <Text style={[styles.wrMainArg, styles.wrCommentText]}> {item.wr_comment}</Text>}
+              {item.wr_link1 && <Icon name="link" style={[styles.wrMainArg, styles.wrLink]} />}
+              {(item.normal_files.length > 0 || item.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
+            </View>
+            <View style={styles.writeSubContainer}>
+              <Text style={styles.wrSubArg}>{item.wr_name}</Text>
+              <Text style={styles.wrSubArg}>조회수 {item.wr_hit}</Text>
+              <Text style={styles.wrSubArg}>추천 {item.good}</Text>
+              <Text style={styles.wrSubArg}>비추 {item.nogood}</Text>
+              <Text style={styles.wrSubArg}>
+                {(() => {
+                  const date = new Date(item.wr_datetime);
+                  return date.toISOString().slice(2, 10).replace(/-/g, '-');
+                })()}
+              </Text>
+            </View>
           </View>
         )}
         onEndReached={loadMorePosts}
@@ -67,5 +86,56 @@ const WriteListScreen = ({ route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1, padding: 10 },
+  writeContainer: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  indicatorFooter: {
+    padding: 10,
+  },
+  writeMainContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
+  wrMainArg: {
+    marginRight: 5,
+  },
+  writeSubContainer: {
+    flexDirection: 'row',
+  },
+  wrSubArg: {
+    marginRight: 10,
+    fontSize: 11,
+  },
+  wrCommentText: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: '#cbe3e8',
+    width: 16,
+    height: 16,
+    fontSize: 11,
+  },
+  wrLink: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: '#edd3fd',
+    width: 16,
+    height: 16,
+    fontSize: 11,
+  },
+  wrFile: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: '#ffefb9',
+    width: 16,
+    height: 16,
+    fontSize: 11,
+  },
+})
 
 export default WriteListScreen;
