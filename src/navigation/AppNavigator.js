@@ -6,7 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { useAuth } from '../auth/context/AuthContext';
+import { useAuth } from '../context/auth/AuthContext';
 import HomeStackScreen from '../screens/Home/HomeStackScreen';
 import BoardListScreen from '../screens/Board/BoardScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';

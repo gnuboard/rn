@@ -6,7 +6,7 @@ import { loginRequest } from '../../../services/api/ServerApi';
 import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
 import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
-import { useAuth } from '../../../auth/context/AuthContext';
+import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
 
 const LoginScreen = ({ navigation }) => {

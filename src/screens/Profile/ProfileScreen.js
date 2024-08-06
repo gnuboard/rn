@@ -6,7 +6,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
 import { removeQuotes } from '../../utils/stringFunc';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from '../../context/auth/AuthContext';
 import { Colors } from '../../constants/theme';
 
 const ProfileScreen = ({ navigation }) => {

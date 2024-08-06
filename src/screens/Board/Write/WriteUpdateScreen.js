@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
 import { useRefresh } from '../../../auth/context/RefreshContext';
-import { useAuth } from '../../../auth/context/AuthContext';
+import { useAuth } from '../../../context/auth/AuthContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   return (

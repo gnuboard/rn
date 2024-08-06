@@ -5,7 +5,7 @@ import Config from 'react-native-config';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
-import { useAuth } from '../../auth/context/AuthContext';
+import { useAuth } from '../../context/auth/AuthContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
 import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
