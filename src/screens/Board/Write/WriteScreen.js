@@ -8,7 +8,7 @@ import { fetchWrite } from '../../../utils/componentsFunc';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
-import { useRefresh } from '../../../auth/context/RefreshContext';
+import { useWriteRefresh } from '../../../context/refresh/write/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { deleteWriteRequest } from '../../../services/api/ServerApi';
@@ -16,7 +16,7 @@ import { deleteWriteRequest } from '../../../services/api/ServerApi';
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id } = route.params;
   const [ write, setWrite ] = useState(null);
-  const { refreshing } = useRefresh();
+  const { writeRefresh } = useWriteRefresh();
   const { width } = useWindowDimensions();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const WriteScreen = ({ navigation, route }) => {
         .catch(error =>console.error("fetchBoardConfigRequest", error));
     })
     .catch(error => console.error("fetchWirte", error));
-  }, [refreshing]);
+  }, [writeRefresh]);
 
   if (!write) {
     return <Text>Loading...</Text>;

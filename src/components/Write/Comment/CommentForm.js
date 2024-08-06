@@ -4,12 +4,12 @@ import {
 } from 'react-native';
 import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../context/auth/AuthContext';
-import { useRefresh } from '../../../auth/context/RefreshContext';
+import { useWriteRefresh } from '../../../context/refresh/write/RefreshContext';
 import { createCommentRequest } from '../../../services/api/ServerApi';
 
 export function CommentForm({ bo_table, wr_id }) {
   const { isLoggedIn } = useAuth();
-  const { refreshing, setRefreshing } = useRefresh();
+  const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const [error, setError] = useState('');
   const [commentFormValue, setCommentFormValue] = useState({
     wr_content: '',
@@ -51,7 +51,7 @@ export function CommentForm({ bo_table, wr_id }) {
         comment_id: 0,
       });
       setError('');
-      setRefreshing(!refreshing);
+      setWriteRefresh(!writeRefresh);
       return response.data;
     } catch (error) {
       if (error.response.status === 429) {

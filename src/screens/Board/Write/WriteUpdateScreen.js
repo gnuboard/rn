@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
-import { useRefresh } from '../../../auth/context/RefreshContext';
+import { useWriteRefresh } from '../../../context/refresh/write/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
@@ -17,7 +17,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 
 const CKEditorForm = ({ navigation, bo_table, write }) => {
   const webViewRef = useRef(null);
-  const { refreshing, setRefreshing } = useRefresh();
+  const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const { isLoggedIn } = useAuth();
   const category = { bo_use_category: 0, bo_category_list: '' }
 
@@ -94,7 +94,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
             try {
               const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
               if (response.status === 200) {
-                setRefreshing(!refreshing);
+                setWriteRefresh(!writeRefresh);
                 navigation.goBack();
               }
             } catch (error) {
