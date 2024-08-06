@@ -202,6 +202,15 @@ export const updateWriteRequest = async (bo_table, wr_id, data) => {
   }
 }
 
+export const deleteWriteRequest = async (bo_table, wr_id) => {
+  try {
+    const response = await serverApi.delete(`/boards/${bo_table}/writes/${wr_id}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const createCommentRequest = async (bo_table, wr_id, data) => {
   try {
     const response = await serverApi.post(
