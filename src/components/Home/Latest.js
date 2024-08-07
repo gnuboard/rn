@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 import { fetchBoardNewData } from '../../utils/componentsFunc';
+import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
 
 const Latest = ({ title, bo_table, rows, onItemPress }) => {
   const [boardWrites, setBoardWrites] = useState([]);
+  const { writeRefresh } = useWriteRefresh();
+  const { writeListRefresh } = useWriteListRefresh();
 
   useEffect(() => {
     fetchBoardNewData(bo_table, setBoardWrites, { rows } );
-  }, []);
+  }, [writeRefresh, writeListRefresh]);
 
   return (
     <View style={styles.container}>

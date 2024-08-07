@@ -4,6 +4,7 @@ import Config from 'react-native-config';
 import { fetchBoardNewData } from '../../utils/componentsFunc';
 import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
+import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -11,11 +12,13 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
 
 const LatestGallery = ({ bo_table, view_type, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
+  const { writeRefresh } = useWriteRefresh();
+  const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();
 
   useEffect(() => {
     fetchBoardNewData(bo_table, setBoardWrites, { view_type, rows} );
-  }, []);
+  }, [writeRefresh, writeListRefresh]);
 
   const writeData = boardWrites.map((item) => ({
     wr_id: item.wr_id,
