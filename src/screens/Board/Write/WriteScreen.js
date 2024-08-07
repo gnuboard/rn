@@ -8,7 +8,7 @@ import { fetchWrite } from '../../../utils/componentsFunc';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
-import { useWriteRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/write/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { deleteWriteRequest } from '../../../services/api/ServerApi';
@@ -17,6 +17,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id } = route.params;
   const [ write, setWrite ] = useState(null);
   const { writeRefresh } = useWriteRefresh();
+  const { setWriteListRefresh } = useWriteListRefresh();
   const { width } = useWindowDimensions();
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const WriteScreen = ({ navigation, route }) => {
           <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
             <Text style={styles.buttonText}>수정</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteButton} onPress={() => showDeleteConfirm(bo_table, write, navigation)}>
+          <TouchableOpacity style={styles.deleteButton} onPress={() => showDeleteConfirm(bo_table, write, navigation, setWriteListRefresh)}>
             <Text style={styles.buttonText}>삭제</Text>
           </TouchableOpacity>
         </View>
@@ -82,7 +83,7 @@ const WriteScreen = ({ navigation, route }) => {
   );
 };
 
-async function deleteWrite(bo_table, write, navigation) {
+async function deleteWrite(bo_table, write, navigation, setWriteListRefresh) {
   let wr_password;
 
   if (!write.mb_id) {
@@ -108,7 +109,8 @@ async function deleteWrite(bo_table, write, navigation) {
           {
             text: "확인",
             onPress: () => {
-              navigation.navigate('WriteList', bo_table);
+              setWriteListRefresh(true);
+              navigation.navigate('WriteList', {'bo_table': bo_table});
             },
           },
         ],
@@ -123,7 +125,7 @@ async function deleteWrite(bo_table, write, navigation) {
   }
 }
 
-const showDeleteConfirm = (bo_table, write, navigation) => {
+const showDeleteConfirm = (bo_table, write, navigation, setWriteListRefresh) => {
   Alert.alert(
     "Confirmation",
     "정말 삭제하시겠습니까?",
@@ -135,7 +137,7 @@ const showDeleteConfirm = (bo_table, write, navigation) => {
       },
       {
         text: "OK",
-        onPress: () => deleteWrite(bo_table, write, navigation)
+        onPress: () => deleteWrite(bo_table, write, navigation, setWriteListRefresh)
       }
     ],
     { cancelable: false }

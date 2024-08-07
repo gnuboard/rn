@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
-import { useWriteRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/write/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
@@ -18,6 +18,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 const CKEditorForm = ({ navigation, bo_table, write }) => {
   const webViewRef = useRef(null);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
+  const { setWriteListRefresh } = useWriteListRefresh();
   const { isLoggedIn } = useAuth();
   const category = { bo_use_category: 0, bo_category_list: '' }
 
@@ -84,6 +85,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
               const response = await createWriteRequest(bo_table, message.data);
               if (response.status === 200) {
                 const wr_id = response.data.wr_id;
+                setWriteListRefresh(true);
                 navigation.navigate('Write', { bo_table, wr_id });
               }
             } catch (error) {
@@ -94,6 +96,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
             try {
               const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
               if (response.status === 200) {
+                setWriteListRefresh(true);
                 setWriteRefresh(!writeRefresh);
                 navigation.goBack();
               }
