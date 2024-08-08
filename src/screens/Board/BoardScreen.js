@@ -59,8 +59,8 @@ const BoardWrites = ({ title, bo_table, data }) => {
       >
         <Text style={styles.sectionTitle}>{title}</Text>
       </TouchableOpacity>
-      {data.map((item) => (
-        <WriteListItem key={item.wr_id.toString()} bo_table={bo_table} item={item} />
+      {data.map((write) => (
+        <WriteListItem key={write.wr_id.toString()} bo_table={bo_table} write={write} />
       ))}
     </View>
   );

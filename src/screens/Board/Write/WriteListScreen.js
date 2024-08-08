@@ -67,7 +67,7 @@ const WriteListScreen = ({ route }) => {
         data={posts}
         keyExtractor={(item) => item.wr_id.toString()}
         renderItem={({ item }) => (
-          <WriteListItem bo_table={bo_table} item={item} />
+          <WriteListItem bo_table={bo_table} write={item} />
         )}
         onEndReached={loadMorePosts}
         onEndReachedThreshold={0.5}

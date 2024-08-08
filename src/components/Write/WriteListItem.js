@@ -5,30 +5,30 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
 import { readWrite } from "../../utils/writeFunc";
 
-const WriteListItem = ({ bo_table, item }) => {
+const WriteListItem = ({ bo_table, write }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.writeContainer}
-      onPress={() => readWrite(bo_table, item, setModalVisible, navigation)}
+      onPress={() => readWrite(bo_table, write, setModalVisible, navigation)}
     >
       <View style={styles.writeMainContainer}>
-        {item.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
-        <Text style={styles.wrMainArg}>{item.wr_subject}</Text>
-        {item.wr_comment > 0 && <Text style={[styles.wrMainArg, styles.wrCommentText]}> {item.wr_comment}</Text>}
-        {item.wr_link1 && <Icon name="link" style={[styles.wrMainArg, styles.wrLink]} />}
-        {(item.normal_files.length > 0 || item.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
+        {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
+        <Text style={styles.wrMainArg}>{write.wr_subject}</Text>
+        {write.wr_comment > 0 && <Text style={[styles.wrMainArg, styles.wrCommentText]}> {write.wr_comment}</Text>}
+        {write.wr_link1 && <Icon name="link" style={[styles.wrMainArg, styles.wrLink]} />}
+        {(write.normal_files.length > 0 || write.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
       </View>
       <View style={styles.writeSubContainer}>
-        <Text style={styles.wrSubArg}>{item.wr_name}</Text>
-        <Text style={styles.wrSubArg}>조회수 {item.wr_hit}</Text>
-        <Text style={styles.wrSubArg}>추천 {item.good}</Text>
-        <Text style={styles.wrSubArg}>비추 {item.nogood}</Text>
+        <Text style={styles.wrSubArg}>{write.wr_name}</Text>
+        <Text style={styles.wrSubArg}>조회수 {write.wr_hit}</Text>
+        <Text style={styles.wrSubArg}>추천 {write.good}</Text>
+        <Text style={styles.wrSubArg}>비추 {write.nogood}</Text>
         <Text style={styles.wrSubArg}>
           {(() => {
-            const date = new Date(item.wr_datetime);
+            const date = new Date(write.wr_datetime);
             return date.toISOString().slice(2, 10).replace(/-/g, '-');
           })()}
         </Text>
