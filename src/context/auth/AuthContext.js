@@ -29,9 +29,10 @@ export const AuthProvider = ({ children }) => {
       const deleteResult =  await deleteAllSecureData();
       if (!deleteResult.isSuccess) {
         console.error('Failed to delete secure data');
-        return;
+        return { isSuccess: false };
       }
       setIsLoggedIn(false);
+      return { isSuccess: true };
     } catch (error) {
       console.error('Error during logout:', error);
     }

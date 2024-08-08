@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { useAuth } from '../context/auth/AuthContext';
+import { setupInterceptors } from '../services/api/ServerApi';
 import HomeStackScreen from '../screens/Home/HomeStackScreen';
 import BoardListScreen from '../screens/Board/BoardScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
@@ -98,6 +99,10 @@ const handleLogout = (logout) => {
 
 const AppNavigator = () => {
   const { isLoggedIn, logout } = useAuth();
+
+  useEffect(() => {
+    setupInterceptors(logout);
+  }, [logout]);
 
   return (
     <NavigationContainer>

@@ -12,61 +12,63 @@ export const serverApi = axios.create({
   },
 });
 
-serverApi.interceptors.request.use(
-  async (config) => {
-    const tokens = await getTokens();
-    if (tokens && tokens.access_token) {
-      config.headers.Authorization = `Bearer ${tokens.access_token}`;
-    }
-    return config;
-  },
-
-  (error) => Promise.reject(error)
-);
-
-serverApi.interceptors.response.use(
-  (response) => response,
-
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (axios.isAxiosError(error)) {
-      if (error.message === 'Network Error') {
-        console.error("axios response interceptors: Network Error");
-        throw error;
+export const setupInterceptors = (logout) => {
+  serverApi.interceptors.request.use(
+    async (config) => {
+      const tokens = await getTokens();
+      if (tokens && tokens.access_token) {
+        config.headers.Authorization = `Bearer ${tokens.access_token}`;
       }
-    };
-    
-    const tokens = await getTokens();
+      return config;
+    },
+  
+    (error) => Promise.reject(error)
+  );
 
-    if (error.response.status === 401 && tokens && tokens.refresh_token) {
-      try {
-        const newTokens = await renewTokenRequest(tokens.refresh_token);
-        const { access_token, refresh_token } = newTokens;
-        const saveTokenResult = await saveTokens(access_token, refresh_token);
-        if (!saveTokenResult.isSuccess) {
-          console.error('Failed to save renewed tokens');
-          return;
+  serverApi.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+  
+      if (axios.isAxiosError(error)) {
+        if (error.message === 'Network Error') {
+          console.error("axios response interceptors: Network Error");
+          throw error;
         }
-        originalRequest.headers.Authorization = `Bearer ${access_token}`;
-        return serverApi(originalRequest);
-      } catch(error) {
-        const response = error.response;
-        if (response.status === 401 && response.data.detail.includes("Token has expired")) {
-          const result = await deleteAllSecureData();
-          if (result.isSuccess) {
-            console.log('Deleted all secure data successfully in response interceptor');
-          } else {
-            console.error('Failed to delete all secure data');
+      };
+      
+      const tokens = await getTokens();
+  
+      if (error.response.status === 401 && tokens && tokens.refresh_token) {
+        try {
+          const newTokens = await renewTokenRequest(tokens.refresh_token);
+          const { access_token, refresh_token } = newTokens;
+          const saveTokenResult = await saveTokens(access_token, refresh_token);
+          if (!saveTokenResult.isSuccess) {
+            console.error('Failed to save renewed tokens');
+            return;
           }
-        } else {
-          console.error(error);
+          originalRequest.headers.Authorization = `Bearer ${access_token}`;
+          return serverApi(originalRequest);
+        } catch(error) {
+          const response = error.response;
+          if (response.status === 401 && response.data.detail.includes("Token has expired")) {
+            delete originalRequest.headers.Authorization;
+            const logoutResult = await logout();
+            if (logoutResult.isSuccess) {
+              return serverApi(originalRequest);
+            } else {
+              console.error("reponse interceptors, Failed to logout");
+            }
+          } else {
+            console.error(error);
+          }
         }
       }
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
-);
+  );
+}
 
 export const signupRequest = async (formData) => {
   try {
