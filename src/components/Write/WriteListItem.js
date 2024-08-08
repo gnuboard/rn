@@ -18,17 +18,17 @@ const WriteListItem = ({ bo_table, item }) => {
         {(item.normal_files.length > 0 || item.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
       </View>
       <View style={styles.writeSubContainer}>
-          <Text style={styles.wrSubArg}>{item.wr_name}</Text>
-          <Text style={styles.wrSubArg}>조회수 {item.wr_hit}</Text>
-          <Text style={styles.wrSubArg}>추천 {item.good}</Text>
-          <Text style={styles.wrSubArg}>비추 {item.nogood}</Text>
-          <Text style={styles.wrSubArg}>
-            {(() => {
-              const date = new Date(item.wr_datetime);
-              return date.toISOString().slice(2, 10).replace(/-/g, '-');
-            })()}
-          </Text>
-        </View>
+        <Text style={styles.wrSubArg}>{item.wr_name}</Text>
+        <Text style={styles.wrSubArg}>조회수 {item.wr_hit}</Text>
+        <Text style={styles.wrSubArg}>추천 {item.good}</Text>
+        <Text style={styles.wrSubArg}>비추 {item.nogood}</Text>
+        <Text style={styles.wrSubArg}>
+          {(() => {
+            const date = new Date(item.wr_datetime);
+            return date.toISOString().slice(2, 10).replace(/-/g, '-');
+          })()}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 };
