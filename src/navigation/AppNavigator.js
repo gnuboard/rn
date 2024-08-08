@@ -8,8 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { useAuth } from '../context/auth/AuthContext';
 import { setupInterceptors } from '../services/api/ServerApi';
-import HomeStackScreen from '../screens/Home/HomeStackScreen';
-import BoardListScreen from '../screens/Board/BoardScreen';
+import HomeScreen from '../screens/Home/HomeScreen';
+import BoardStackScreen from '../screens/Board/BoardStackScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import SettingsScreen from '../screens/Settings/SettingsScreen';
 import LoginScreen from '../screens/Auth/Login/LoginScreen';
@@ -70,8 +70,8 @@ const TabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackScreen} options={{ tabBarLabel: "메인화면" }} />
-      <Tab.Screen name="Boards" component={BoardListScreen} options={{ tabBarLabel: "게시판" }} />
+      <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: "메인화면" }} />
+      <Tab.Screen name="Boards" component={BoardStackScreen} options={{ tabBarLabel: "게시판" }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: "프로필" }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: "환경설정" }} />
     </Tab.Navigator>
