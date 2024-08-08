@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
+import { readWrite } from "../../utils/writeFunc";
 
 const WriteListItem = ({ bo_table, item }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -11,13 +12,7 @@ const WriteListItem = ({ bo_table, item }) => {
   return (
     <TouchableOpacity
       style={styles.writeContainer}
-      onPress={() => {
-        if (item.wr_option.includes('secret')) {
-          setModalVisible(true);
-        } else {
-          navigation.navigate('Write', {bo_table, 'wr_id': item.wr_id});
-        }
-      }}
+      onPress={() => readWrite(bo_table, item, setModalVisible, navigation)}
     >
       <View style={styles.writeMainContainer}>
         {item.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}

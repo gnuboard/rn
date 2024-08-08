@@ -7,9 +7,6 @@ import LatestGallery from '../../components/Home/LatestGallery';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const handleItemPress = ({ bo_table, wr_id }) => {
-    navigation.navigate('Write', { bo_table, wr_id });
-  }
 
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -31,14 +28,14 @@ const HomeScreen = () => {
               onPress={() => navigation.navigate('WriteList', params={'bo_table': 'free'})}
               activeOpacity={1}
             >
-              <Latest title="자유게시판" bo_table="free" rows={2} onItemPress={handleItemPress} />
+              <Latest title="자유게시판" bo_table="free" rows={2}/>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.column}
               onPress={() => navigation.navigate('WriteList', params={'bo_table': 'notice'})}
               activeOpacity={1}
             >
-              <Latest title="공지사항" bo_table="notice" rows={2} onItemPress={handleItemPress} />
+              <Latest title="공지사항" bo_table="notice" rows={2}/>
             </TouchableOpacity>
           </View>
           <View style={styles.column}>

@@ -6,6 +6,7 @@ import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
+import { readWrite } from '../../utils/writeFunc';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -32,13 +33,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => {
-        if (item.wr_option.includes('secret')) {
-          setModalVisible(true);
-        } else {
-          navigation.navigate('Write', {bo_table, 'wr_id': item.wr_id});
-        }
-      }}
+      onPress={() => readWrite(bo_table, item, setModalVisible, navigation)}
       activeOpacity={1}
     >
       <View style={styles.itemContainer}>

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from '@react-navigation/native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 import { fetchBoardNewData } from '../../utils/componentsFunc';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
+import { readWrite } from '../../utils/writeFunc';
 
-const Latest = ({ title, bo_table, rows, onItemPress }) => {
+const Latest = ({ title, bo_table, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchBoardNewData(bo_table, setBoardWrites, { rows } );
@@ -22,13 +25,7 @@ const Latest = ({ title, bo_table, rows, onItemPress }) => {
       {boardWrites.map((write) => (
         <TouchableOpacity
           key={write.wr_id}
-          onPress={() => {
-            if (write.wr_option.includes('secret')) {
-              setModalVisible(true);
-            } else {
-              onItemPress({ bo_table, wr_id: write.wr_id });
-            }
-          }}
+          onPress={() => readWrite(bo_table, write, setModalVisible, navigation)}
         >
         <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>
