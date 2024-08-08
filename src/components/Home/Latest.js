@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 import { fetchBoardNewData } from '../../utils/componentsFunc';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
+import { WritePasswordModal } from '../Modals/Modal';
 
 const Latest = ({ title, bo_table, rows, onItemPress }) => {
   const [boardWrites, setBoardWrites] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
 
@@ -19,16 +22,27 @@ const Latest = ({ title, bo_table, rows, onItemPress }) => {
       {boardWrites.map((write) => (
         <TouchableOpacity
           key={write.wr_id}
-          onPress={() => onItemPress({ bo_table, wr_id: write.wr_id })}
+          onPress={() => {
+            if (write.wr_option.includes('secret')) {
+              setModalVisible(true);
+            } else {
+              onItemPress({ bo_table, wr_id: write.wr_id });
+            }
+          }}
         >
         <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>
+          {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" />}
             <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
               {truncateText(write.wr_subject, 10)}
             </Text>
             <Text style={styles.itemDate}>{dateToMonthDay(write.wr_datetime)}</Text>
           </View>
         </View>
+        <WritePasswordModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+        />
         </TouchableOpacity>
       ))}
     </View>
