@@ -3,13 +3,26 @@ import {
   Modal, View, Text, TextInput, TouchableOpacity, StyleSheet
 } from 'react-native';
 import { Colors } from '../../constants/theme';
+import { fetchSecretWriteRequest } from '../../services/api/ServerApi';
+import { useNavigation } from '@react-navigation/native';
 
-export const WritePasswordModal = ({ visible, onClose, onSubmit }) => {
+export const WritePasswordModal = ({ visible, onClose, bo_table, wr_id }) => {
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
-  const handlePasswordSubmit = () => {
-    onSubmit(password);
-    onClose();
+  const handlePasswordSubmit = async () => {
+    try {
+      const response = await fetchSecretWriteRequest(bo_table, wr_id, password);
+      const writeData = response.data;
+      navigation.navigate('Write', {bo_table, wr_id, isVerified: true, writeData});
+      onClose();
+      setPassword('');
+    } catch (error) {
+      console.error(error);
+      if (error.response.status === 403) {
+        alert(error.response.data.detail);
+      }
+    }
   };
 
   return (

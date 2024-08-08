@@ -36,7 +36,8 @@ const WriteListItem = ({ bo_table, write }) => {
       <WritePasswordModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-        onSubmit={() => console.log("확인")}
+        bo_table={bo_table}
+        wr_id={write.wr_id}
       />
     </TouchableOpacity>
   );

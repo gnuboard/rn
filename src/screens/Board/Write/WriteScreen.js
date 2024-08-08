@@ -14,27 +14,41 @@ import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { deleteWriteRequest } from '../../../services/api/ServerApi';
 
 const WriteScreen = ({ navigation, route }) => {
-  const { bo_table, wr_id } = route.params;
+  const { bo_table, wr_id, isVerified, writeData } = route.params;
   const [ write, setWrite ] = useState(null);
   const { writeRefresh } = useWriteRefresh();
   const { setWriteListRefresh } = useWriteListRefresh();
   const { width } = useWindowDimensions();
 
   useEffect(() => {
-    fetchWrite(bo_table, wr_id, setWrite)
-    .then(() => {
+    if (isVerified) {
+      setWrite(writeData);
       fetchBoardConfigRequest(bo_table)
-        .then(response => {
-          const noticeArray = response.data.bo_notice.split(',');
-          const notice = noticeArray.includes(String(wr_id));
-          setWrite(prevState => ({
-            ...prevState,
-            notice: notice,
-          }))
-        })
-        .catch(error =>console.error("fetchBoardConfigRequest", error));
-    })
-    .catch(error => console.error("fetchWirte", error));
+      .then(response => {
+        const noticeArray = response.data.bo_notice.split(',');
+        const notice = noticeArray.includes(String(wr_id));
+        setWrite(prevState => ({
+          ...prevState,
+          notice: notice,
+        }))
+      })
+      .catch(error =>console.error("fetchBoardConfigRequest", error));
+    } else {
+      fetchWrite(bo_table, wr_id, setWrite)
+      .then(() => {
+        fetchBoardConfigRequest(bo_table)
+          .then(response => {
+            const noticeArray = response.data.bo_notice.split(',');
+            const notice = noticeArray.includes(String(wr_id));
+            setWrite(prevState => ({
+              ...prevState,
+              notice: notice,
+            }))
+          })
+          .catch(error =>console.error("fetchBoardConfigRequest", error));
+      })
+      .catch(error => console.error("fetchWirte", error));
+    }
   }, [writeRefresh]);
 
   if (!write) {

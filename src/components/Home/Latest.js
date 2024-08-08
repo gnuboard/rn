@@ -39,6 +39,8 @@ const Latest = ({ title, bo_table, rows }) => {
         <WritePasswordModal
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
+          bo_table={bo_table}
+          wr_id={write.wr_id}
         />
         </TouchableOpacity>
       ))}

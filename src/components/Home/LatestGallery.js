@@ -49,6 +49,12 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
           <Text style={styles.itemDate}>{item.date}</Text>
         </View>
       </View>
+      <WritePasswordModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        bo_table={bo_table}
+        wr_id={item.wr_id}
+      />
     </TouchableOpacity>
   );
 
@@ -69,11 +75,6 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
         snapToInterval={ITEM_WIDTH + 10} // Width + marginRight
         decelerationRate="fast"
         pagingEnabled
-      />
-      <WritePasswordModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onSubmit={() => console.log("확인")}
       />
     </View>
   );
