@@ -107,7 +107,7 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="홈" component={MainStack} options={{headerShown: false}} />
+        <Stack.Screen name="홈" component={MainStack} options={{headerShown: false}} />
         {isLoggedIn
           ? <Drawer.Screen
               name="로그아웃"
