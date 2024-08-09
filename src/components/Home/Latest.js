@@ -11,6 +11,7 @@ import { readWrite } from '../../utils/writeFunc';
 const Latest = ({ title, bo_table, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalWrId, setModalWrId] = useState(null);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();
@@ -25,7 +26,7 @@ const Latest = ({ title, bo_table, rows }) => {
       {boardWrites.map((write) => (
         <TouchableOpacity
           key={write.wr_id}
-          onPress={() => readWrite(bo_table, write, setModalVisible, navigation)}
+          onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation)}
         >
         <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>
@@ -36,14 +37,14 @@ const Latest = ({ title, bo_table, rows }) => {
             <Text style={styles.itemDate}>{dateToMonthDay(write.wr_datetime)}</Text>
           </View>
         </View>
-        <WritePasswordModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          bo_table={bo_table}
-          wr_id={write.wr_id}
-        />
         </TouchableOpacity>
       ))}
+      <WritePasswordModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        bo_table={bo_table}
+        modalWrId={modalWrId}
+      />
     </View>
   );
 };

@@ -15,6 +15,7 @@ const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
 const LatestGallery = ({ bo_table, view_type, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalWrId, setModalWrId] = useState(null);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();
@@ -33,7 +34,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => readWrite(bo_table, item, setModalVisible, navigation)}
+      onPress={() => readWrite(bo_table, item, setModalVisible, setModalWrId, navigation)}
       activeOpacity={1}
     >
       <View style={styles.itemContainer}>
@@ -49,12 +50,6 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
           <Text style={styles.itemDate}>{item.date}</Text>
         </View>
       </View>
-      <WritePasswordModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        bo_table={bo_table}
-        wr_id={item.wr_id}
-      />
     </TouchableOpacity>
   );
 
@@ -75,6 +70,12 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
         snapToInterval={ITEM_WIDTH + 10} // Width + marginRight
         decelerationRate="fast"
         pagingEnabled
+      />
+      <WritePasswordModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        bo_table={bo_table}
+        modalWrId={modalWrId}
       />
     </View>
   );

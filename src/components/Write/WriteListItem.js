@@ -7,12 +7,13 @@ import { readWrite } from "../../utils/writeFunc";
 
 const WriteListItem = ({ bo_table, write }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalWrId, setModalWrId] = useState(null);
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
       style={styles.writeContainer}
-      onPress={() => readWrite(bo_table, write, setModalVisible, navigation)}
+      onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation)}
     >
       <View style={styles.writeMainContainer}>
         {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
@@ -38,6 +39,7 @@ const WriteListItem = ({ bo_table, write }) => {
         onClose={() => setModalVisible(false)}
         bo_table={bo_table}
         wr_id={write.wr_id}
+        modalWrId={modalWrId}
       />
     </TouchableOpacity>
   );

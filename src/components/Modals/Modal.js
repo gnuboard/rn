@@ -6,15 +6,21 @@ import { Colors } from '../../constants/theme';
 import { fetchSecretWriteRequest } from '../../services/api/ServerApi';
 import { useNavigation } from '@react-navigation/native';
 
-export const WritePasswordModal = ({ visible, onClose, bo_table, wr_id }) => {
+export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
   const handlePasswordSubmit = async () => {
     try {
-      const response = await fetchSecretWriteRequest(bo_table, wr_id, password);
+      const response = await fetchSecretWriteRequest(bo_table, modalWrId, password);
       const writeData = response.data;
-      navigation.navigate('Write', {bo_table, wr_id, isVerified: true, writeData});
+      navigation.navigate(
+        'Boards',
+        {
+          screen: 'Write',
+          params: { bo_table, modalWrId, isVerified: true, writeData }
+        }
+      );
       onClose();
       setPassword('');
     } catch (error) {
