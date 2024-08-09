@@ -4,6 +4,7 @@ import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
 
 const PAGE_SIZE = 10;
 
@@ -15,8 +16,15 @@ const WriteListScreen = ({ route }) => {
   const [hasMore, setHasMore] = useState(true);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
+  const { loadCacheWrites, setLoadCacheWrites, cacheWrites, setCacheWrites } = useCacheWrites();
 
   useEffect(() => {
+    if (loadCacheWrites && cacheWrites[bo_table].posts.length > 0) {
+      setPage(cacheWrites[bo_table].page);
+      setPosts(cacheWrites[bo_table].posts);
+      return;
+    }
+
     if (writeListRefresh) {
       setPosts([]);
       setPage(1);
@@ -24,6 +32,7 @@ const WriteListScreen = ({ route }) => {
       setWriteListRefresh(false);
     } else {
       loadMorePosts();
+      setLoadCacheWrites(true);
     }
   }, [writeRefresh, writeListRefresh]);
 
@@ -45,6 +54,13 @@ const WriteListScreen = ({ route }) => {
         setHasMore(false);
       }
       setLoading(false);
+      setCacheWrites(prevCacheWrites => ({
+        ...prevCacheWrites,
+        [bo_table]: {
+          page: page,
+          posts: posts,
+        },
+      }));
     } catch (error) {
       console.error('fetchWriteListRequest - WriteListScreen', error);
     }
