@@ -16,7 +16,6 @@ import LoginScreen from '../screens/Auth/Login/LoginScreen';
 import SignupScreen from '../screens/Auth/Signup/SignupScreen';
 import ProfileUpdateScreen from '../screens/Profile/ProfileUpdateScreen';
 import ZipScreen from '../screens/Zip/ZipScreen';
-import WriteUpdateScreen from '../screens/Board/Write/WriteUpdateScreen';
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -28,7 +27,6 @@ const MainStack = () => {
       <Stack.Screen name="MainTabs" component={TabNavigator} options={{headerShown: false}} />
       <Stack.Screen name="ProfileUpdate" component={ProfileUpdateScreen} options={{headerShown: false}} />
       <Stack.Screen name="Zip" component={ZipScreen} options={{headerShown: false}} />
-      <Stack.Screen name="WriteUpdate" component={WriteUpdateScreen} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 };

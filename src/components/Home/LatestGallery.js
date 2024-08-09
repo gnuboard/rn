@@ -56,7 +56,13 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress = {() => navigation.navigate('WriteList', { bo_table })}
+        onPress = {() => navigation.navigate(
+          'Boards',
+          {
+            screen: 'WriteList',
+            params: { bo_table },
+          }
+        )}
         activeOpacity={1}
       >
         <Text style={styles.title}>갤러리</Text>

@@ -5,6 +5,12 @@ export function readWrite(
     setModalWrId(write.wr_id);
     setModalVisible(true);
   } else {
-    navigation.navigate('Write', {bo_table, 'wr_id': write.wr_id});
+    navigation.navigate(
+      'Boards',
+      {
+        screen: 'Write',
+        params: {bo_table, 'wr_id': write.wr_id},
+      },
+    );
   }
 }

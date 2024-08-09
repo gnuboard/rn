@@ -25,14 +25,26 @@ const HomeScreen = () => {
           <View style={styles.row}>
             <TouchableOpacity
               style={styles.column}
-              onPress={() => navigation.navigate('WriteList', params={'bo_table': 'free'})}
+              onPress={() => navigation.navigate(
+                'Boards',
+                {
+                  screen: 'WriteList',
+                  params: { bo_table: 'free' },
+                }
+              )}
               activeOpacity={1}
             >
               <Latest title="자유게시판" bo_table="free" rows={2}/>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.column}
-              onPress={() => navigation.navigate('WriteList', params={'bo_table': 'notice'})}
+              onPress={() => navigation.navigate(
+                'Boards',
+                {
+                  screen: 'WriteList',
+                  params: { bo_table: 'notice' },
+                }
+              )}
               activeOpacity={1}
             >
               <Latest title="공지사항" bo_table="notice" rows={2}/>
