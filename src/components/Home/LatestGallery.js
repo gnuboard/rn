@@ -61,6 +61,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
           {
             screen: 'WriteList',
             params: { bo_table },
+            initial: false,
           }
         )}
         activeOpacity={1}

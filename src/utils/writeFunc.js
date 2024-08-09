@@ -10,6 +10,7 @@ export function readWrite(
       {
         screen: 'Write',
         params: {bo_table, 'wr_id': write.wr_id},
+        initial: false,
       },
     );
   }

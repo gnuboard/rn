@@ -30,6 +30,7 @@ const HomeScreen = () => {
                 {
                   screen: 'WriteList',
                   params: { bo_table: 'free' },
+                  initial: false,
                 }
               )}
               activeOpacity={1}
@@ -43,6 +44,7 @@ const HomeScreen = () => {
                 {
                   screen: 'WriteList',
                   params: { bo_table: 'notice' },
+                  initial: false,
                 }
               )}
               activeOpacity={1}
