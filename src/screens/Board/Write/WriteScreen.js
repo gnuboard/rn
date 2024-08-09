@@ -49,7 +49,7 @@ const WriteScreen = ({ navigation, route }) => {
       })
       .catch(error => console.error("fetchWirte", error));
     }
-  }, [writeRefresh]);
+  }, [bo_table, wr_id, writeData, writeRefresh]);
 
   if (!write) {
     return <Text>Loading...</Text>;
