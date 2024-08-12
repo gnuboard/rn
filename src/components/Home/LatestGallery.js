@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
 import Config from 'react-native-config';
-import { fetchBoardNewData } from '../../utils/componentsFunc';
+import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
@@ -21,7 +21,17 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    fetchBoardNewData(bo_table, setBoardWrites, { view_type, rows} );
+    fetchWriteListRequest(bo_table, { view_type, rows})
+    .then(response => {
+      if (Array.isArray(response.data.writes)) {
+        setBoardWrites(response.data.writes);
+      } else {
+        console.error('API response data is not in the expected format:', data);
+      }
+    })
+    .catch(error => {
+      console.error('Latest useEffect', JSON.stringify(error));
+    })
   }, [writeRefresh, writeListRefresh]);
 
   const writeData = boardWrites.map((item) => ({

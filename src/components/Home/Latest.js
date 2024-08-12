@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
-import { fetchBoardNewData } from '../../utils/componentsFunc';
+import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
 import { readWrite } from '../../utils/writeFunc';
@@ -17,7 +17,17 @@ const Latest = ({ title, bo_table, rows }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    fetchBoardNewData(bo_table, setBoardWrites, { rows } );
+    fetchWriteListRequest(bo_table, { 'per_page': rows })
+    .then(response => {
+      if (Array.isArray(response.data.writes)) {
+        setBoardWrites(response.data.writes);
+      } else {
+        console.error('API response data is not in the expected format:', data);
+      }
+    })
+    .catch(error => {
+      console.error('Latest useEffect', JSON.stringify(error));
+    })
   }, [writeRefresh, writeListRefresh]);
 
   return (
