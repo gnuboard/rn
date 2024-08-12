@@ -148,7 +148,7 @@ async function deleteWrite(bo_table, write, navigation, setWriteListRefresh) {
       // response = await deleteNoneMemberWriteRequest(bo_table, write.wr_id, wr_password); // deleteNoneMemberWriteRequest is not implemented
     }
 
-    if (response.data.result === 'deleted') {
+    if (response.status === 200) {
       Alert.alert(
         "Notification",
         "게시물이 삭제되었습니다.",
