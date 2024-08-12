@@ -73,6 +73,7 @@ export const SignupForm = ({ navigation }) => {
     mb_password_re: '',
     mb_name: '',
     mb_nick: '',
+    mb_name: '',
     mb_email: '',
     mb_mailling: false,
     mb_open: false,
@@ -97,7 +98,7 @@ export const SignupForm = ({ navigation }) => {
     setEmailError('');
     try {
       const response = await signupRequest(formData);
-      if (response.status === 201) {
+      if (response.status === 200) {
         setFormData(initalFormData);
         Alert.alert(
           "Confirmation",
@@ -148,6 +149,7 @@ export const SignupForm = ({ navigation }) => {
         onChangeText={(text) => {
           handleInputChange('mb_id', text);
           handleInputChange('mb_nick', text);
+          handleInputChange('mb_name', text);
         }}
       />
       {idError && <Text style={styles.errorText}>{idError}</Text>}
