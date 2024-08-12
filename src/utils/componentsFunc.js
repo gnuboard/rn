@@ -35,7 +35,7 @@ export async function fetchWrite(bo_table, wr_id, setWrite) {
     const data = response.data;
     setWrite(data);
   } catch (error) {
-    console.error(JSON.stringify(error));
+    throw error;
   }
 }
 

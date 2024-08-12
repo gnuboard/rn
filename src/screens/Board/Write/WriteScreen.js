@@ -12,6 +12,7 @@ import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/w
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { deleteWriteRequest } from '../../../services/api/ServerApi';
+import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData } = route.params;
@@ -19,6 +20,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { writeRefresh } = useWriteRefresh();
   const { setWriteListRefresh } = useWriteListRefresh();
   const { width } = useWindowDimensions();
+  const { setLoadCacheWrites, setCacheWrites } = useCacheWrites();
 
   useEffect(() => {
     if (isVerified) {
@@ -47,7 +49,38 @@ const WriteScreen = ({ navigation, route }) => {
           })
           .catch(error =>console.error("fetchBoardConfigRequest", error));
       })
-      .catch(error => console.error("fetchWirte", error));
+      .catch(error => {
+        if (error.response.status === 404) {
+          setLoadCacheWrites(false);
+          setCacheWrites(prevState => ({
+            ...prevState,
+            [bo_table]: {page: 1, posts: []},
+          }));
+          setWriteListRefresh(true);
+          Alert.alert(
+            "Notification",
+            "게시물이 존재하지 않습니다.",
+            [
+              {
+                text: "확인",
+                onPress: () => {
+                  setWriteListRefresh(true);
+                  navigation.navigate(
+                    'Boards',
+                    {
+                      screen: 'WriteList',
+                      params: { bo_table: bo_table },
+                      initial: false,
+                    }
+                  );
+                },
+              },
+            ],
+            { cancelable: false }
+          )
+          return;
+        }
+      });
     }
   }, [bo_table, wr_id, writeData, writeRefresh]);
 
