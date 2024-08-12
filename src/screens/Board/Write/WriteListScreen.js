@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, FlatList, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
@@ -14,6 +14,7 @@ const WriteListScreen = ({ route }) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { loadCacheWrites, setLoadCacheWrites, cacheWrites, setCacheWrites } = useCacheWrites();
@@ -29,6 +30,7 @@ const WriteListScreen = ({ route }) => {
       setPosts([]);
       setPage(1);
       setHasMore(true);
+      setRefreshing(false);
       setWriteListRefresh(false);
     } else {
       loadMorePosts();
@@ -88,6 +90,25 @@ const WriteListScreen = ({ route }) => {
         onEndReached={loadMorePosts}
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setPage(1);
+              setPosts([]);
+              setHasMore(true);
+              setCacheWrites(prevCacheWrites => ({
+                ...prevCacheWrites,
+                [bo_table]: {
+                  page: 1,
+                  posts: [],
+                },
+              }));
+              setWriteListRefresh(true);
+              setRefreshing(true);
+            }}
+          />
+        }
       />
     </View>
   );
