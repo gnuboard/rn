@@ -20,7 +20,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { writeRefresh } = useWriteRefresh();
   const { setWriteListRefresh } = useWriteListRefresh();
   const { width } = useWindowDimensions();
-  const { setLoadCacheWrites, setCacheWrites } = useCacheWrites();
+  const { setCacheWrites } = useCacheWrites();
 
   useEffect(() => {
     if (isVerified) {
@@ -51,7 +51,6 @@ const WriteScreen = ({ navigation, route }) => {
       })
       .catch(error => {
         if (error.response.status === 404) {
-          setLoadCacheWrites(false);
           setCacheWrites(prevState => ({
             ...prevState,
             [bo_table]: {page: 1, posts: []},

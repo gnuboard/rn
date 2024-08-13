@@ -3,7 +3,6 @@ import React, { createContext, useState, useContext } from 'react';
 const CacheWritesContext = createContext();
 
 export const CacheWritesProvider = ({ children }) => {
-  const [ loadCacheWrites, setLoadCacheWrites ] = useState(false);
   const [ cacheWrites, setCacheWrites ] = useState({
     free: {page: 1, posts: []},
     notice: {page: 1, posts: []},
@@ -12,7 +11,7 @@ export const CacheWritesProvider = ({ children }) => {
   });
 
   return (
-    <CacheWritesContext.Provider value={{ loadCacheWrites, setLoadCacheWrites, cacheWrites, setCacheWrites }}>
+    <CacheWritesContext.Provider value={{ cacheWrites, setCacheWrites }}>
       {children}
     </CacheWritesContext.Provider>
   );

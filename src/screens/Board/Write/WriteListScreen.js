@@ -17,10 +17,10 @@ const WriteListScreen = ({ route }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
-  const { loadCacheWrites, setLoadCacheWrites, cacheWrites, setCacheWrites } = useCacheWrites();
+  const { cacheWrites, setCacheWrites } = useCacheWrites();
 
   useEffect(() => {
-    if (loadCacheWrites && cacheWrites[bo_table].posts.length > 0) {
+    if (cacheWrites[bo_table].posts.length > 0) {
       setPage(cacheWrites[bo_table].page);
       setPosts(cacheWrites[bo_table].posts);
       return;
@@ -34,7 +34,6 @@ const WriteListScreen = ({ route }) => {
       setWriteListRefresh(false);
     } else {
       loadMorePosts();
-      setLoadCacheWrites(true);
     }
   }, [writeRefresh, writeListRefresh]);
 
