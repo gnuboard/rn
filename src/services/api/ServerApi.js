@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import { getTokens, saveTokens, deleteAllSecureData } from '../../utils/authFunc';
+import { getTokens, saveTokens } from '../../utils/authFunc';
 
 const baseUrl = `${Config.SERVER_URL}/api/v1`;
 

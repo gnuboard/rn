@@ -39,15 +39,15 @@ const WriteScreen = ({ navigation, route }) => {
       fetchWrite(bo_table, wr_id, setWrite)
       .then(() => {
         fetchBoardConfigRequest(bo_table)
-          .then(response => {
-            const noticeArray = response.data.bo_notice.split(',');
-            const notice = noticeArray.includes(String(wr_id));
-            setWrite(prevState => ({
-              ...prevState,
-              notice: notice,
-            }))
-          })
-          .catch(error =>console.error("fetchBoardConfigRequest", error));
+        .then(response => {
+          const noticeArray = response.data.bo_notice.split(',');
+          const notice = noticeArray.includes(String(wr_id));
+          setWrite(prevState => ({
+            ...prevState,
+            notice: notice,
+          }))
+        })
+        .catch(error =>console.error("fetchBoardConfigRequest", error));
       })
       .catch(error => {
         if (error.response.status === 404) {
