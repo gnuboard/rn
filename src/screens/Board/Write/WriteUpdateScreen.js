@@ -18,7 +18,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 const CKEditorForm = ({ navigation, bo_table, write }) => {
   const webViewRef = useRef(null);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
-  const { setWriteListRefresh } = useWriteListRefresh();
+  const { refreshWriteList } = useWriteListRefresh();
   const { isLoggedIn } = useAuth();
   const category = { bo_use_category: 0, bo_category_list: '' }
 
@@ -85,7 +85,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
               const response = await createWriteRequest(bo_table, message.data);
               if (response.status === 200) {
                 const wr_id = response.data.wr_id;
-                setWriteListRefresh(true);
+                await refreshWriteList(bo_table);
                 navigation.navigate('Write', { bo_table, wr_id });
               }
             } catch (error) {
@@ -96,7 +96,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
             try {
               const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
               if (response.status === 200) {
-                setWriteListRefresh(true);
+                await refreshWriteList(bo_table);
                 setWriteRefresh(!writeRefresh);
                 navigation.goBack();
               }
