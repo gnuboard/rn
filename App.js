@@ -8,15 +8,15 @@ import { CacheWritesProvider } from './src/context/writes/CacheWritesContext';
 const App = () => {
   return (
     <AuthProvider>
-      <WriteListRefreshProvider>
-      <WriteRefreshProvider>
       <CacheWritesProvider>
+        <WriteListRefreshProvider>
+        <WriteRefreshProvider>
         <SafeAreaView style={styles.container}>
           <AppNavigator />
         </SafeAreaView>
+        </WriteRefreshProvider>
+        </WriteListRefreshProvider>
       </CacheWritesProvider>
-      </WriteRefreshProvider>
-      </WriteListRefreshProvider>
     </AuthProvider>
   );
 };

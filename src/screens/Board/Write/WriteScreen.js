@@ -18,7 +18,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData } = route.params;
   const [ write, setWrite ] = useState(null);
   const { writeRefresh } = useWriteRefresh();
-  const { setWriteListRefresh } = useWriteListRefresh();
+  const { refreshWriteList } = useWriteListRefresh();
   const { width } = useWindowDimensions();
   const { setCacheWrites } = useCacheWrites();
 
@@ -55,7 +55,6 @@ const WriteScreen = ({ navigation, route }) => {
             ...prevState,
             [bo_table]: {page: 1, posts: []},
           }));
-          setWriteListRefresh(true);
           Alert.alert(
             "Notification",
             "게시물이 존재하지 않습니다.",
@@ -63,7 +62,7 @@ const WriteScreen = ({ navigation, route }) => {
               {
                 text: "확인",
                 onPress: () => {
-                  setWriteListRefresh(true);
+                  refreshWriteList(bo_table);
                   navigation.navigate(
                     'Boards',
                     {
@@ -98,7 +97,7 @@ const WriteScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={styles.deleteButton}
             onPress={() => showDeleteConfirm(
-              bo_table, write, navigation, setCacheWrites, setWriteListRefresh
+              bo_table, write, navigation, refreshWriteList
             )}>
             <Text style={styles.buttonText}>삭제</Text>
           </TouchableOpacity>
@@ -133,7 +132,7 @@ const WriteScreen = ({ navigation, route }) => {
   );
 };
 
-async function deleteWrite(bo_table, write, navigation, setCacheWrites, setWriteListRefresh) {
+async function deleteWrite(bo_table, write, navigation, refreshWriteList) {
   let wr_password;
 
   if (!write.mb_id) {
@@ -147,13 +146,6 @@ async function deleteWrite(bo_table, write, navigation, setCacheWrites, setWrite
     let response;
     if (write.mb_id) {
       response = await deleteWriteRequest(bo_table, write.wr_id);
-      if (response.status === 200) {
-        setCacheWrites(prevState => ({
-          ...prevState,
-          [bo_table]: {page: 1, posts: []},
-        }));
-        setWriteListRefresh(true);
-      }
     } else {
       // response = await deleteNoneMemberWriteRequest(bo_table, write.wr_id, wr_password); // deleteNoneMemberWriteRequest is not implemented
     }
@@ -166,7 +158,7 @@ async function deleteWrite(bo_table, write, navigation, setCacheWrites, setWrite
           {
             text: "확인",
             onPress: () => {
-              setWriteListRefresh(true);
+              refreshWriteList(bo_table);
               navigation.navigate(
                 'Boards',
                 {
@@ -189,7 +181,7 @@ async function deleteWrite(bo_table, write, navigation, setCacheWrites, setWrite
   }
 }
 
-const showDeleteConfirm = (bo_table, write, navigation, setCacheWrites, setWriteListRefresh) => {
+const showDeleteConfirm = (bo_table, write, navigation, refreshWriteList) => {
   Alert.alert(
     "Confirmation",
     "정말 삭제하시겠습니까?",
@@ -201,7 +193,7 @@ const showDeleteConfirm = (bo_table, write, navigation, setCacheWrites, setWrite
       },
       {
         text: "OK",
-        onPress: () => deleteWrite(bo_table, write, navigation, setCacheWrites, setWriteListRefresh)
+        onPress: () => deleteWrite(bo_table, write, navigation, refreshWriteList)
       }
     ],
     { cancelable: false }

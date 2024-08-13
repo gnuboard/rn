@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
+import { useCacheWrites } from './CacheWritesContext';
 
 // 개별 글에 대한 context
 const WriteRefreshContext = createContext();
@@ -20,8 +21,21 @@ const WriteListRefreshContext = createContext();
 
 export const WriteListRefreshProvider = ({ children }) => {
   const [ writeListRefresh, setWriteListRefresh ] = useState(false);
+  const { setCacheWrites } = useCacheWrites();
+
+  async function refreshWriteList(bo_table) {
+    setCacheWrites(prevCacheWrites => ({
+      ...prevCacheWrites,
+      [bo_table]: {
+        page: 1,
+        posts: [],
+      }
+    }));
+    setWriteListRefresh(true);
+  }
+
   return (
-    <WriteListRefreshContext.Provider value={{ writeListRefresh, setWriteListRefresh }}>
+    <WriteListRefreshContext.Provider value={{ writeListRefresh, setWriteListRefresh, refreshWriteList }}>
       {children}
     </WriteListRefreshContext.Provider>
   );
