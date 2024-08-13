@@ -11,12 +11,13 @@ import { Colors } from '../../../constants/theme';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
-import { deleteWriteRequest } from '../../../services/api/ServerApi';
+import { fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData } = route.params;
   const [ write, setWrite ] = useState(null);
+  const [ comments, setComments ] = useState([]);
   const { writeRefresh } = useWriteRefresh();
   const { refreshWriteList } = useWriteListRefresh();
   const { width } = useWindowDimensions();
@@ -48,6 +49,13 @@ const WriteScreen = ({ navigation, route }) => {
           }))
         })
         .catch(error =>console.error("fetchBoardConfigRequest", error));
+      })
+      .then(() => {
+        fetchCommentsRequest(bo_table, wr_id)
+        .then(response => {
+          setComments(response.data.comments);
+        })
+        .catch(error => console.error("fetchCommentsRequest", error));
       })
       .catch(error => {
         if (error.response.status === 404) {
@@ -121,8 +129,8 @@ const WriteScreen = ({ navigation, route }) => {
       />
       <View style={styles.commentContainer}>
         <Text style={styles.commentHeaderText}>댓글</Text>
-        {write.comments.length > 0
-        ? write.comments.map((comment, index) => (
+        {comments.length > 0
+        ? comments.map((comment, index) => (
             <Comment key={index} comment={comment} />
           ))
         : <Text style={styles.noCommentText}>등록된 댓글이 없습니다.</Text>}
