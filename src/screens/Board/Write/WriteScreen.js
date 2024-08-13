@@ -95,7 +95,11 @@ const WriteScreen = ({ navigation, route }) => {
           <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
             <Text style={styles.buttonText}>수정</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteButton} onPress={() => showDeleteConfirm(bo_table, write, navigation, setWriteListRefresh)}>
+          <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => showDeleteConfirm(
+              bo_table, write, navigation, setCacheWrites, setWriteListRefresh
+            )}>
             <Text style={styles.buttonText}>삭제</Text>
           </TouchableOpacity>
         </View>
@@ -129,7 +133,7 @@ const WriteScreen = ({ navigation, route }) => {
   );
 };
 
-async function deleteWrite(bo_table, write, navigation, setWriteListRefresh) {
+async function deleteWrite(bo_table, write, navigation, setCacheWrites, setWriteListRefresh) {
   let wr_password;
 
   if (!write.mb_id) {
@@ -143,6 +147,13 @@ async function deleteWrite(bo_table, write, navigation, setWriteListRefresh) {
     let response;
     if (write.mb_id) {
       response = await deleteWriteRequest(bo_table, write.wr_id);
+      if (response.status === 200) {
+        setCacheWrites(prevState => ({
+          ...prevState,
+          [bo_table]: {page: 1, posts: []},
+        }));
+        setWriteListRefresh(true);
+      }
     } else {
       // response = await deleteNoneMemberWriteRequest(bo_table, write.wr_id, wr_password); // deleteNoneMemberWriteRequest is not implemented
     }
@@ -156,7 +167,14 @@ async function deleteWrite(bo_table, write, navigation, setWriteListRefresh) {
             text: "확인",
             onPress: () => {
               setWriteListRefresh(true);
-              navigation.navigate('WriteList', {'bo_table': bo_table});
+              navigation.navigate(
+                'Boards',
+                {
+                  screen: 'WriteList',
+                  params: { bo_table: bo_table },
+                  initial: false,
+                }
+              );
             },
           },
         ],
@@ -171,7 +189,7 @@ async function deleteWrite(bo_table, write, navigation, setWriteListRefresh) {
   }
 }
 
-const showDeleteConfirm = (bo_table, write, navigation, setWriteListRefresh) => {
+const showDeleteConfirm = (bo_table, write, navigation, setCacheWrites, setWriteListRefresh) => {
   Alert.alert(
     "Confirmation",
     "정말 삭제하시겠습니까?",
@@ -183,7 +201,7 @@ const showDeleteConfirm = (bo_table, write, navigation, setWriteListRefresh) => 
       },
       {
         text: "OK",
-        onPress: () => deleteWrite(bo_table, write, navigation, setWriteListRefresh)
+        onPress: () => deleteWrite(bo_table, write, navigation, setCacheWrites, setWriteListRefresh)
       }
     ],
     { cancelable: false }
