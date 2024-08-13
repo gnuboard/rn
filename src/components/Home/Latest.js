@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
-import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
 import { readWrite } from '../../utils/writeFunc';
 

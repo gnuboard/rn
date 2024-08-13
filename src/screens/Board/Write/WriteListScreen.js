@@ -3,7 +3,7 @@ import { View, FlatList, RefreshControl, ActivityIndicator, StyleSheet } from 'r
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
-import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
 
 const PAGE_SIZE = 10;

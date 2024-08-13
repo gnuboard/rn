@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
-import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
 
 const WriteUpdateScreen = ({ navigation, route }) => {

@@ -4,7 +4,7 @@ import Config from 'react-native-config';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
-import { useWriteRefresh, useWriteListRefresh } from '../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
 import { readWrite } from '../../utils/writeFunc';
 

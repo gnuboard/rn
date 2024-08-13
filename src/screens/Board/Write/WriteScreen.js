@@ -8,7 +8,7 @@ import { fetchWrite } from '../../../utils/componentsFunc';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
-import { useWriteRefresh, useWriteListRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { deleteWriteRequest } from '../../../services/api/ServerApi';

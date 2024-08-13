@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../context/auth/AuthContext';
-import { useWriteRefresh } from '../../../context/refresh/write/RefreshContext';
+import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { createCommentRequest } from '../../../services/api/ServerApi';
 
 export function CommentForm({ bo_table, wr_id }) {
