@@ -57,7 +57,14 @@ const BoardWrites = ({ title, bo_table, data }) => {
   return (
     <View style={styles.section}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('WriteList', { bo_table })}
+        onPress={() => navigation.navigate(
+          'Boards',
+          {
+            screen: 'WriteList',
+            params: { bo_table },
+            initial: false,
+          }
+        )}
       >
         <Text style={styles.sectionTitle}>{title}</Text>
       </TouchableOpacity>

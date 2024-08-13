@@ -86,7 +86,14 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
               if (response.status === 200) {
                 const wr_id = response.data.wr_id;
                 await refreshWriteList(bo_table);
-                navigation.navigate('Write', { bo_table, wr_id });
+                navigation.navigate(
+                  'Boards',
+                  {
+                    screen: 'Write',
+                    params: { bo_table, wr_id },
+                    initial: false,
+                  }
+                );
               }
             } catch (error) {
               console.error('Error creating new write:', error.response);
