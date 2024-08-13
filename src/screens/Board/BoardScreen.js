@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
+import { useWriteListRefresh } from '../../context/writes/RefreshContext';
 import WriteListItem from '../../components/Write/WriteListItem';
 
 const PAGE_SIZE = 5;
 
 const BoardListScreen = () => {
   const [boardWrites, setBoardWrites] = useState(null);
+  const { writeListRefresh } = useWriteListRefresh();
 
   async function getAllBoardWrites() {
     try {
@@ -29,7 +31,7 @@ const BoardListScreen = () => {
 
   useEffect(() => {
     getAllBoardWrites();
-  }, []);
+  }, [writeListRefresh]);
 
   if (!boardWrites) {
     return (
