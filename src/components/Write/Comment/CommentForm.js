@@ -7,7 +7,7 @@ import { useAuth } from '../../../context/auth/AuthContext';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { createCommentRequest } from '../../../services/api/ServerApi';
 
-export function CommentForm({ bo_table, wr_id }) {
+export function CommentForm({ bo_table, wr_id, comment_id, setIsEditFormVisible }) {
   const { isLoggedIn } = useAuth();
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const [error, setError] = useState('');
@@ -16,7 +16,7 @@ export function CommentForm({ bo_table, wr_id }) {
     wr_name: '',
     wr_password: '',
     wr_secret_checked: false,
-    comment_id: 0,
+    comment_id: comment_id ? comment_id : 0,
   });
 
   async function submitComment() {
@@ -48,10 +48,13 @@ export function CommentForm({ bo_table, wr_id }) {
         wr_name: '',
         wr_password: '',
         wr_secret_checked: false,
-        comment_id: 0,
+        comment_id: comment_id ? comment_id : 0,
       });
       setError('');
       setWriteRefresh(!writeRefresh);
+      if (setIsEditFormVisible) {
+        setIsEditFormVisible(false);
+      }
       return response.data;
     } catch (error) {
       if (error.response.status === 429) {

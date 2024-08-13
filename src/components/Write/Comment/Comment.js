@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { CommentForm } from './CommentForm';
 
-function Comment({comment }) {
+function Comment({ comment, bo_table, wr_id }) {
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+
   return (
     <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 20 }]}>
       <View style={styles.divider} />
@@ -21,6 +24,7 @@ function Comment({comment }) {
             <Text style={styles.dateTime}>{comment.wr_datetime}</Text>
             <TouchableOpacity
               style={[styles.button, styles.replyButton]}
+              onPress={() => setIsEditFormVisible(!isEditFormVisible)}
             >
               <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
@@ -39,6 +43,14 @@ function Comment({comment }) {
           </View>
         </View>
       </View>
+      {isEditFormVisible &&(
+        <CommentForm
+          bo_table={bo_table}
+          wr_id={wr_id}
+          comment_id={comment.wr_id}
+          setIsEditFormVisible={setIsEditFormVisible}
+        />
+      )}
     </View>
   );
 }
