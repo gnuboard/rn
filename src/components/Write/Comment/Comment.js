@@ -8,7 +8,7 @@ function Comment({ comment, bo_table, wr_id }) {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   return (
-    <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 20 }]}>
+    <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 10 }]}>
       <View style={styles.divider} />
       <View style={styles.commentHeader}>
         {comment.wr_comment_reply.length > 0 && (
