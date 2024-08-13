@@ -4,6 +4,7 @@ export const Colors = {
   'navi_btn_black': "#464646",
   'btn_blue': '#4a90e2',
   'btn_gray': '#808080',
+  'btn_green': 'green',
   'btn_text_white': 'white',
 }
 

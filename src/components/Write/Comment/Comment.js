@@ -3,8 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CommentForm } from './CommentForm';
+import { Colors } from '../../../constants/theme';
 
 function Comment({ comment, bo_table, wr_id }) {
+  const [ itemVisible, setItemVisible ] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
   return (
@@ -22,12 +24,6 @@ function Comment({ comment, bo_table, wr_id }) {
           <View style={styles.commentInfo}>
             <Text style={styles.authorName}>{comment.wr_name}</Text>
             <Text style={styles.dateTime}>{comment.wr_datetime}</Text>
-            <TouchableOpacity
-              style={[styles.button, styles.replyButton]}
-              onPress={() => setIsEditFormVisible(!isEditFormVisible)}
-            >
-              <Text style={styles.buttonText}>답변</Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.commentBody}>
             {comment.is_secret ? (
@@ -42,6 +38,31 @@ function Comment({ comment, bo_table, wr_id }) {
             )}
           </View>
         </View>
+        {itemVisible && (
+          <View>
+            <TouchableOpacity
+              style={[styles.button, styles.replyButton]}
+              onPress={() => setIsEditFormVisible(!isEditFormVisible)}
+            >
+              <Text style={styles.buttonText}>답변</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.updateButton]}
+              onPress={() => console.log("댓글 수정 창 열기")}
+            >
+              <Text style={styles.buttonText}>수정</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, styles.deleteButton]}
+              onPress={() => console.log("댓글 삭제 함수 필요")}
+            >
+              <Text style={styles.buttonText}>삭제</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        <TouchableOpacity style={styles.iconButton} onPress={() => setItemVisible(!itemVisible)}>
+          <Icon name="ellipsis-vertical" size={20} color="gray" />
+        </TouchableOpacity>
       </View>
       {isEditFormVisible &&(
         <CommentForm
@@ -100,7 +121,15 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   replyButton: {
-    backgroundColor: 'green',
+    backgroundColor: Colors.btn_green,
+    marginBottom: 5,
+  },
+  updateButton: {
+    backgroundColor: Colors.btn_blue,
+    marginBottom: 5,
+  },
+  deleteButton: {
+    backgroundColor: Colors.btn_gray,
   },
   buttonText: {
     color: 'white',
