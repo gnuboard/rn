@@ -96,8 +96,8 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
             try {
               const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
               if (response.status === 200) {
-                await refreshWriteList(bo_table);
                 setWriteRefresh(!writeRefresh);
+                await refreshWriteList(bo_table);
                 navigation.goBack();
               }
             } catch (error) {
