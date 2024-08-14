@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, Image,
+  View, Text, StyleSheet, ScrollView, Image, Linking,
   useWindowDimensions, TouchableOpacity, Alert
 } from 'react-native';
 import RenderHTML from 'react-native-render-html';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
@@ -137,6 +138,20 @@ const WriteScreen = ({ navigation, route }) => {
         contentWidth={width}
         source={{ html: write?.wr_content }}
       />
+      {
+        write.wr_link1 && (
+          <View style={styles.linkContainer}>
+            <Icon name="link" style={styles.wrLink} /><Text onPress={() => {Linking.openURL(`${write.wr_link1}`)}}>{write.wr_link1}</Text>
+          </View>
+        )
+      }
+      {
+        write.wr_link2 && (
+          <View style={styles.linkContainer}>
+            <Icon name="link" style={styles.wrLink} /><Text onPress={() => {Linking.openURL(`${write.wr_link2}`)}}>{write.wr_link2}</Text>
+          </View>
+        )
+      }
       <View style={styles.commentContainer}>
         <Text style={styles.commentHeaderText}>댓글</Text>
         {comments.length > 0
@@ -312,6 +327,24 @@ const styles = StyleSheet.create({
   },
   noCommentText: {
     textAlign: 'center'
+  },
+  linkContainer: {
+    flexDirection: 'row',
+    borderWidth: 0.5,
+    borderRadius: 5,
+    padding: 5,
+    marginBottom: 10,
+    height: 35,
+    alignItems: 'center',
+  },
+  wrLink: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: '#edd3fd',
+    width: 16,
+    height: 16,
+    fontSize: 13,
+    marginRight: 10,
   },
 });
 
