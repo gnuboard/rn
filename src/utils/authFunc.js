@@ -71,3 +71,25 @@ export const deleteAllSecureData = async () => {
     return {isSuccess: false};
   }
 };
+
+export const deleteUserInfo = async () => {
+  try {
+    const keys = [
+      'mb_id',
+      'mb_nick',
+      'mb_email',
+      'mb_point',
+      'mb_profile',
+      'mb_icon_path',
+      'mb_image_path',
+      'mb_name',
+      'mb_memo_cnt',
+      'mb_scrap_cnt',
+    ];
+    await AsyncStorage.multiRemove(keys);
+    return {isSuccess: true};
+  } catch (error) {
+    console.error('deleteUserInfo, Error deleting user info', error);
+    return {isSuccess: false};
+  }
+}

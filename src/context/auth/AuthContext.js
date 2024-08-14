@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getTokens, deleteAllSecureData } from '../../utils/authFunc';
+import { getTokens, deleteAllSecureData, deleteUserInfo } from '../../utils/authFunc';
 
 const AuthContext = createContext();
 
@@ -29,6 +29,11 @@ export const AuthProvider = ({ children }) => {
       const deleteResult =  await deleteAllSecureData();
       if (!deleteResult.isSuccess) {
         console.error('Failed to delete secure data');
+        return { isSuccess: false };
+      }
+      const deleteUserInfoResult = await deleteUserInfo();
+      if (!deleteUserInfoResult.isSuccess) {
+        console.error('Failed to delete user info');
         return { isSuccess: false };
       }
       setIsLoggedIn(false);
