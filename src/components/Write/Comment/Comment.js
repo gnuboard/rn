@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { CommentForm } from './CommentForm';
 import { Colors } from '../../../constants/theme';
 
-function Comment({ comment, bo_table, wr_id }) {
+function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
@@ -46,18 +46,22 @@ function Comment({ comment, bo_table, wr_id }) {
             >
               <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.updateButton]}
-              onPress={() => console.log("댓글 수정 창 열기")}
-            >
-              <Text style={styles.buttonText}>수정</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.button, styles.deleteButton]}
-              onPress={() => console.log("댓글 삭제 함수 필요")}
-            >
-              <Text style={styles.buttonText}>삭제</Text>
-            </TouchableOpacity>
+            {currentMbId == comment.mb_id ? (
+              <>
+                <TouchableOpacity
+                  style={[styles.button, styles.updateButton]}
+                  onPress={() => console.log("댓글 수정 창 열기")}
+                >
+                  <Text style={styles.buttonText}>수정</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, styles.deleteButton]}
+                  onPress={() => console.log("댓글 삭제 함수 필요", comment.mb_id)}
+                >
+                  <Text style={styles.buttonText}>삭제</Text>
+                </TouchableOpacity>
+              </>
+            ): null}
           </View>
         )}
         <TouchableOpacity style={styles.iconButton} onPress={() => setItemVisible(!itemVisible)}>

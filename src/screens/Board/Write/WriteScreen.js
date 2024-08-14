@@ -140,7 +140,13 @@ const WriteScreen = ({ navigation, route }) => {
         <Text style={styles.commentHeaderText}>댓글</Text>
         {comments.length > 0
         ? comments.map((comment, index) => (
-            <Comment key={index} comment={comment} bo_table={bo_table} wr_id={wr_id} />
+            <Comment
+              key={index}
+              comment={comment}
+              bo_table={bo_table}
+              wr_id={wr_id}
+              currentMbId={currentMbId}
+            />
           ))
         : <Text style={styles.noCommentText}>등록된 댓글이 없습니다.</Text>}
         <CommentForm bo_table={bo_table} wr_id={wr_id} />
