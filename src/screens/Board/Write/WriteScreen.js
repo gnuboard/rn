@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   wrLink: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: '#edd3fd',
+    backgroundColor: Colors.link_icon_bg,
     width: 16,
     height: 16,
     fontSize: 13,

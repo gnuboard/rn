@@ -6,6 +6,9 @@ export const Colors = {
   'btn_gray': '#808080',
   'btn_green': 'green',
   'btn_text_white': 'white',
+  'comment_count_bg': '#cbe3e8',
+  'link_icon_bg': '#edd3fd',
+  'file_icon_bg': '#ffefb9',
 }
 
 export const emptyAvatarPath = '/static/img/no_profile.gif'

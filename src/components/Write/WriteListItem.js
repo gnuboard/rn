@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
 import { readWrite } from "../../utils/writeFunc";
+import { Colors } from "../../constants/theme";
 
 const WriteListItem = ({ bo_table, write }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   wrCommentText: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: '#cbe3e8',
+    backgroundColor: Colors.comment_count_bg,
     width: 16,
     height: 16,
     fontSize: 11,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   wrLink: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: '#edd3fd',
+    backgroundColor: Colors.link_icon_bg,
     width: 16,
     height: 16,
     fontSize: 11,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   wrFile: {
     textAlign: 'center',
     textAlignVertical: 'center',
-    backgroundColor: '#ffefb9',
+    backgroundColor: Colors.file_icon_bg,
     width: 16,
     height: 16,
     fontSize: 11,
