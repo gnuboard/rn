@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getTokens, deleteAllSecureData, deleteUserInfo } from '../../utils/authFunc';
+import { removeQuotes } from '../../utils/stringFunc';
 
 const AuthContext = createContext();
 
@@ -43,6 +45,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getCurrentUserData = async () => {
+    const keys = [
+      'mb_id',
+      'mb_nick',
+      'mb_email',
+      'mb_point',
+      'mb_profile',
+      'mb_icon_path',
+      'mb_image_path',
+      'mb_name',
+      'mb_memo_cnt',
+      'mb_scrap_cnt',
+    ];
+    const results = await AsyncStorage.multiGet(keys);
+    const data = Object.fromEntries(
+      results.map(([key, value]) => [key, removeQuotes(value)])
+    );
+    return data;
+  };
+
   return (
     <AuthContext.Provider 
       value={{ 
@@ -50,6 +72,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         logout,
         setIsLoggedIn,
+        getCurrentUserData,
       }}
     >
       {children}

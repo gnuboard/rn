@@ -13,6 +13,7 @@ import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
+import { useAuth } from '../../../context/auth/AuthContext';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData } = route.params;
@@ -22,6 +23,8 @@ const WriteScreen = ({ navigation, route }) => {
   const { refreshWriteList } = useWriteListRefresh();
   const { width } = useWindowDimensions();
   const { setCacheWrites } = useCacheWrites();
+  const { getCurrentUserData } = useAuth();
+  const [ currentMbId, setCurrentMbId ] = useState(null);
 
   useEffect(() => {
     if (isVerified) {
@@ -49,6 +52,10 @@ const WriteScreen = ({ navigation, route }) => {
           }))
         })
         .catch(error =>console.error("fetchBoardConfigRequest", error));
+        getCurrentUserData()
+        .then(data => {
+          setCurrentMbId(data.mb_id)
+        })
       })
       .then(() => {
         fetchCommentsRequest(bo_table, wr_id)
@@ -98,18 +105,20 @@ const WriteScreen = ({ navigation, route }) => {
     <ScrollView style={styles.container}>
       <View style={styles.subjectWithButton}>
         <Text style={styles.title}>{write?.wr_subject}</Text>
-        <View style={styles.bindedButton}>
-          <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
-            <Text style={styles.buttonText}>수정</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => showDeleteConfirm(
-              bo_table, write, navigation, refreshWriteList
-            )}>
-            <Text style={styles.buttonText}>삭제</Text>
-          </TouchableOpacity>
-        </View>
+        {currentMbId == write.mb_id ? (
+          <View style={styles.bindedButton}>
+            <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
+              <Text style={styles.buttonText}>수정</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.deleteButton}
+              onPress={() => showDeleteConfirm(
+                bo_table, write, navigation, refreshWriteList
+              )}>
+              <Text style={styles.buttonText}>삭제</Text>
+            </TouchableOpacity>
+          </View>
+        ): null}
       </View>
       <View style={styles.metaContainer}>
         <View style={styles.authorAvatar}>
