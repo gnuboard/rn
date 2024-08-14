@@ -1,13 +1,42 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CommentForm } from './CommentForm';
 import { Colors } from '../../../constants/theme';
+import { deleteCommentRequest } from '../../../services/api/ServerApi';
+import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 
 function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const { writeRefresh, setWriteRefresh } = useWriteRefresh();
+
+  async function deleteComment() {
+    Alert.alert(
+      '댓글 삭제',
+      '정말로 삭제하시겠습니까?',
+      [
+        {
+          text: '취소',
+          style: 'cancel',
+        },
+        {
+          text: '확인',
+          onPress: () => {
+            setItemVisible(false);
+            deleteCommentRequest(bo_table, wr_id, comment.wr_id)
+            .then(() => setWriteRefresh(!writeRefresh))
+            .catch((error) => {
+              alert('댓글 삭제 실패');
+              console.error('댓글 삭제 실패', error);
+            });
+          },
+        },
+      ],
+      { cancelable: false },
+    )
+  }
 
   return (
     <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 10 }]}>
@@ -56,7 +85,7 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={[styles.button, styles.deleteButton]}
-                  onPress={() => console.log("댓글 삭제 함수 필요", comment.mb_id)}
+                  onPress={deleteComment}
                 >
                   <Text style={styles.buttonText}>삭제</Text>
                 </TouchableOpacity>
