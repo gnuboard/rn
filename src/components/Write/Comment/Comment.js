@@ -10,6 +10,7 @@ import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const [ isUpdateComment, setIsUpdateComment ] = useState(false);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
 
   async function deleteComment() {
@@ -71,7 +72,10 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
           <View>
             <TouchableOpacity
               style={[styles.button, styles.replyButton]}
-              onPress={() => setIsEditFormVisible(!isEditFormVisible)}
+              onPress={() => {
+                setIsUpdateComment(false);
+                setIsEditFormVisible(!isEditFormVisible);
+              }}
             >
               <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
@@ -79,7 +83,10 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
               <>
                 <TouchableOpacity
                   style={[styles.button, styles.updateButton]}
-                  onPress={() => console.log("댓글 수정 창 열기")}
+                  onPress={() => {
+                    setIsUpdateComment(true);
+                    setIsEditFormVisible(!isEditFormVisible);
+                  }}
                 >
                   <Text style={styles.buttonText}>수정</Text>
                 </TouchableOpacity>
@@ -101,8 +108,9 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
         <CommentForm
           bo_table={bo_table}
           wr_id={wr_id}
-          comment_id={comment.wr_id}
+          comment={comment}
           setIsEditFormVisible={setIsEditFormVisible}
+          isUpdateComment={isUpdateComment}
         />
       )}
     </View>

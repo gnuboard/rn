@@ -5,18 +5,18 @@ import {
 import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
-import { createCommentRequest } from '../../../services/api/ServerApi';
+import { createCommentRequest, updateCommentRequest } from '../../../services/api/ServerApi';
 
-export function CommentForm({ bo_table, wr_id, comment_id, setIsEditFormVisible }) {
+export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, isUpdateComment }) {
   const { isLoggedIn } = useAuth();
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const [error, setError] = useState('');
   const [commentFormValue, setCommentFormValue] = useState({
-    wr_content: '',
+    wr_content: isUpdateComment ? comment.save_content : '',
     wr_name: '',
     wr_password: '',
     wr_secret_checked: false,
-    comment_id: comment_id ? comment_id : 0,
+    comment_id: comment?.wr_id ? comment.wr_id : 0,
   });
 
   async function submitComment() {
@@ -42,13 +42,18 @@ export function CommentForm({ bo_table, wr_id, comment_id, setIsEditFormVisible 
     }
 
     try {
-      const response = await createCommentRequest(bo_table, wr_id, dataToSend);
+      let response;
+      if (isUpdateComment) {
+        response = await updateCommentRequest(bo_table, wr_id, comment.wr_id, dataToSend);
+      } else {
+        response = await createCommentRequest(bo_table, wr_id, dataToSend);
+      }
       setCommentFormValue({
         wr_content: '',
         wr_name: '',
         wr_password: '',
         wr_secret_checked: false,
-        comment_id: comment_id ? comment_id : 0,
+        comment_id: comment?.wr_id ? comment.wr_id : 0,
       });
       setError('');
       setWriteRefresh(!writeRefresh);
@@ -60,7 +65,11 @@ export function CommentForm({ bo_table, wr_id, comment_id, setIsEditFormVisible 
       if (error.response.status === 429) {
         setError(error.response.data.message);
       } else {
-        setError('댓글 등록에 실패했습니다.');
+        if (isUpdateComment) {
+          setError('댓글 수정에 실패했습니다.');
+        } else {
+          setError('댓글 등록에 실패했습니다.');
+        }
       }
       console.error("submitComment - CommentForm", error);
     }
@@ -120,7 +129,7 @@ export function CommentForm({ bo_table, wr_id, comment_id, setIsEditFormVisible 
             style={styles.submitButton}
             onPress={() => submitComment(bo_table, wr_id, commentFormValue)}
           >
-            <Text style={styles.submitButtonText}>댓글등록</Text>
+            <Text style={styles.submitButtonText}>{isUpdateComment ? "댓글수정" : "댓글등록"}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -182,6 +191,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 4,
+  },
+  updateButton: {
+    backgroundColor: Colors.btn_green,
   },
   submitButtonText: {
     color: 'white',
