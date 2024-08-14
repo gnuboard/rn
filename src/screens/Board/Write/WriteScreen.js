@@ -4,15 +4,13 @@ import {
   useWindowDimensions, TouchableOpacity, Alert
 } from 'react-native';
 import RenderHTML from 'react-native-render-html';
-import { fetchWrite } from '../../../utils/componentsFunc';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
-import { fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
-import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
+import { fetchWriteRequest, fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
 
 const WriteScreen = ({ navigation, route }) => {
@@ -22,7 +20,6 @@ const WriteScreen = ({ navigation, route }) => {
   const { writeRefresh } = useWriteRefresh();
   const { refreshWriteList } = useWriteListRefresh();
   const { width } = useWindowDimensions();
-  const { setCacheWrites } = useCacheWrites();
   const { getCurrentUserData } = useAuth();
   const [ currentMbId, setCurrentMbId ] = useState(null);
 
@@ -40,62 +37,66 @@ const WriteScreen = ({ navigation, route }) => {
       })
       .catch(error =>console.error("fetchBoardConfigRequest", error));
     } else {
-      fetchWrite(bo_table, wr_id, setWrite)
-      .then(() => {
-        fetchBoardConfigRequest(bo_table)
-        .then(response => {
-          const noticeArray = response.data.bo_notice.split(',');
-          const notice = noticeArray.includes(String(wr_id));
-          setWrite(prevState => ({
-            ...prevState,
-            notice: notice,
-          }))
-        })
-        .catch(error =>console.error("fetchBoardConfigRequest", error));
-        getCurrentUserData()
-        .then(data => {
-          setCurrentMbId(data.mb_id)
-        })
-      })
-      .then(() => {
-        fetchCommentsRequest(bo_table, wr_id)
-        .then(response => {
-          setComments(response.data.comments);
-        })
-        .catch(error => console.error("fetchCommentsRequest", error));
-      })
-      .catch(error => {
-        if (error.response.status === 404) {
-          setCacheWrites(prevState => ({
-            ...prevState,
-            [bo_table]: {page: 1, posts: []},
-          }));
-          Alert.alert(
-            "Notification",
-            "게시물이 존재하지 않습니다.",
-            [
-              {
-                text: "확인",
-                onPress: () => {
-                  refreshWriteList(bo_table);
-                  navigation.navigate(
-                    'Boards',
-                    {
-                      screen: 'WriteList',
-                      params: { bo_table: bo_table },
-                      initial: false,
-                    }
-                  );
-                },
-              },
-            ],
-            { cancelable: false }
-          )
-          return;
-        }
-      });
+      fetchWriteTotally();
     }
   }, [bo_table, wr_id, writeData, writeRefresh]);
+
+  async function fetchWriteTotally() {
+    try {
+      const [ fetchWriteResponse, fetchCommentResponse, currentUserData ] = await Promise.all([
+        fetchWriteRequest(bo_table, wr_id),
+        fetchCommentsRequest(bo_table, wr_id),
+        getCurrentUserData(),
+      ]);
+
+      // 게시글
+      setWrite(fetchWriteResponse.data);
+
+      // 댓글
+      setComments(fetchCommentResponse.data.comments);
+
+      // 현재 사용자 정보
+      setCurrentMbId(currentUserData.mb_id);
+
+      // 게시판 설정
+      const fetchBoardConfigResponse = await fetchBoardConfigRequest(bo_table);
+      const noticeArray = fetchBoardConfigResponse.data.bo_notice.split(',');
+      const notice = noticeArray.includes(String(wr_id));
+      setWrite(prevState => ({
+        ...prevState,
+        notice: notice,
+      }));
+    } catch (error) {
+      if (!error.response) {
+        console.error("fetchWriteTotally - !error.response", error);
+        return;
+      }
+      if (error.response.status === 404) {
+        refreshWriteList(bo_table);
+        Alert.alert(
+          "Notification",
+          "게시물이 존재하지 않습니다.",
+          [
+            {
+              text: "확인",
+              onPress: () => {
+                navigation.navigate(
+                  'Boards',
+                  {
+                    screen: 'WriteList',
+                    params: { bo_table: bo_table },
+                    initial: false,
+                  }
+                );
+              },
+            },
+          ],
+          { cancelable: false }
+        )
+        return;
+      }
+    }
+  }
 
   if (!write) {
     return <Text>Loading...</Text>;

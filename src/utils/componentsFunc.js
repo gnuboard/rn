@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { fetchBoardNewDataRequest, fetchWriteRequest, fetchPersonalInfoRequest } from '../services/api/ServerApi';
+import { fetchBoardNewDataRequest, fetchPersonalInfoRequest } from '../services/api/ServerApi';
 
 export async function fetchPersonalInfo() {
   try {
@@ -26,16 +26,6 @@ export async function fetchBoardNewData(bo_table, setBoardWrites, params ) {
     }
   } catch(error) {
     console.error(JSON.stringify(error));
-  }
-}
-
-export async function fetchWrite(bo_table, wr_id, setWrite) {
-  try {
-    const response = await fetchWriteRequest(bo_table, wr_id);
-    const data = response.data;
-    setWrite(data);
-  } catch (error) {
-    throw error;
   }
 }
 
