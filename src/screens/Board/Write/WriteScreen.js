@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, Linking,
-  useWindowDimensions, TouchableOpacity, Alert
+  useWindowDimensions, TouchableOpacity, Alert, Platform
 } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 import Icon from 'react-native-vector-icons/Ionicons';
+import RNFetchBlob from 'rn-fetch-blob';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
 import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
@@ -13,6 +14,7 @@ import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { fetchWriteRequest, fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
+import { requestStoragePermission } from '../../../utils/os/android/permission';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData } = route.params;
@@ -139,16 +141,42 @@ const WriteScreen = ({ navigation, route }) => {
         source={{ html: write?.wr_content }}
       />
       {
+        write.normal_files.map((file, index) => (
+          <TouchableOpacity style={styles.fileContainer} key={index} onPress={() => downloadFile(file)}>
+            <Icon name="download" style={styles.wrFile} />
+            <View>
+              <View style={styles.fileSubject}>
+                <Text style={styles.fileName}>{file.bf_source}</Text>
+                <Text> ({file.bf_filesize}byte)</Text>
+              </View>
+              <Text>{file.bf_download}회 다운로드 | Date: {file.bf_datetime}</Text>
+            </View>
+          </TouchableOpacity>
+        ))
+      }
+      {
         write.wr_link1 && (
           <View style={styles.linkContainer}>
-            <Icon name="link" style={styles.wrLink} /><Text onPress={() => {Linking.openURL(`${write.wr_link1}`)}}>{write.wr_link1}</Text>
+            <Icon name="link" style={styles.wrLink} />
+            <Text
+              style={styles.linkText}
+              onPress={() => {Linking.openURL(`${write.wr_link1}`)}}
+            >
+              {write.wr_link1}
+            </Text>
           </View>
         )
       }
       {
         write.wr_link2 && (
           <View style={styles.linkContainer}>
-            <Icon name="link" style={styles.wrLink} /><Text onPress={() => {Linking.openURL(`${write.wr_link2}`)}}>{write.wr_link2}</Text>
+            <Icon name="link" style={styles.wrLink} />
+            <Text
+              style={styles.linkText}
+              onPress={() => {Linking.openURL(`${write.wr_link2}`)}}
+            >
+              {write.wr_link2}
+            </Text>
           </View>
         )
       }
@@ -237,6 +265,42 @@ const showDeleteConfirm = (bo_table, write, navigation, refreshWriteList) => {
     ],
     { cancelable: false }
   );
+};
+
+const downloadFile = async (file) => {
+  const url = file.bf_file;
+  const fileName = file.bf_source;
+
+  if (Platform.OS === 'android') {
+    const granted = await requestStoragePermission();
+    if (!granted) {
+      Alert.alert('권한이 거절되었습니다.', '파일 다운로드를 위해선 저장소 접근 권한이 필요합니다.');
+      return;
+    }
+  }
+
+  const { fs } = RNFetchBlob;
+  const downloadPath = `${fs.dirs.DownloadDir}/${fileName}`;
+
+  RNFetchBlob
+    .config({
+      fileCache: true,
+      path: downloadPath,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path: downloadPath,
+        description: 'Downloading file...',
+      },
+    })
+    .fetch('GET', url)
+    .then((res) => {
+      Alert.alert('파일 다운로드 완료', `저장장소: ${res.path()}`);
+    })
+    .catch((error) => {
+      console.error('downloadFile Error', error);
+      Alert.alert('파일 다운로드 실패', '파일 다운로드 과정에서 문제가 발생했습니다.');
+    });
 };
 
 const styles = StyleSheet.create({
@@ -345,6 +409,31 @@ const styles = StyleSheet.create({
     height: 16,
     fontSize: 13,
     marginRight: 10,
+  },
+  fileContainer: {
+    flexDirection: 'row',
+    borderWidth: 0.5,
+    borderRadius: 5,
+    padding: 5,
+    marginBottom: 10,
+    height: 45,
+    alignItems: 'center',
+  },
+  wrFile: {
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    backgroundColor: Colors.file_icon_bg,
+    width: 30,
+    height: 30,
+    fontSize: 17,
+    marginRight: 10,
+  },
+  fileSubject: {
+    flexDirection: 'row',
+    marginBottom: 3,
+  },
+  fileName: {
+    fontWeight: 'bold',
   },
 });
 
