@@ -10,7 +10,7 @@ const PAGE_SIZE = 10;
 
 const WriteListScreen = ({ route }) => {
   const bo_table = route.params.bo_table;
-  const [posts, setPosts] = useState([]);
+  const [writes, setWrites] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -20,14 +20,14 @@ const WriteListScreen = ({ route }) => {
   const { cacheWrites, setCacheWrites } = useCacheWrites();
 
   useEffect(() => {
-    if (cacheWrites[bo_table].posts.length > 0) {
+    if (cacheWrites[bo_table].writes.length > 0) {
       setPage(cacheWrites[bo_table].page);
-      setPosts(cacheWrites[bo_table].posts);
+      setWrites(cacheWrites[bo_table].writes);
       return;
     }
 
     if (writeListRefresh) {
-      setPosts([]);
+      setWrites([]);
       setPage(1);
       setHasMore(true);
       setRefreshing(false);
@@ -49,7 +49,7 @@ const WriteListScreen = ({ route }) => {
       );
       const newWrites = response.data.writes;
       if (newWrites.length > 0) {
-        setPosts((prevPosts) => [...prevPosts, ...newWrites]);
+        setWrites((prevWrites) => [...prevWrites, ...newWrites]);
         setPage((prevPage) => prevPage + 1);
       } else {
         setHasMore(false);
@@ -59,7 +59,7 @@ const WriteListScreen = ({ route }) => {
         ...prevCacheWrites,
         [bo_table]: {
           page: page,
-          posts: posts,
+          writes: writes,
         },
       }));
     } catch (error) {
@@ -81,7 +81,7 @@ const WriteListScreen = ({ route }) => {
     <View style={styles.container}>
       <WriteListToolbar bo_table={bo_table} />
       <FlatList
-        data={posts}
+        data={writes}
         keyExtractor={(item) => item.wr_id.toString()}
         renderItem={({ item }) => (
           <WriteListItem bo_table={bo_table} write={item} />
@@ -94,13 +94,13 @@ const WriteListScreen = ({ route }) => {
             refreshing={refreshing}
             onRefresh={() => {
               setPage(1);
-              setPosts([]);
+              setWrites([]);
               setHasMore(true);
               setCacheWrites(prevCacheWrites => ({
                 ...prevCacheWrites,
                 [bo_table]: {
                   page: 1,
-                  posts: [],
+                  writes: [],
                 },
               }));
               setWriteListRefresh(true);

@@ -28,7 +28,7 @@ export const WriteListRefreshProvider = ({ children }) => {
       ...prevCacheWrites,
       [bo_table]: {
         page: 1,
-        posts: [],
+        writes: [],
       }
     }));
     setWriteListRefresh(true);
