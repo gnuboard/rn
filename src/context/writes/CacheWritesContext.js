@@ -4,10 +4,10 @@ const CacheWritesContext = createContext();
 
 export const CacheWritesProvider = ({ children }) => {
   const [ cacheWrites, setCacheWrites ] = useState({
-    free: {page: 1, writes: []},
-    notice: {page: 1, writes: []},
-    gallery: {page: 1, writes: []},
-    qa: {page: 1, writes: []},
+    free: {page: 1, notices: [], writes: []},
+    notice: {page: 1, notices: [], writes: []},
+    gallery: {page: 1, notices: [], writes: []},
+    qa: {page: 1, notices: [], writes: []},
   });
 
   return (
