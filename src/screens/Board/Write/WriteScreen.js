@@ -7,7 +7,6 @@ import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNFetchBlob from 'rn-fetch-blob';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
-import Config from 'react-native-config';
 import { Colors } from '../../../constants/theme';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
@@ -15,6 +14,7 @@ import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { fetchWriteRequest, fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { requestStoragePermission } from '../../../utils/os/android/permission';
+import { getMemberIconUri } from '../../../utils/fileFunc';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData } = route.params;
@@ -127,7 +127,7 @@ const WriteScreen = ({ navigation, route }) => {
       <View style={styles.metaContainer}>
         <View style={styles.authorAvatar}>
           <Image 
-            source={{ uri: `${Config.SERVER_URL}${write?.mb_icon_path}` }} 
+            source={{ uri: getMemberIconUri(write) }}
             style={styles.avatarImage} 
           />
         </View>

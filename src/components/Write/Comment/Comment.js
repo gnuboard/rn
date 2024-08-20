@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import Config from 'react-native-config';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CommentForm } from './CommentForm';
 import { Colors } from '../../../constants/theme';
 import { deleteCommentRequest } from '../../../services/api/ServerApi';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
+import { getMemberIconUri } from '../../../utils/fileFunc';
 
 function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
@@ -48,7 +48,7 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
         )}
         <Image
           style={styles.avatar}
-          source={{ uri: `${Config.SERVER_URL}${comment?.mb_icon_path}` }} 
+          source={{ uri: getMemberIconUri(comment) }}
         />
         <View style={styles.commentContent}>
           <View style={styles.commentInfo}>

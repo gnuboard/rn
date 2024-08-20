@@ -129,7 +129,7 @@ export const updatePersonalInfoRequest = async (data) => {
 export const updateMbImgRequest = async (formData) => {
   try {
     const response = await serverApi.put(
-      '/member/image',
+      '/member/images',
       formData,
       { headers: { 'Content-Type': 'multipart/form-data' } },
     )
