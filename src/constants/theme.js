@@ -11,6 +11,6 @@ export const Colors = {
   'file_icon_bg': '#ffefb9',
 }
 
-export const emptyAvatarPath = '/static/img/no_profile.gif'
+export const emptyAvatarPath = '/img/no_profile.gif'
 
 export const emptyAvatarUri = `${Config.SERVER_URL}${emptyAvatarPath}`;
