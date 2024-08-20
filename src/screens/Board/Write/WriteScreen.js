@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, Linking,
   useWindowDimensions, TouchableOpacity, Alert, Platform
 } from 'react-native';
-import RenderHTML from 'react-native-render-html';
+import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNFetchBlob from 'rn-fetch-blob';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
@@ -136,10 +136,7 @@ const WriteScreen = ({ navigation, route }) => {
           <Text style={styles.date}>{write?.wr_datetime}</Text>
         </View>
       </View>
-      <RenderHTML
-        contentWidth={width}
-        source={{ html: write?.wr_content }}
-      />
+      <WriteContentWeVview width={width} write={write} />
       {
         write.normal_files.map((file, index) => (
           <TouchableOpacity style={styles.fileContainer} key={index} onPress={() => downloadFile(file)}>
@@ -196,6 +193,50 @@ const WriteScreen = ({ navigation, route }) => {
         <CommentForm bo_table={bo_table} wr_id={wr_id} />
       </View>
     </ScrollView>
+  );
+};
+
+const WriteContentWeVview = ({ width, write }) => {
+  const [ webViewHeight, setWebViewHeight ] = useState(0);
+  const webViewRef = useRef(null);
+
+  const htmlContent = `
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          body {
+            margin: 0;
+            padding: 0;
+          }
+        </style>
+      </head>
+      <body>
+        ${write?.wr_content}
+        <script>
+          window.ReactNativeWebView.postMessage(document.body.scrollHeight);
+        </script>
+      </body>
+    </html>
+  `;
+
+  const onMessage = (event) => {
+    const contentHeight = parseInt(event.nativeEvent.data, 10);
+    setWebViewHeight(contentHeight);  // wr_content에 따른 WebView 높이 설정 -> window.ReactNativeWebView.postMessage(document.body.scrollHeight); 와 연동
+  };
+
+  return (
+    <View style={{ width: width }}>
+      <WebView
+        ref={webViewRef}
+        originWhitelist={['*']}
+        source={{ html: htmlContent }}
+        injectedJavaScript="window.ReactNativeWebView.postMessage(document.body.scrollHeight);"
+        onMessage={onMessage}
+        style={{ height: webViewHeight }}
+        javaScriptEnabled={true}
+      />
+    </View>
   );
 };
 
