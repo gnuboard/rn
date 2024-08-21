@@ -11,7 +11,7 @@ import { ImageWithDeleteButton } from '../../components/Common/Delete';
 import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
-  const imgFormData = new FormData();
+  let imgFormData = new FormData();
   const { setIsLoggedIn } = useAuth();
   const [formValue, setFormValue] = useState({
     mb_nick: route.params.mb_nick,
@@ -109,6 +109,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           return;
         }
         setTimeout(() => {
+          imgFormData = new FormData();
           handleSubmit();
         }, 50);
         return;
