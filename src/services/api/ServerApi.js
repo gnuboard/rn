@@ -198,7 +198,7 @@ export const fetchSecretWriteRequest = async (bo_table, wr_id, wr_password) => {
   try {
     const response = await serverApi.post(
       `/boards/${bo_table}/writes/${wr_id}`,
-      JSON.stringify(wr_password),
+      { wr_password},
       { headers: { 'Content-Type': 'application/json' } },
     );
     return response;
