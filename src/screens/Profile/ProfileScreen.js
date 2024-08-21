@@ -4,10 +4,10 @@ import {
   SafeAreaView, TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Config from 'react-native-config';
 import { removeQuotes } from '../../utils/stringFunc';
 import { useAuth } from '../../context/auth/AuthContext';
 import { Colors } from '../../constants/theme';
+import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 
 const ProfileScreen = ({ navigation }) => {
   const { isLoggedIn } = useAuth();
@@ -65,12 +65,12 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.header}>
           <Image 
-            source={{ uri: `${Config.SERVER_URL}${profileData.mb_image_path}` }}
+            source={{ uri: getMemberImageUri(profileData) }}
             style={styles.coverImage}
           />
           <View style={styles.avatarContainer}>
             <Image 
-              source={{ uri: `${Config.SERVER_URL}${profileData.mb_icon_path}` }}
+              source={{ uri: getMemberIconUri(profileData) }}
               style={styles.avatar}
             />
           </View>

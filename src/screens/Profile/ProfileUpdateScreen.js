@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-import Config from 'react-native-config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
@@ -10,6 +9,7 @@ import { useAuth } from '../../context/auth/AuthContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
 import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
+import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
   let imgFormData = new FormData();
@@ -24,8 +24,8 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_addr_jibeon: '',
     mb_addr1: '',
     mb_addr2: '',
-    mb_icon_path: route.params.mb_icon_path,
-    mb_image_path: route.params.mb_image_path,
+    mb_icon_path: getMemberIconUri(route.params),
+    mb_image_path: getMemberImageUri(route.params),
     mb_profile: route.params.mb_profile,
     mb_open: false,
     mb_alarm: false,
@@ -42,8 +42,8 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_10: '',
   });
   const [ mbImages, setMbImages ] = useState({
-    mb_icon: route.params.mb_icon_path ? `${Config.SERVER_URL}${route.params.mb_icon_path}` : '',
-    mb_img: route.params.mb_image_path ? `${Config.SERVER_URL}${route.params.mb_image_path}` : '',
+    mb_icon: getMemberIconUri(route.params),
+    mb_img: getMemberImageUri(route.params),
     del_mb_icon: 0,
     del_mb_img: 0,
   });
