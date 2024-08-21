@@ -154,7 +154,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       }
     } catch (error) {
       if (error.response && error.response.status && error.response.status === 400) {
-        alert(error.response.data.detail);
+        alert(error.response.data.error.description);
       } else {
         console.error("handleImgSubmit error - ProfileUpdateScreen", error);
       }
