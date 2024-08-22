@@ -83,10 +83,10 @@ export const SignupForm = ({ navigation }) => {
     mb_open: false,
   };
 
-  const [formData, setFormData] = useState(initalFormData);
-  const [isSignupLoading, setIsSignupLoading] = useState(false);
-  const [idError, setIdError] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [ formData, setFormData ] = useState(initalFormData);
+  const [ isSignupLoading, setIsSignupLoading ] = useState(false);
+  const [ idError, setIdError ] = useState('');
+  const [ emailError, setEmailError ] = useState('');
 
   const handleInputChange = (name, value) => {
     setFormData(prevState => ({

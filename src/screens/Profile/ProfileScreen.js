@@ -11,7 +11,7 @@ import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 
 const ProfileScreen = ({ navigation }) => {
   const { isLoggedIn } = useAuth();
-  const [profileData, setProfileData] = useState(null);
+  const [ profileData, setProfileData ] = useState(null);
 
   useEffect(() => {
     const fetchProfileData = async () => {

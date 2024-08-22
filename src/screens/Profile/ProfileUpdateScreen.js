@@ -14,8 +14,8 @@ import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 const ProfileUpdateScreen = ({ navigation, route }) => {
   let imgFormData = new FormData();
   const { setIsLoggedIn } = useAuth();
-  const [disableEmailInput, setDisableEmailInput] = useState(true);
-  const [formValue, setFormValue] = useState({
+  const [ disableEmailInput, setDisableEmailInput ] = useState(true);
+  const [ formValue, setFormValue ] = useState({
     mb_nick: route.params.mb_nick,
     mb_email: route.params.mb_email,
     mb_name: route.params.mb_name,
@@ -47,7 +47,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     del_mb_icon: 0,
     del_mb_img: 0,
   });
-  const [isSubmitReady, setIsSubmitReady] = useState(true);
+  const [ isSubmitReady, setIsSubmitReady ] = useState(true);
   let retryCount = 0;
 
   useEffect(() => {

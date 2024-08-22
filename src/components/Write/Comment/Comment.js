@@ -9,7 +9,7 @@ import { getMemberIconUri } from '../../../utils/fileFunc';
 
 function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
-  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+  const [ isEditFormVisible, setIsEditFormVisible ] = useState(false);
   const [ isUpdateComment, setIsUpdateComment ] = useState(false);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
 

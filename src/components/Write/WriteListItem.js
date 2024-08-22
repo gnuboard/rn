@@ -7,8 +7,8 @@ import { readWrite } from "../../utils/writeFunc";
 import { Colors } from "../../constants/theme";
 
 const WriteListItem = ({ bo_table, write }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalWrId, setModalWrId] = useState(null);
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const [ modalWrId, setModalWrId ] = useState(null);
   const navigation = useNavigation();
 
   return (

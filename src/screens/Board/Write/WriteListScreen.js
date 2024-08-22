@@ -10,12 +10,12 @@ const PAGE_SIZE = 10;
 
 const WriteListScreen = ({ route }) => {
   const bo_table = route.params.bo_table;
-  const [notices, setNotices] = useState([]);
-  const [writes, setWrites] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const [ notices, setNotices ] = useState([]);
+  const [ writes, setWrites ] = useState([]);
+  const [ page, setPage ] = useState(1);
+  const [ loading, setLoading ] = useState(false);
+  const [ hasMore, setHasMore ] = useState(true);
+  const [ refreshing, setRefreshing ] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { cacheWrites, setCacheWrites } = useCacheWrites();

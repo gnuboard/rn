@@ -37,7 +37,7 @@ const ModalComponent = ({ title, visible, password, setPassword, handlePasswordS
 }
 
 export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) => {
-  const [password, setPassword] = useState('');
+  const [ password, setPassword ] = useState('');
   const navigation = useNavigation();
 
   const handlePasswordSubmit = async () => {

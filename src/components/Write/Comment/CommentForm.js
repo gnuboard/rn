@@ -10,8 +10,8 @@ import { createCommentRequest, updateCommentRequest } from '../../../services/ap
 export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, isUpdateComment }) {
   const { isLoggedIn } = useAuth();
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
-  const [error, setError] = useState('');
-  const [commentFormValue, setCommentFormValue] = useState({
+  const [ error, setError ] = useState('');
+  const [ commentFormValue, setCommentFormValue ] = useState({
     wr_content: isUpdateComment ? comment.save_content : '',
     wr_name: '',
     wr_password: '',

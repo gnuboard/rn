@@ -7,10 +7,10 @@ import { Agreement, SignupForm } from '../../../components/Auth/Signup/SignupFor
 import { Colors } from '../../../constants/theme';
 
 const SignupScreen = ({ navigation }) => {
-  const [allAgreed, setAllAgreed] = useState(false);
-  const [policySignup, setPolicySignup] = useState(false);
-  const [policyPrivacy, setPolicyPrivacy] = useState(false);
-  const [togglePressed, setTogglePressed] = useState(false);
+  const [ allAgreed, setAllAgreed ] = useState(false);
+  const [ policySignup, setPolicySignup ] = useState(false);
+  const [ policyPrivacy, setPolicyPrivacy ] = useState(false);
+  const [ togglePressed, setTogglePressed ] = useState(false);
 
   const toggleForm = () => setTogglePressed(!togglePressed);
 

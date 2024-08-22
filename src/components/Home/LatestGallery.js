@@ -14,9 +14,9 @@ const ITEM_WIDTH = width*0.9;
 const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
 
 const LatestGallery = ({ bo_table, view_type, rows }) => {
-  const [boardWrites, setBoardWrites] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalWrId, setModalWrId] = useState(null);
+  const [ boardWrites, setBoardWrites ] = useState([]);
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const [ modalWrId, setModalWrId ] = useState(null);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();

@@ -9,7 +9,7 @@ import { Colors } from '../../constants/theme';
 const PAGE_SIZE = 5;
 
 const BoardListScreen = () => {
-  const [boardWrites, setBoardWrites] = useState(null);
+  const [ boardWrites, setBoardWrites ] = useState(null);
   const { writeListRefresh } = useWriteListRefresh();
 
   async function getAllBoardWrites() {

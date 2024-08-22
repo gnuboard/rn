@@ -9,8 +9,8 @@ import { naverLogout } from '../../services/api/NaverApi';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [ isLoggedIn, setIsLoggedIn ] = useState(false);
+  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     checkLoginStatus();

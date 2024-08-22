@@ -10,9 +10,9 @@ import { readWrite } from '../../utils/writeFunc';
 import { Colors } from '../../constants/theme';
 
 const Latest = ({ title, bo_table, rows }) => {
-  const [boardWrites, setBoardWrites] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalWrId, setModalWrId] = useState(null);
+  const [ boardWrites, setBoardWrites ] = useState([]);
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const [ modalWrId, setModalWrId ] = useState(null);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();

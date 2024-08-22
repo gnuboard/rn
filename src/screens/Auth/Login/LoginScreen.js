@@ -33,7 +33,7 @@ const LoginScreen = ({ navigation }) => {
     username: '',
     password: '',
   });
-  const [saveLoginInfo, setSaveLoginInfo] = useState(false);
+  const [ saveLoginInfo, setSaveLoginInfo ] = useState(false);
   const passwordInputRef = useRef(null);
 
   async function handleAfterLogin () {
