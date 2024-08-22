@@ -20,7 +20,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const { refreshWriteList } = useWriteListRefresh();
   const { isLoggedIn } = useAuth();
-  const category = { bo_use_category: 0, bo_category_list: '' }
+  const category = { bo_use_category: 0, bo_category_list: '' };
   let fileUploadCount = 0;
 
   const setContent = (content) => {
@@ -29,11 +29,11 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
 
   const setWriteFormData = (write) => {
     webViewRef.current.injectJavaScript(`setWriteFormData(${JSON.stringify(write)});`);
-  }
+  };
 
   const setbyLoginStatus = (isLoggedIn) => {
     webViewRef.current.injectJavaScript(`setByLoginStatus(${isLoggedIn});`);
-  }
+  };
 
   const handleMessage = async (event) => {
     try {
@@ -58,7 +58,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
             })
             .catch(error => console.error('fetchBoardConfigReques - CKEditorForm', error));
 
-            if (!write) {
+          if (!write) {
             break;
           }
 
