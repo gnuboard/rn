@@ -33,7 +33,12 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
             deleteCommentRequest(bo_table, wr_id, comment.wr_id)
             .then(() => setWriteRefresh(!writeRefresh))
             .catch((error) => {
-              alert('댓글 삭제 실패');
+              Alert.alert(
+                '댓글 삭제 실패',
+                error.response.data.error.description,
+                [{ text: '확인' }],
+                { cancelable: false },
+              )
               console.error('댓글 삭제 실패', error);
             });
           },
