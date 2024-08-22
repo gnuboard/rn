@@ -6,6 +6,36 @@ import { Colors } from '../../constants/theme';
 import { fetchSecretWriteRequest } from '../../services/api/ServerApi';
 import { useNavigation } from '@react-navigation/native';
 
+const ModalComponent = ({ title, visible, password, setPassword, handlePasswordSubmit, onClose }) => {
+  return (
+    <Modal
+      visible={visible}
+      transparent={true}
+      animationType="none"
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text>{title}의 비밀번호를 입력해주세요</Text>
+          <TextInput
+            secureTextEntry={true}
+            style={styles.textInput}
+            onChangeText={setPassword}
+            value={password}
+          />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handlePasswordSubmit}>
+              <Text style={styles.buttonText}>확인</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
+              <Text style={styles.buttonText}>취소</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
 export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) => {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
@@ -33,33 +63,15 @@ export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) =>
   };
 
   return (
-    <Modal
+    <ModalComponent
+      title="게시글"
       visible={visible}
-      transparent={true}
-      animationType="none"
-    >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text>게시글의 비밀번호를 입력해주세요</Text>
-          <TextInput
-            secureTextEntry={true}
-            style={styles.textInput}
-            onChangeText={setPassword}
-            value={password}
-          />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handlePasswordSubmit}>
-              <Text style={styles.buttonText}>확인</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
-              <Text style={styles.buttonText}>취소</Text>
-            </TouchableOpacity>
-          </View>
-          
-        </View>
-      </View>
-    </Modal>
-  );
+      password={password}
+      setPassword={setPassword}
+      handlePasswordSubmit={handlePasswordSubmit}
+      onClose={onClose}
+    />
+  )
 };
 
 const styles = StyleSheet.create({
