@@ -167,12 +167,7 @@
 		<div class="form-group">
 			<input type="url" id="wr_link2" name="wr_link2" placeholder="링크 #2">
 		</div>
-		<div class="form-group file-input">
-			<input type="file" id="file1" name="file1">
-		</div>
-		<div class="form-group file-input">
-			<input type="file" id="file2" name="file2">
-		</div>
+		<div id="file-input-group" ></div>
 		<div class="button-group">
 			<button type="button" class="button cancel">취소</button>
 			<button type="button" class="button" onclick="submitForm()">작성완료</button>
@@ -209,6 +204,19 @@
 			} else {
 				document.getElementById('notice').style.display = 'none';
 				document.querySelector('label[for="notice"]').style.display = 'none';
+			}
+		}
+
+		function setFileUploadInputs(inputCount) {
+			const fileInputGroup = document.getElementById('file-input-group');
+			fileInputGroup.innerHTML = '';
+			for (let i = 0; i < inputCount; i++) {
+				const fileInput = document.createElement('div');
+				fileInput.className = 'form-group file-input';
+				fileInput.innerHTML = `
+					<input type="file" id="file${i + 1}" name="file${i + 1}">
+				`;
+				fileInputGroup.appendChild(fileInput);
 			}
 		}
 

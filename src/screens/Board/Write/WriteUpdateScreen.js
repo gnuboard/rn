@@ -21,6 +21,7 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
   const { refreshWriteList } = useWriteListRefresh();
   const { isLoggedIn } = useAuth();
   const category = { bo_use_category: 0, bo_category_list: '' }
+  let fileUploadCount = 0;
 
   const setContent = (content) => {
     webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
@@ -49,8 +50,10 @@ const CKEditorForm = ({ navigation, bo_table, write }) => {
             .then(response => {
               category.bo_use_category = response.data.bo_use_category;
               category.bo_category_list = response.data.bo_category_list;
+              fileUploadCount = response.data.bo_upload_count;
             })
             .then(() => {
+              webViewRef.current.injectJavaScript(`setFileUploadInputs(${fileUploadCount});`);
               webViewRef.current.injectJavaScript(`setCategoryList(${JSON.stringify(category)});`);
             })
             .catch(error => console.error('fetchBoardConfigReques - CKEditorForm', error));
