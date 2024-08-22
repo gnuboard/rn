@@ -3,7 +3,9 @@ import {
   Modal, View, Text, TextInput, TouchableOpacity, StyleSheet
 } from 'react-native';
 import { Colors } from '../../constants/theme';
-import { fetchSecretWriteRequest } from '../../services/api/ServerApi';
+import {
+  fetchSecretCommentRequest, fetchSecretWriteRequest
+} from '../../services/api/ServerApi';
 import { useNavigation } from '@react-navigation/native';
 
 const ModalComponent = ({ title, visible, password, setPassword, handlePasswordSubmit, onClose }) => {
@@ -65,6 +67,45 @@ export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) =>
   return (
     <ModalComponent
       title="게시글"
+      visible={visible}
+      password={password}
+      setPassword={setPassword}
+      handlePasswordSubmit={handlePasswordSubmit}
+      onClose={onClose}
+    />
+  )
+};
+
+export const CommentPasswordModal = ({
+  visible,
+  onClose,
+  setIsSecretCommentVisible,
+  setSecretCommentContent,
+  bo_table,
+  wr_id,
+  comment_id,
+}) => {
+  const [ password, setPassword ] = useState('');
+
+  const handlePasswordSubmit = async () => {
+    try {
+      const response = await fetchSecretCommentRequest(bo_table, wr_id, comment_id, password);
+      const writeData = response.data;
+      setSecretCommentContent(writeData.comments[0].save_content);
+      setIsSecretCommentVisible(true);
+      onClose();
+      setPassword('');
+    } catch (error) {
+      console.error(error);
+      if (error.response.status === 403) {
+        alert(error.response.data.detail);
+      }
+    }
+  };
+
+  return (
+    <ModalComponent
+      title="댓글"
       visible={visible}
       password={password}
       setPassword={setPassword}

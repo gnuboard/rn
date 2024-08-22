@@ -260,6 +260,18 @@ export const fetchCommentsRequest = async (bo_table, wr_id) => {
   }
 }
 
+export const fetchSecretCommentRequest = async (bo_table, wr_id, comment_id, wr_password) => {
+  try {
+    const response = await serverApi.post(
+      `/boards/${bo_table}/writes/${wr_id}/comments/${comment_id}`,
+      { wr_password },
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const createCommentRequest = async (bo_table, wr_id, data) => {
   try {
     const response = await serverApi.post(

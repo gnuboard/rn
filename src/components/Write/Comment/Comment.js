@@ -6,11 +6,15 @@ import { Colors } from '../../../constants/theme';
 import { deleteCommentRequest } from '../../../services/api/ServerApi';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { getMemberIconUri } from '../../../utils/fileFunc';
+import { CommentPasswordModal } from '../../Modals/Modal';
 
 function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
   const [ isEditFormVisible, setIsEditFormVisible ] = useState(false);
   const [ isUpdateComment, setIsUpdateComment ] = useState(false);
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const [ isSecretCommentVisible, setIsSecretCommentVisible ] = useState(false);
+  const [ secretCommentContent, setSecretCommentContent ] = useState(false);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
 
   async function deleteComment() {
@@ -57,12 +61,28 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
           </View>
           <View style={styles.commentBody}>
             {comment.is_secret ? (
-              <TouchableOpacity onPress={() => console.log("비밀댓글 조회 함수 필요")}>
-                <View style={styles.secretComment}>
+              <>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <View
+                    style={[
+                      styles.secretComment,
+                      {display: isSecretCommentVisible ? "none" : "flex"}
+                    ]}
+                  >
+                    <Icon name="lock-closed" size={16} color="#757575" />
+                    <Text style={styles.commentText}>{comment.save_content}</Text>
+                  </View>
+                </TouchableOpacity>
+                <View
+                  style={[
+                    styles.secretComment,
+                    {display: isSecretCommentVisible ? "flex" : "none"}
+                  ]}
+                >
                   <Icon name="lock-closed" size={16} color="#757575" />
-                  <Text style={styles.commentText}>{comment.save_content}</Text>
+                  <Text style={styles.commentText}>{secretCommentContent}</Text>
                 </View>
-              </TouchableOpacity>
+              </>
             ) : (
               <Text style={styles.commentText}>{comment.save_content}</Text>
             )}
@@ -113,6 +133,15 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
           isUpdateComment={isUpdateComment}
         />
       )}
+      <CommentPasswordModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        setIsSecretCommentVisible={setIsSecretCommentVisible}
+        setSecretCommentContent={setSecretCommentContent}
+        bo_table={bo_table}
+        wr_id={wr_id}
+        comment_id={comment.wr_id}
+      />
     </View>
   );
 }
