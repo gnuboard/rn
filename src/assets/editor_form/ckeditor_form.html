@@ -8,169 +8,23 @@
 	<style>
 		body {
 			font-family: Arial, sans-serif;
-			padding: 20px;
 			background-color: #f0f0f0;
 			margin: 0;
 		}
 		#editor {
-			margin-top: 20px;
 			border: 1px solid #ccc;
 		}
 		.cke_notification_warning { display: none !important; }
 		.form-group {
-			margin-bottom: 15px;
 			display: flex;
 			align-items: center;
 		}
-		.form-row {
-			display: flex;
-			justify-content: space-between;
-    }
-		.form-row input {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			font-size: 14px;
-		}
-		.form-row.subject {
-			margin-bottom: 15px;
-		}
-    .form-group.half {
-			width: 48%;
-    }
-    .form-group.half input {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			font-size: 14px;
-    }
-		select {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			font-size: 14px;
-			background-color: white;
-    }
-		.button-group {
-			margin-top: 20px;
-			text-align: center;
-		}
-		.button {
-			width: 100px;
-			padding: 10px 20px;
-			margin-left: 10px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 3px;
-			cursor: pointer;
-		}
-		.button:hover {
-			background-color: #0056b3;
-		}
-		.button.cancel {
-			background-color: #6c757d;
-		}
-		.button.cancel:hover {
-			background-color: #545b62;
-		}
-		.checkbox-group div {
-			display: flex;
-			align-items: center;
-		}
-		.checkbox-group input[type="checkbox"] {
-				margin-right: 5px;
-		}
-		.checkbox-group label {
-				margin-right: 15px;
-				flex: 0 0 auto;
-		}
-		.form-group input[type="url"] {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			font-size: 14px;
-    }
-		.form-group input[type="email"] {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			font-size: 14px;
-    }
-    .file-input {
-			display: flex;
-			align-items: center;
-			margin-bottom: 10px;
-    }
-    .file-input input[type="text"] {
-			flex-grow: 1;
-			margin-right: 10px;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			font-size: 14px;
-			background-color: #f8f8f8;
-    }
-    .file-input label {
-			padding: 10px 15px;
-			background-color: #f0f0f0;
-			border: 1px solid #ccc;
-			border-radius: 3px;
-			cursor: pointer;
-			font-size: 14px;
-    }
 	</style>
 </head>
 <body>
 	<form>
 		<div class="form-group">
-			<select id="ca_name" name="ca_name"></select>
-		</div>
-		<div class="form-row">
-			<div class="form-group half">
-				<input type="text" id="wr_name" name="wr_name" placeholder="이름" required>
-			</div>
-			<div class="form-group half">
-				<input type="password" id="wr_password" name="wr_password" placeholder="비밀번호" required>
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="form-group half">
-				<input type="email" id="wr_email" name="wr_email" placeholder="이메일">
-			</div>
-			<div class="form-group half">
-				<input type="url" id="wr_homepage" name="wr_homepage" placeholder="홈페이지">
-			</div>
-		</div>
-		<div class="form-group checkbox-group">
-			<div>
-				<input type="checkbox" id="notice" name="notice">
-				<label for="notice">공지</label>
-				<input type="checkbox" id="secret" name="secret">
-				<label for="secret">비밀글</label>
-			</div>
-		</div>
-		<div class="form-row subject">
-			<input type="text" id="wr_subject" name="wr_subject" placeholder="제목">
-		</div>
-		<div class="form-group">
 			<textarea name="editor" id="editor"></textarea>
-		</div>
-		<div class="form-group">
-			<input type="url" id="wr_link1" name="wr_link1" placeholder="링크 #1">
-		</div>
-		<div class="form-group">
-			<input type="url" id="wr_link2" name="wr_link2" placeholder="링크 #2">
-		</div>
-		<div id="file-input-group" ></div>
-		<div class="button-group">
-			<button type="button" class="button cancel">취소</button>
-			<button type="button" class="button" onclick="submitForm()">작성완료</button>
 		</div>
 	</form>
 
@@ -197,50 +51,15 @@
 			CKEDITOR.instances.editor.setData(content);
 		}
 
-		function setByLoginStatus(isLoggedIn) {
-			if (isLoggedIn) {
-				document.getElementById('wr_name').style.display = 'none';
-				document.getElementById('wr_password').style.display = 'none';
-			} else {
-				document.getElementById('notice').style.display = 'none';
-				document.querySelector('label[for="notice"]').style.display = 'none';
-			}
-		}
-
-		function setFileUploadInputs(inputCount) {
-			const fileInputGroup = document.getElementById('file-input-group');
-			fileInputGroup.innerHTML = '';
-			for (let i = 0; i < inputCount; i++) {
-				const fileInput = document.createElement('div');
-				fileInput.className = 'form-group file-input';
-				fileInput.innerHTML = `
-					<input type="file" id="file${i + 1}" name="file${i + 1}">
-				`;
-				fileInputGroup.appendChild(fileInput);
-			}
-		}
 
 		function submitForm() {
 			const form = document.querySelector('form');
 			const formData = new FormData(form);
-			const secret = document.getElementById('secret').checked ? 'secret' : 'html1';
-			const notice = document.getElementById('notice').checked;
 			const data = {'wr_content': CKEDITOR.instances.editor.getData()};
 
 			for (let [key, value] of formData.entries()) {
-				if (form.elements[key].type === 'file') {
-					const files = form.elements[key].files;
-					data[key] = Array.from(files).map(file => ({
-						name: file.name,
-						type: file.type,
-						size: file.size
-					}));
-				} else {
-					data[key] = value;
-				}
+				data[key] = value;
 			}
-			data['secret'] = secret;
-			data['notice'] = notice;
 
 			window.ReactNativeWebView.postMessage(JSON.stringify({
 				type: 'submit',
@@ -248,65 +67,6 @@
 			}));
 		}
 
-		function setCategoryList(data) {
-			// 분류 설정
-			if (!data.bo_use_category) {
-				document.getElementById('ca_name').style.display = 'none';
-				return;
-			}
-
-			const boCategoryList = data.bo_category_list.split('|');
-			let selctOptions = '';
-			for (let i = 0; i < boCategoryList.length; i++) {
-				selctOptions += `<option value="${boCategoryList[i]}">${boCategoryList[i]}</option>`;
-			}
-			document.getElementById('ca_name').innerHTML = selctOptions;
-		}
-
-		function setWriteFormData(data) {
-			try {
-				document.getElementById('wr_name').value = data.wr_name;
-				document.getElementById('wr_email').value = data.wr_email;
-				document.getElementById('wr_homepage').value = data.wr_homepage;
-				document.getElementById('wr_subject').value = data.wr_subject;
-				document.getElementById('wr_link1').value = data.wr_link1;
-				document.getElementById('wr_link2').value = data.wr_link2;
-
-				// 공지글 여부 체크
-				if (data.notice) {
-					document.getElementById('notice').checked = true;
-				}
-
-				// 비밀글 여부 체크
-				if (data.wr_option.includes('secret')) {
-					document.getElementById('secret').checked = true;
-				}
-
-				// 첨부파일 표시
-				const fileArray = [];
-				for (let file of data.images) {
-					fileArray.push(new File([''], file.bf_source, { type: 'text/plain' }));
-				}
-				for (let file of data.normal_files) {
-					fileArray.push(new File([''], file.bf_source, { type: 'text/plain' }));
-				}
-				if (fileArray.length >= 1) {
-					const dataTransfer = new DataTransfer();
-					dataTransfer.items.add(fileArray[0]);
-					document.getElementById('file1').files = dataTransfer.files;
-				}
-				if (fileArray.length >= 2) {
-					const dataTransfer2 = new DataTransfer();
-					dataTransfer2.items.add(fileArray[1]);
-					document.getElementById('file2').files = dataTransfer2.files;
-				}				
-			} catch (error) {
-				window.ReactNativeWebView.postMessage(JSON.stringify({
-					type: 'error',
-					data: error
-				}));
-			}
-		}
 	</script>
 </body>
 </html>
