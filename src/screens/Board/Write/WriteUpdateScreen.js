@@ -14,6 +14,10 @@ import { Colors } from '../../../constants/theme';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   const { isLoggedIn } = useAuth();
+  const webViewRef = useRef(null);
+  const { bo_table, write } = route.params;
+  const { refreshWriteList } = useWriteListRefresh();
+  const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const [ boardInfoRequested, setBoardInfoRequested ] = useState(false);
   const [ boardInfo, setBoardInfo ] = useState({
     bo_use_category: 0,
@@ -29,12 +33,13 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     notice: false,
     secret: false,
     wr_subject: '',
+    wr_content: '',
     wr_link1: '',
     wr_link2: '',
   });
 
   useEffect(() => {
-    fetchBoardConfigRequest(route.params.bo_table)
+    fetchBoardConfigRequest(bo_table)
       .then(response => {
         setBoardInfo({
           bo_use_category: response.data.bo_use_category,
@@ -46,9 +51,88 @@ const WriteUpdateScreen = ({ navigation, route }) => {
       .catch(error => console.error('fetchBoardConfigReques - CKEditorForm', error));
   }, [boardInfoRequested]);
 
-  const handleFormSubmit = () => {
-    // Handle form submission
-    console.log('Form submitted:', formValue);
+  const getContent = async () => {
+    // CKEditor에서 작성한 내용을 가져오기
+    // handleMessage 내의 submit case에서, 가져와진 내용에 따라 작성/수정 요청을 보낸다.
+    webViewRef.current.injectJavaScript(`getEditorContent();`);
+  };
+
+  const setContent = async (content) => {
+    // 게시글 수정의 경우 write의 wr_content를 CKEditor Form에 주입
+    webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
+  };
+
+  const handleMessage = async (event) => {
+    try {
+      const eventData = event.nativeEvent.data;
+      if (eventData === 'undefined') {
+        return;
+      }
+
+      const message = JSON.parse(eventData);
+      switch (message.type) {
+        case 'ready':
+          if (!write) {
+            break;
+          }
+          setContent(write.wr_content);
+          break;
+        case 'submit':
+          if (!message.data) {
+            alert('내용을 입력해주세요.');
+            return;
+          }
+          if (!write) {
+            // 새게시글 작성
+            try {
+              const dataToSend = {
+                ...formValue,
+                wr_content: message.data,
+                secret: formValue.secret ? "secret": "html1"
+              }
+              const response = await createWriteRequest(bo_table, dataToSend);
+              if (response.status === 200) {
+                const wr_id = response.data.wr_id;
+                await refreshWriteList(bo_table);
+                navigation.navigate(
+                  'Boards',
+                  {
+                    screen: 'Write',
+                    params: { bo_table, wr_id },
+                    initial: false,
+                  }
+                );
+              }
+            } catch (error) {
+              console.error('Error creating new write:', error.response);
+            }
+          } else {
+            // 게시글 수정
+            try {
+              const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
+              if (response.status === 200) {
+                setWriteRefresh(!writeRefresh);
+                await refreshWriteList(bo_table);
+                navigation.goBack();
+              }
+            } catch (error) {
+              if (error.response.status === 403) {
+                alert(error.response.data.detail);
+              } else {
+                console.error('Error updating write:', error);
+              }
+            }
+          }
+          break
+        case 'error':
+          console.error('ERROR from CKEditor:', message);
+          break;
+        default:
+          console.log('Received message from CKEditor:', message);
+      }
+    } catch (error) {
+      console.error('Error parsing event data:', error);
+    }
   };
 
   return (
@@ -131,8 +215,10 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           onChangeText={text => setFormValue({ ...formValue, wr_subject: text })}
         />
         <CKEditorForm
+          webViewRef={webViewRef}
+          handleMessage={handleMessage}
           navigation={navigation}
-          bo_table={route.params.bo_table}
+          bo_table={bo_table}
           write={route.params.write}
         />
         <TextInput
@@ -171,7 +257,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.button, styles.buttonSubmit]}
-            onPress={handleFormSubmit}
+            onPress={getContent}
           >
             <Text style={styles.buttnText}>작성완료</Text>
           </TouchableOpacity>
@@ -181,85 +267,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
   );
 }
 
-const CKEditorForm = ({ navigation, bo_table, write }) => {
-  const webViewRef = useRef(null);
-  const { writeRefresh, setWriteRefresh } = useWriteRefresh();
-  const { refreshWriteList } = useWriteListRefresh();
-
-  const setContent = (content) => {
-    webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
-  };
-
-  const handleMessage = async (event) => {
-    try {
-      const eventData = event.nativeEvent.data;
-      if (eventData === 'undefined') {
-        return;
-      }
-
-      const message = JSON.parse(eventData);
-      switch (message.type) {
-        case 'ready':
-          if (!write) {
-            break;
-          }
-
-          setContent(write.wr_content);
-          break;
-        case 'submit':
-          console.log("submmited~~~~~")
-          if (!message.data.wr_content) {
-            alert('내용을 입력해주세요.');
-            return;
-          }
-          if (!write) {
-            // 새게시글 작성
-            try {
-              const response = await createWriteRequest(bo_table, message.data);
-              if (response.status === 200) {
-                const wr_id = response.data.wr_id;
-                await refreshWriteList(bo_table);
-                navigation.navigate(
-                  'Boards',
-                  {
-                    screen: 'Write',
-                    params: { bo_table, wr_id },
-                    initial: false,
-                  }
-                );
-              }
-            } catch (error) {
-              console.error('Error creating new write:', error.response);
-            }
-          } else {
-            // 게시글 수정
-            try {
-              const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
-              if (response.status === 200) {
-                setWriteRefresh(!writeRefresh);
-                await refreshWriteList(bo_table);
-                navigation.goBack();
-              }
-            } catch (error) {
-              if (error.response.status === 403) {
-                alert(error.response.data.detail);
-              } else {
-                console.error('Error updating write:', error);
-              }
-            }
-          }
-          break
-        case 'error':
-          console.error('ERROR from CKEditor:', message);
-          break;
-        default:
-          console.log('Received message from CKEditor:', message);
-      }
-    } catch (error) {
-      console.error('Error parsing event data:', error);
-    }
-  };
-
+const CKEditorForm = ({ webViewRef, handleMessage }) => {
   return (
     <WebView
       ref={webViewRef}
