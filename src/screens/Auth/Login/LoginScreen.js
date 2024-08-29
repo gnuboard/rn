@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet, Image } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import { NativeModules } from 'react-native';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
 import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsFunc';
@@ -8,6 +9,7 @@ import { logJson } from '../../../utils/logFunc';
 import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
+import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
 
 const LoginScreen = ({ navigation }) => {
   const { setIsLoggedIn } = useAuth();
@@ -17,6 +19,16 @@ const LoginScreen = ({ navigation }) => {
   });
   const [saveLoginInfo, setSaveLoginInfo] = useState(false);
   const passwordInputRef = useRef(null);
+  const { NaverLogin } = NativeModules;
+
+  async function naverLogin () {
+    try {
+      const accessToken = await NaverLogin.login();
+      console.log(accessToken);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  }
 
   async function login () {
     try {
@@ -110,6 +122,11 @@ const LoginScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.loginButton} onPress={login}>
             <Text style={styles.loginButtonText}>로그인</Text>
           </TouchableOpacity>
+          <View style={styles.socialLoginGroupContainer}>
+            <TouchableOpacity onPress={naverLogin}>
+              <Image source={naverLogoCircle} style={styles.socialLoginLogo} resizeMode="cover" />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity onPress={() => navigation.navigate('회원가입')}>
             <Text style={styles.forgotPassword}>계정이 없으신가요? 회원가입</Text>
           </TouchableOpacity>
@@ -176,6 +193,15 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginTop: 10,
     width: '100%',
+  },
+  socialLoginGroupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+  },
+  socialLoginLogo: {
+    width: 35,
+    height: 35,
   },
   loginButtonText: {
     color: Colors.btn_text_white,
