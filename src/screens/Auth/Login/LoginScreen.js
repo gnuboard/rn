@@ -23,8 +23,8 @@ const LoginScreen = ({ navigation }) => {
 
   async function naverLogin () {
     try {
-      const accessToken = await NaverLogin.login();
-      console.log(accessToken);
+      const loginResult = await NaverLogin.login();
+      console.log(loginResult);
     } catch (error) {
       console.error("Login failed", error);
     }

@@ -5,6 +5,8 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
 
@@ -31,8 +33,19 @@ public class NaverLoginModule extends ReactContextBaseJavaModule {
             @Override
             public void onSuccess() {
                 String accessToken = NaverIdLoginSDK.INSTANCE.getAccessToken();
+                String refreshToken = NaverIdLoginSDK.INSTANCE.getRefreshToken();
+                String tokenType = NaverIdLoginSDK.INSTANCE.getTokenType();
+                String state = NaverIdLoginSDK.INSTANCE.getState().toString();
+                long expiresAtLong = NaverIdLoginSDK.INSTANCE.getExpiresAt();
+                String expiresAt = Long.toString(expiresAtLong);
+                
                 if (accessToken != null) {
-                    promise.resolve(accessToken);
+                    WritableMap result = Arguments.createMap();
+                    result.putString("accessToken", accessToken);
+                    result.putString("refreshToken", refreshToken);
+                    result.putString("expiresAt", expiresAt);
+                    result.putString("tokenType", tokenType);
+                    promise.resolve(result);
                 } else {
                     promise.reject("NO_TOKEN", "No access token retrieved");
                 }
