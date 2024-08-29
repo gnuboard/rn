@@ -1,8 +1,11 @@
 package com.gnuboard_react_native;
 
+import android.os.Bundle;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.navercorp.nid.NaverIdLoginSDK;
+import com.gnuboard_react_native.BuildConfig;
 
 public class MainActivity extends ReactActivity {
 
@@ -43,6 +46,18 @@ public class MainActivity extends ReactActivity {
       // If you opted-in for the New Architecture, we enable Concurrent Root (i.e. React 18).
       // More on this on https://reactjs.org/blog/2022/03/29/react-v18.html
       return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+    }
+
+    /**
+     * NaverIdLoginSDK
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        String naverClient = BuildConfig.NAVER_CLIENT_ID;
+        String naverSecret = BuildConfig.NAVER_CLIENT_SECRET;
+        String naverAppName = BuildConfig.NAVER_APP_NAME;
+        NaverIdLoginSDK.INSTANCE.initialize(getContext(), naverClient, naverSecret, naverAppName);
     }
   }
 }
