@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getTokens, deleteAllSecureData, deleteUserInfo } from '../../utils/authFunc';
 import { removeQuotes } from '../../utils/stringFunc';
+import { naverLogout } from '../../services/api/NaverApi';
 
 const AuthContext = createContext();
 
@@ -28,6 +29,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
+      const loginMethod = await AsyncStorage.getItem('login_method');
+      if (loginMethod === 'naver') {
+        naverLogout();
+      }
+
       const deleteResult =  await deleteAllSecureData();
       if (!deleteResult.isSuccess) {
         console.error('Failed to delete secure data');

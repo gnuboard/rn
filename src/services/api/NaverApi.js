@@ -31,3 +31,11 @@ export const naverProfileRequest = async (accessToken) => {
     throw error;
   }
 }
+
+export const naverLogout = async () => {
+  try {
+    await NaverLogin.logout();
+  } catch (error) {
+    throw error;
+  }
+}
