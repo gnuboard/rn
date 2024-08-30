@@ -21,6 +21,17 @@ export const saveTokens = async (access_token, refresh_token) => {
   }
 };
 
+export const saveNaverTokens = async (accessToken, refreshToken) =>{
+  try {
+    await Keychain.setInternetCredentials('naver_tokens', accessToken, refreshToken);
+    console.log('Naver tokens saved successfully');
+    return { isSuccess: true };
+  } catch (error) {
+    console.error('Error saving naver tokens', error);
+    return { isSuccess: false };
+  }
+}
+
 export const saveLoginPreferences = async (preferences) => {
   try {
     await AsyncStorage.setItem('loginPreferences', JSON.stringify(preferences));

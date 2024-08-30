@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet, Image } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import { NativeModules } from 'react-native';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
 import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
-import { saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences, getCredentials } from '../../../utils/authFunc';
+import {
+  saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences,
+  getCredentials, saveNaverTokens
+} from '../../../utils/authFunc';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
+import { getNaverTokens, naverProfileRequest } from '../../../services/api/NaverApi';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }) => {
   const { setIsLoggedIn } = useAuth();
@@ -19,14 +23,27 @@ const LoginScreen = ({ navigation }) => {
   });
   const [saveLoginInfo, setSaveLoginInfo] = useState(false);
   const passwordInputRef = useRef(null);
-  const { NaverLogin } = NativeModules;
 
   async function naverLogin () {
     try {
-      const loginResult = await NaverLogin.login();
-      console.log(loginResult);
+      const tokens = await getNaverTokens();
+      const { accessToken, refreshToken } = tokens;
+      const profileData = await naverProfileRequest(accessToken);
+
+      const saveSocialTokenResult = await saveNaverTokens(accessToken, refreshToken);
+      if (!saveSocialTokenResult.isSuccess) {
+        console.error('Failed to save tokens');
+        return;
+      }
+
+      AsyncStorage.setItem('login_method', 'naver');
+      AsyncStorage.setItem('mb_id', profileData.id);
+      AsyncStorage.setItem('mb_email', profileData.email);
+
+      setIsLoggedIn(true);
+      navigation.navigate('Home');
     } catch (error) {
-      console.error("Login failed", error);
+      console.error("Naver login failed", error);
     }
   }
 
