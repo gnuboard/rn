@@ -130,6 +130,20 @@ def reactNativeArchitectures() {
     return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
+def loadEnvProperties() {
+    def envFile = file("${rootProject.projectDir}/.env")
+    if (envFile.exists()) {
+        def Properties properties = new Properties()
+        envFile.withInputStream { stream ->
+            properties.load(stream)
+        }
+        return properties
+    }
+    return null
+}
+
+def env = loadEnvProperties()
+
 android {
     ndkVersion rootProject.ext.ndkVersion
 
@@ -148,6 +162,11 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+        def kakaoNativeAppKey = env != null ? env['KAKAO_NATIVE_APP_KEY'] : ""
+        manifestPlaceholders = [
+            kakaoNativeAppKeyScheme: "kakao${kakaoNativeAppKey}"
+        ]
 
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
