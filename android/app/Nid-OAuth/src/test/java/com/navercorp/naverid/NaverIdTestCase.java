@@ -7,7 +7,7 @@ import org.robolectric.annotation.Config;
 
 
 @Config(
-        minSdk = 21,
+        minSdk = 23,
         maxSdk = 29
 )
 @RunWith(NaverIdTestRunner.class)
