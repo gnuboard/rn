@@ -7,7 +7,7 @@ import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsF
 import { logJson } from '../../../utils/logFunc';
 import {
   saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences,
-  getCredentials, saveNaverTokens
+  getCredentials, saveSocialLoginTokens
 } from '../../../utils/authFunc';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
@@ -30,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
       const { accessToken, refreshToken } = tokens;
       const profileData = await naverProfileRequest(accessToken);
 
-      const saveSocialTokenResult = await saveNaverTokens(accessToken, refreshToken);
+      const saveSocialTokenResult = await saveSocialLoginTokens('naver_login_tokens', accessToken, refreshToken);
       if (!saveSocialTokenResult.isSuccess) {
         console.error('Failed to save tokens');
         return;

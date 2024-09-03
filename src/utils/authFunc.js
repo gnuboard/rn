@@ -21,10 +21,11 @@ export const saveTokens = async (access_token, refresh_token) => {
   }
 };
 
-export const saveNaverTokens = async (accessToken, refreshToken) =>{
+export const saveSocialLoginTokens = async (tokenName, accessToken, refreshToken) =>{
+  // tokenName example: 'naver_login_tokens', 'kakao_login_tokens'
   try {
-    await Keychain.setInternetCredentials('naver_tokens', accessToken, refreshToken);
-    console.log('Naver tokens saved successfully');
+    await Keychain.setInternetCredentials(tokenName, accessToken, refreshToken);
+    console.log(`${tokenName} saved successfully`);
     return { isSuccess: true };
   } catch (error) {
     console.error('Error saving naver tokens', error);
@@ -75,7 +76,7 @@ export const deleteAllSecureData = async () => {
   try {
     await Keychain.resetInternetCredentials('user_credentials');
     await Keychain.resetInternetCredentials('auth_tokens');
-    await Keychain.resetInternetCredentials('naver_tokens');
+    await Keychain.resetInternetCredentials('naver_login_tokens');
     console.log('All secure data deleted successfully');
     return {isSuccess: true};
   } catch (error) {
