@@ -7,6 +7,7 @@ import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
 import { readWrite } from '../../utils/writeFunc';
+import { Colors } from '../../constants/theme';
 
 const Latest = ({ title, bo_table, rows }) => {
   const [boardWrites, setBoardWrites] = useState([]);
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: Colors.text_black,
   },
   subjectHeader: {
     flexDirection: 'row',
@@ -89,10 +91,11 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontSize: 14,
+    color: Colors.text_black,
   },
   itemDate: {
     fontSize: 12,
-    color: '#888',
+    color: Colors.text_black,
     marginTop: 2,
   },
   itemSource: {

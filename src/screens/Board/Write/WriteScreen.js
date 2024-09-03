@@ -102,7 +102,7 @@ const WriteScreen = ({ navigation, route }) => {
   }
 
   if (!write) {
-    return <Text>Loading...</Text>;
+    return <Text style={styles.loading_text}>Loading...</Text>;
   }
 
   return (
@@ -144,9 +144,9 @@ const WriteScreen = ({ navigation, route }) => {
             <View>
               <View style={styles.fileSubject}>
                 <Text style={styles.fileName}>{file.bf_source}</Text>
-                <Text> ({file.bf_filesize}byte)</Text>
+                <Text style={styles.fileSize}> ({file.bf_filesize}byte)</Text>
               </View>
-              <Text>{file.bf_download}회 다운로드 | Date: {file.bf_datetime}</Text>
+              <Text style={styles.fileDownload}>{file.bf_download}회 다운로드 | Date: {file.bf_datetime}</Text>
             </View>
           </TouchableOpacity>
         ))
@@ -378,6 +378,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: Colors.text_black,
   },
   bindedButton: {
     flexDirection: 'row',
@@ -413,10 +414,11 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: Colors.text_black,
   },
   date: {
     fontSize: 14,
-    color: '#666',
+    color: Colors.text_black,
   },
   content: {
     fontSize: 16,
@@ -429,9 +431,11 @@ const styles = StyleSheet.create({
   commentHeaderText: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: Colors.text_black,
   },
   noCommentText: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color: Colors.text_black,
   },
   linkContainer: {
     flexDirection: 'row',
@@ -473,6 +477,7 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontWeight: 'bold',
+    color: Colors.text_black,
   },
   fileSubject: {
     flexDirection: 'row',
@@ -480,6 +485,17 @@ const styles = StyleSheet.create({
   },
   fileName: {
     fontWeight: 'bold',
+    color: Colors.text_black,
+  },
+  fileSize: {
+    color: Colors.text_black,
+  },
+  fileDownload:{
+    color: Colors.text_black,
+  },
+  loading_text: {
+    fontSize: 24,
+    color: Colors.text_black,
   },
 });
 

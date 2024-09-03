@@ -1,6 +1,8 @@
 import Config from "react-native-config";
 
 export const Colors = {
+  'text_black': '#7a7a7a',
+  'text_placeholder_black': '#b3b3b3',
   'navi_btn_black': "#464646",
   'btn_blue': '#4a90e2',
   'btn_gray': '#808080',
@@ -9,6 +11,7 @@ export const Colors = {
   'comment_count_bg': '#cbe3e8',
   'link_icon_bg': '#edd3fd',
   'file_icon_bg': '#ffefb9',
+  'checkbox_border': '#B0B0B0',
 }
 
 export const emptyAvatarPath = '/img/no_profile.gif'

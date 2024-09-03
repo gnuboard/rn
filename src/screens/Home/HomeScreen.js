@@ -4,6 +4,7 @@ import { useNavigation, DrawerActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
+import { Colors } from '../../constants/theme';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -85,6 +86,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: Colors.text_black,
   },
   row: {
     flexDirection: 'row',

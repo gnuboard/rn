@@ -194,6 +194,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         <TextInput 
           style={styles.input}
           placeholder="별명"
+          placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.mb_nick}
           onChangeText={(value) => handleChange('mb_nick', value)}
         />
@@ -204,12 +205,14 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       <TextInput 
         style={styles.input}
         placeholder="이메일 주소"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={formValue.mb_email}
         onChangeText={(value) => handleChange('mb_email', value)}
       />
       <TextInput
         style={styles.input}
         placeholder="이름"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={formValue.mb_name}
         onChangeText={(value) => handleChange('mb_name', value)}
       />
@@ -217,6 +220,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           placeholder="휴대폰번호"
+          placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.mb_hp}
           onChangeText={(value) => handleChange('mb_hp', value)}
         />
@@ -228,6 +232,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           placeholder="우편번호"
+          placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.mb_zip}
           onChangeText={(value) => handleChange('mb_zip', value)}
           editable={false}
@@ -239,12 +244,14 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       <TextInput
         style={styles.input}
         placeholder="기본 주소"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={formValue.mb_addr1}
         onChangeText={(value) => handleChange('mb_addr1', value)}
       />
       <TextInput
         style={styles.input}
         placeholder="상세 주소"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={formValue.mb_addr2}
         onChangeText={(value) => handleChange('mb_addr2', value)}
       />
@@ -295,6 +302,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       <TextInput 
         style={[styles.input, styles.multilineInput]} 
         placeholder="자기소개"
+        placeholderTextColor={Colors.text_placeholder_black}
         multiline
         numberOfLines={4}
         value={formValue.mb_profile}
@@ -354,6 +362,7 @@ const styles = StyleSheet.create({
     padding: 15,
     textAlign: 'center',
     backgroundColor: '#fff',
+    color: Colors.text_black,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -367,6 +376,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#f9f9f9',
     height: 45,
+    color: Colors.text_black,
   },
   multilineInput: {
     height: 100,
@@ -424,6 +434,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     flex: 1,
     fontSize: 13,
+    color: Colors.text_black,
   },
   submitButton: {
     backgroundColor: Colors.btn_blue,

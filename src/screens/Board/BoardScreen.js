@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteListRefresh } from '../../context/writes/RefreshContext';
 import WriteListItem from '../../components/Write/WriteListItem';
+import { Colors } from '../../constants/theme';
 
 const PAGE_SIZE = 5;
 
@@ -36,7 +37,7 @@ const BoardListScreen = () => {
   if (!boardWrites) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text style={styles.loading_text}>Loading...</Text>
       </View>
     );
   }
@@ -87,6 +88,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
+    color: Colors.text_black,
+  },
+  loading_text: {
+    fontSize: 24,
+    color: Colors.text_black,
   },
 });
 

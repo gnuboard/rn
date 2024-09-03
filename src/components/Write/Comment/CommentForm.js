@@ -83,6 +83,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
         multiline
         numberOfLines={3}
         placeholder="댓글내용을 입력해주세요"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={commentFormValue.wr_content}
         onChangeText={(text) => setCommentFormValue({
           ...commentFormValue,
@@ -95,6 +96,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
             <TextInput
               style={styles.smallInput}
               placeholder="작성자 이름"
+              placeholderTextColor={Colors.text_placeholder_black}
               value={commentFormValue.wr_name}
               onChangeText={(text) => setCommentFormValue({
                 ...commentFormValue,
@@ -104,6 +106,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
             <TextInput
               style={styles.smallInput}
               placeholder="비밀번호"
+              placeholderTextColor={Colors.text_placeholder_black}
               secureTextEntry
               value={commentFormValue.wr_password}
               onChangeText={(text) => setCommentFormValue({
@@ -117,6 +120,8 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
         <View style={styles.formActions}>
           <View style={styles.secretCommentContainer}>
             <Switch
+              trackColor={{ false: Colors.btn_gray }}
+              thumbColor={Colors.white}
               value={commentFormValue.wr_secret_checked}
               onValueChange={(value) => setCommentFormValue({
                 ...commentFormValue,
@@ -167,6 +172,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     width: '48%',
+    color: Colors.text_black,
   },
   errorText: {
     color: 'red',
@@ -185,6 +191,7 @@ const styles = StyleSheet.create({
   secretCommentText: {
     marginLeft: 8,
     fontSize: 14,
+    color: Colors.text_black,
   },
   submitButton: {
     backgroundColor: Colors.btn_blue,

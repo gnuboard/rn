@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   },
   wrMainArg: {
     marginRight: 5,
+    color: Colors.text_black,
   },
   writeSubContainer: {
     flexDirection: 'row',
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
   wrSubArg: {
     marginRight: 10,
     fontSize: 11,
+    color: Colors.text_black,
   },
   wrCommentText: {
     textAlign: 'center',
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     fontSize: 11,
+    color: Colors.text_black,
   },
   wrLink: {
     textAlign: 'center',
@@ -82,6 +85,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     fontSize: 11,
+    color: Colors.text_black,
   },
   wrFile: {
     textAlign: 'center',
@@ -90,6 +94,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     fontSize: 11,
+    color: Colors.text_black,
   },
 });
 

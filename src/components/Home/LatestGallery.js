@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
 import { readWrite } from '../../utils/writeFunc';
+import { Colors } from '../../constants/theme';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     paddingHorizontal: 16,
+    color: Colors.text_black,
   },
   itemContainer: {
     width: ITEM_WIDTH,
@@ -127,10 +129,11 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     marginRight: 8,
+    color: Colors.text_black,
   },
   itemDate: {
     fontSize: 12,
-    color: '#888',
+    color: Colors.text_black,
   },
 });
 

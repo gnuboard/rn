@@ -24,8 +24,10 @@ export const Agreement = ({
       </ScrollView>
       <View style={styles.checkboxContainer}>
         <CheckBox
+          style={styles.checkbox}
           value={policySignup}
           onValueChange={setPolicySignup}
+          tintColors={{ false: Colors.checkbox_border }}
         />
         <Text style={styles.label}>회원가입약관에 동의합니다.</Text>
       </View>
@@ -52,6 +54,7 @@ export const Agreement = ({
         <CheckBox
           value={policyPrivacy}
           onValueChange={setPolicyPrivacy}
+          tintColors={{ false: Colors.checkbox_border }}
         />
         <Text style={styles.label}>개인정보처리방침에 동의합니다.</Text>
       </View>
@@ -59,6 +62,7 @@ export const Agreement = ({
         <CheckBox
           value={allAgreed}
           onValueChange={toggleAll}
+          tintColors={{ false: Colors.checkbox_border }}
         />
         <Text style={styles.label}>위 내용에 모두 동의합니다.</Text>
       </View>
@@ -145,6 +149,7 @@ export const SignupForm = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="아이디 (필수)*"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={formData.mb_id}
         onChangeText={(text) => {
           handleInputChange('mb_id', text);
@@ -156,6 +161,7 @@ export const SignupForm = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="비밀번호 (필수)*"
+        placeholderTextColor={Colors.text_placeholder_black}
         secureTextEntry
         value={formData.mb_password}
         onChangeText={(text) => handleInputChange('mb_password', text)}
@@ -163,6 +169,7 @@ export const SignupForm = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="비밀번호 확인 (필수)*"
+        placeholderTextColor={Colors.text_placeholder_black}
         secureTextEntry
         value={formData.mb_password_re}
         onChangeText={(text) => handleInputChange('mb_password_re', text)}
@@ -171,6 +178,7 @@ export const SignupForm = ({ navigation }) => {
       <TextInput
         style={styles.input}
         placeholder="E-mail (필수)*"
+        placeholderTextColor={Colors.text_placeholder_black}
         value={formData.mb_email}
         onChangeText={(text) => handleInputChange('mb_email', text)}
         keyboardType="email-address"
@@ -183,6 +191,7 @@ export const SignupForm = ({ navigation }) => {
           name="mb_mailing"
           value={formData.mb_mailling}
           onValueChange={() => handleInputChange('mb_mailling', !formData.mb_mailling)}
+          tintColors={{ false: Colors.checkbox_border }}
         />
         <Text style={styles.label}>정보 메일을 받겠습니다.</Text>
       </View>
@@ -191,6 +200,7 @@ export const SignupForm = ({ navigation }) => {
           name="mb_open"
           value={formData.mb_open}
           onValueChange={() => handleInputChange('mb_open', !formData.mb_open)}
+          tintColors={{ false: Colors.checkbox_border }}
         />
         <Text style={styles.label}>
           다른분들이 나의 정보를 {'\n'}볼 수 있도록 합니다.
@@ -229,6 +239,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 3,
     width: '100%',
+    color: Colors.text_black,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -256,6 +267,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 10,
+    color: Colors.text_black,
   },
   agreementScroll: {
     height: 100,
@@ -266,6 +278,7 @@ const styles = StyleSheet.create({
   },
   agreementText: {
     fontSize: 13,
+    color: Colors.text_black,
   },
   tableContainer: {
     borderWidth: 1,
@@ -281,6 +294,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     fontSize: 12,
+    color: Colors.text_black,
   },
   tableHeader: {
     fontWeight: 'bold',
@@ -291,9 +305,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  checkbox: {
+    borderColor: Colors.text_black,
+    borderWidth: 1,
+  },
   label: {
     marginLeft: 8,
     fontSize: 14,
+    color: Colors.text_black,
   },
   button: {
     backgroundColor: Colors.btn_blue,

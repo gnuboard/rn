@@ -148,10 +148,11 @@ const styles = StyleSheet.create({
   authorName: {
     fontWeight: 'bold',
     marginRight: 10,
+    color: Colors.text_black,
   },
   dateTime: {
     fontSize: 12,
-    color: '#757575',
+    color: Colors.text_black,
     marginRight: 10,
   },
   button: {
@@ -185,6 +186,7 @@ const styles = StyleSheet.create({
   },
   commentText: {
     marginLeft: 5,
+    color: Colors.text_black,
   },
 });
 

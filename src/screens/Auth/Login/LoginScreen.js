@@ -225,6 +225,7 @@ const LoginScreen = ({ navigation }) => {
             <CheckBox
               value={saveLoginInfo}
               onValueChange={setSaveLoginInfo}
+              tintColors={{ false: Colors.checkbox_border }}
             />
             <Text style={styles.label}>로그인 정보 저장</Text>
           </View>
@@ -291,6 +292,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 3,
     width: '100%',
+    color: Colors.text_black,
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -298,6 +300,7 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 2,
+    color: Colors.text_black,
   },
   loginButton: {
     backgroundColor: Colors.btn_blue,
