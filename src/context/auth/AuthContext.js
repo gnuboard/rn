@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logout as kakaoLogout } from "@react-native-seoul/kakao-login";
 import { getTokens, deleteAllSecureData, deleteUserInfo } from '../../utils/authFunc';
 import { removeQuotes } from '../../utils/stringFunc';
 import { naverLogout } from '../../services/api/NaverApi';
@@ -32,6 +33,8 @@ export const AuthProvider = ({ children }) => {
       const loginMethod = await AsyncStorage.getItem('login_method');
       if (loginMethod === 'naver') {
         naverLogout();
+      } else if (loginMethod === 'kakao') {
+        kakaoLogout();
       }
 
       const deleteResult =  await deleteAllSecureData();
