@@ -17,8 +17,13 @@ import {
 import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
+import kakaoLogo from '../../../assets/img/socialLogin/kakao/logo.png'
 import { getNaverTokens, naverProfileRequest } from '../../../services/api/NaverApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  login as getKakaoTokens,
+  getProfile as getKakaoProfile,
+} from "@react-native-seoul/kakao-login";
 
 const LoginScreen = ({ navigation }) => {
   const { setIsLoggedIn } = useAuth();
@@ -109,6 +114,28 @@ const LoginScreen = ({ navigation }) => {
           console.error("Naver signup failed", error);
         }
       }
+    }
+  }
+
+  async function kakaoLogin () {
+    try {
+      const tokens = await getKakaoTokens();
+      const { accessToken, refreshToken } = tokens;
+      const profileData = await getKakaoProfile();
+
+      const saveSocialTokenResult = await saveSocialLoginTokens('kakao_login_tokens', accessToken, refreshToken);
+      if (!saveSocialTokenResult.isSuccess) {
+        console.error('Failed to save tokens');
+        return;
+      }
+
+      AsyncStorage.setItem('login_method', 'kakao');
+      AsyncStorage.setItem('mb_id', profileData.id);
+
+      setIsLoggedIn(true);
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error("Kakao login failed", error);
     }
   }
 
@@ -207,6 +234,9 @@ const LoginScreen = ({ navigation }) => {
           <View style={styles.socialLoginGroupContainer}>
             <TouchableOpacity onPress={naverLogin}>
               <Image source={naverLogoCircle} style={styles.socialLoginLogo} resizeMode="cover" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={kakaoLogin}>
+              <Image source={kakaoLogo} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('회원가입')}>
