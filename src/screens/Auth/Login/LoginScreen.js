@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard, StyleSheet, Image } from 'react-native';
+import {
+  View, Text, TextInput, TouchableWithoutFeedback,
+  TouchableOpacity, Keyboard, StyleSheet, Image
+} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import { loginRequest } from '../../../services/api/ServerApi';
