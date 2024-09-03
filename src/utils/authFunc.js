@@ -106,3 +106,17 @@ export const deleteUserInfo = async () => {
     return {isSuccess: false};
   }
 }
+
+export function getRandomNick(length) {
+  const characters = 'abcdefghijklmnopqrstuvwxyz';
+  const charactersLength = characters.length;
+  const currentTime = Date.now().toString();
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  result += currentTime;
+
+  return result;
+}

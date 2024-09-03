@@ -108,6 +108,31 @@ export const renewTokenRequest = async (refresh_token) =>{
   });
 }
 
+export const socialSignupRequest = async (provider, accessToken, randomNick) => {
+  try {
+    const response = await axios.post(
+      `${baseUrl}/social/register/${provider}`,
+      {"mb_nick": randomNick},
+      { 'headers': { 'Authorization': `Bearer ${accessToken}` } },
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const socialLoginRequest = async (provider, accessToken) => {
+  try {
+    const response = await serverApi.post(
+      `/social/token-login/${provider}`,
+      { access_token: accessToken },
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchPersonalInfoRequest = async () => {
   try {
     const response = await serverApi.get('/members/me');

@@ -5,12 +5,14 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
-import { loginRequest } from '../../../services/api/ServerApi';
+import {
+  loginRequest, socialLoginRequest, socialSignupRequest
+} from '../../../services/api/ServerApi';
 import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
 import {
   saveCredentials, saveTokens, saveLoginPreferences, getLoginPreferences,
-  getCredentials, saveSocialLoginTokens
+  getCredentials, saveSocialLoginTokens, getRandomNick
 } from '../../../utils/authFunc';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
@@ -28,12 +30,29 @@ const LoginScreen = ({ navigation }) => {
   const passwordInputRef = useRef(null);
 
   async function naverLogin () {
+    let socialAccssToken;
+    let socialRefreshToken;
     try {
       const tokens = await getNaverTokens();
-      const { accessToken, refreshToken } = tokens;
-      const profileData = await naverProfileRequest(accessToken);
+      socialAccssToken = tokens.accessToken;
+      socialRefreshToken = tokens.refreshToken;
+      const profileData = await naverProfileRequest(socialAccssToken);
 
-      const saveSocialTokenResult = await saveSocialLoginTokens('naver_login_tokens', accessToken, refreshToken);
+      // 소셜 로그인 서버 요청
+      const serverSocialLoginResponse = await socialLoginRequest('naver', socialAccssToken);
+      const { access_token, refresh_token } = serverSocialLoginResponse.data;
+      if (!access_token) {
+        console.error('Failed to login - !access_token');
+        return;
+      }
+
+      const saveTokenResult = await saveTokens(access_token, refresh_token);
+      if (!saveTokenResult.isSuccess) {
+        console.error('Failed to save tokens');
+        return;
+      }
+
+      const saveSocialTokenResult = await saveSocialLoginTokens('naver_login_tokens', socialAccssToken, socialRefreshToken);
       if (!saveSocialTokenResult.isSuccess) {
         console.error('Failed to save tokens');
         return;
@@ -43,10 +62,53 @@ const LoginScreen = ({ navigation }) => {
       AsyncStorage.setItem('mb_id', profileData.id);
       AsyncStorage.setItem('mb_email', profileData.email);
 
-      setIsLoggedIn(true);
-      navigation.navigate('Home');
+      fetchPersonalInfo().then(() => {
+        setIsLoggedIn(true);
+        setFormValue({ username: '', password: '' });
+        setSaveLoginInfo(false);
+        navigation.navigate('Home');
+      });
     } catch (error) {
       console.error("Naver login failed", error);
+      if (error.response.data.statusCode === 404 && error.response.data.error.type === "user not found") {
+        const randomNick = getRandomNick(6);
+        const serverAccessToken = error.response.data.token;
+
+        // 소셜 회원가입 서버 요청
+        try {
+          const serverSocialSignupResponse = await socialSignupRequest('naver', serverAccessToken, randomNick);
+          const { access_token, refresh_token } = serverSocialSignupResponse.data;
+          if (!access_token) {
+            console.error('Failed to signup - !access_token');
+            return;
+          }
+
+          const saveTokenResult = await saveTokens(access_token, refresh_token);
+          if (!saveTokenResult.isSuccess) {
+            console.error('Failed to save tokens');
+            return;
+          }
+
+          const saveSocialTokenResult = await saveSocialLoginTokens('naver_login_tokens', socialAccssToken, socialRefreshToken);
+          if (!saveSocialTokenResult.isSuccess) {
+            console.error('Failed to save tokens');
+            return;
+          }
+
+          AsyncStorage.setItem('login_method', 'naver');
+          AsyncStorage.setItem('mb_id', profileData.id);
+          AsyncStorage.setItem('mb_email', profileData.email);
+
+          fetchPersonalInfo().then(() => {
+            setIsLoggedIn(true);
+            setFormValue({ username: '', password: '' });
+            setSaveLoginInfo(false);
+            navigation.navigate('Home');
+          });
+        } catch (error) {
+          console.error("Naver signup failed", error);
+        }
+      }
     }
   }
 
