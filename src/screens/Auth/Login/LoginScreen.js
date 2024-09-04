@@ -118,12 +118,29 @@ const LoginScreen = ({ navigation }) => {
   }
 
   async function kakaoLogin () {
+    let socialAccssToken;
+    let socialRefreshToken;
     try {
       const tokens = await getKakaoTokens();
-      const { accessToken, refreshToken } = tokens;
+      socialAccssToken = tokens.accessToken;
+      socialRefreshToken = tokens.refreshToken;
       const profileData = await getKakaoProfile();
 
-      const saveSocialTokenResult = await saveSocialLoginTokens('kakao_login_tokens', accessToken, refreshToken);
+      // 소셜 로그인 서버 요청
+      const serverSocialLoginResponse = await socialLoginRequest('kakao', socialAccssToken);
+      const { access_token, refresh_token } = serverSocialLoginResponse.data;
+      if (!access_token) {
+        console.error('Failed to login - !access_token');
+        return;
+      }
+
+      const saveTokenResult = await saveTokens(access_token, refresh_token);
+      if (!saveTokenResult.isSuccess) {
+        console.error('Failed to save tokens');
+        return;
+      }
+
+      const saveSocialTokenResult = await saveSocialLoginTokens('kakao_login_tokens', socialAccssToken, socialRefreshToken);
       if (!saveSocialTokenResult.isSuccess) {
         console.error('Failed to save tokens');
         return;
@@ -136,6 +153,44 @@ const LoginScreen = ({ navigation }) => {
       navigation.navigate('Home');
     } catch (error) {
       console.error("Kakao login failed", error);
+      if (error.response.data.statusCode === 404 && error.response.data.error.type === "user not found") {
+        const randomNick = getRandomNick(6);
+        const serverAccessToken = error.response.data.token;
+
+        // 소셜 회원가입 서버 요청
+        try {
+          const serverSocialSignupResponse = await socialSignupRequest('kakao', serverAccessToken, randomNick);
+          const { access_token, refresh_token } = serverSocialSignupResponse.data;
+          if (!access_token) {
+            console.error('Failed to signup - !access_token');
+            return;
+          }
+
+          const saveTokenResult = await saveTokens(access_token, refresh_token);
+          if (!saveTokenResult.isSuccess) {
+            console.error('Failed to save tokens');
+            return;
+          }
+
+          const saveSocialTokenResult = await saveSocialLoginTokens('kakao_login_tokens', socialAccssToken, socialRefreshToken);
+          if (!saveSocialTokenResult.isSuccess) {
+            console.error('Failed to save tokens');
+            return;
+          }
+
+          AsyncStorage.setItem('login_method', 'kakao');
+          AsyncStorage.setItem('mb_id', profileData.id);
+
+          fetchPersonalInfo().then(() => {
+            setIsLoggedIn(true);
+            setFormValue({ username: '', password: '' });
+            setSaveLoginInfo(false);
+            navigation.navigate('Home');
+          });
+        } catch (error) {
+          console.error("Kakao signup failed", error);
+        }
+      }
     }
   }
 
