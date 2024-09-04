@@ -4,6 +4,7 @@ import {
   TouchableOpacity, Keyboard, StyleSheet, Image
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import {
   loginRequest, socialLoginRequest, socialSignupRequest
@@ -18,6 +19,7 @@ import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
 import kakaoLogo from '../../../assets/img/socialLogin/kakao/logo.png'
+import googleLogo from '../../../assets/img/socialLogin/google/logo.png'
 import { getNaverTokens, naverProfileRequest } from '../../../services/api/NaverApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -168,6 +170,68 @@ const LoginScreen = ({ navigation }) => {
     }
   }
 
+  async function googleLogin () {
+    let socialAccssToken;
+
+    GoogleSignin.configure({
+      scopes: ['profile', 'email'],
+    });
+
+    const hasPlayService = GoogleSignin.hasPlayServices();
+    if (!hasPlayService) {
+      console.error("Google Play Services are not available");
+      return;
+    }
+
+    const userInfo = await GoogleSignin.signIn();
+    if (userInfo){
+      const tokens = await GoogleSignin.getTokens();
+      socialAccssToken = tokens.accessToken;
+    }
+
+    try {
+      // 소셜 로그인 서버 요청
+      const serverSocialLoginResponse = await socialLoginRequest('google', socialAccssToken);
+      const { access_token, refresh_token } = serverSocialLoginResponse.data;
+      const tokenHandleResult = await handleTokens(access_token, refresh_token, socialAccssToken, null, 'kakao');
+      if (!tokenHandleResult.isSuccess) {
+        console.error(tokenHandleResult.message);
+        return;
+      }
+
+      AsyncStorage.setItem('login_method', 'google');
+      AsyncStorage.setItem('mb_id', userInfo.data.user.id);
+      AsyncStorage.setItem('mb_email', userInfo.data.user.email);
+
+      handleAfterLogin();
+    } catch (error) {
+      if (error.response.data.statusCode === 404 && error.response.data.error.type === "user not found") {
+        const randomNick = getRandomNick(6);
+        const serverAccessToken = error.response.data.token;
+
+        // 소셜 회원가입 서버 요청
+        try {
+          const serverSocialSignupResponse = await socialSignupRequest('google', serverAccessToken, randomNick);
+          const { access_token, refresh_token } = serverSocialSignupResponse.data;
+          const tokenHandleResult = await handleTokens(access_token, refresh_token, socialAccssToken, null, 'google');
+          if (!tokenHandleResult.isSuccess) {
+            console.error(tokenHandleResult.message);
+            return;
+          }
+
+          AsyncStorage.setItem('login_method', 'google');
+          AsyncStorage.setItem('mb_id', userInfo.data.user.id);
+          AsyncStorage.setItem('mb_email', userInfo.data.user.email);
+
+          handleAfterLogin();
+        } catch (error) {
+          console.error("Google signup failed", error);
+        }
+      } else {
+        console.error("Google login failed", error);
+      }
+    }
+  }
   async function login () {
     try {
       const response = await loginRequest(formValue.username, formValue.password);
@@ -257,6 +321,9 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={kakaoLogin}>
               <Image source={kakaoLogo} style={styles.socialLoginLogo} resizeMode="cover" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={googleLogin}>
+              <Image source={googleLogo} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('회원가입')}>
