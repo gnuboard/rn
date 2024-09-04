@@ -78,6 +78,7 @@ export const deleteAllSecureData = async () => {
     await Keychain.resetInternetCredentials('auth_tokens');
     await Keychain.resetInternetCredentials('naver_login_tokens');
     await Keychain.resetInternetCredentials('kakao_login_tokens');
+    await Keychain.resetInternetCredentials('google_login_tokens');
     console.log('All secure data deleted successfully');
     return {isSuccess: true};
   } catch (error) {
