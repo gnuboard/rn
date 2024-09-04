@@ -94,7 +94,6 @@ const LoginScreen = ({ navigation }) => {
 
       handleAfterLogin();
     } catch (error) {
-      console.error("Naver login failed", error);
       if (error.response.data.statusCode === 404 && error.response.data.error.type === "user not found") {
         const randomNick = getRandomNick(6);
         const serverAccessToken = error.response.data.token;
@@ -117,6 +116,8 @@ const LoginScreen = ({ navigation }) => {
         } catch (error) {
           console.error("Naver signup failed", error);
         }
+      } else {
+        console.error("Naver login failed", error);
       }
     }
   }
@@ -144,7 +145,6 @@ const LoginScreen = ({ navigation }) => {
 
       handleAfterLogin();
     } catch (error) {
-      console.error("Kakao login failed", error);
       if (error.response.data.statusCode === 404 && error.response.data.error.type === "user not found") {
         const randomNick = getRandomNick(6);
         const serverAccessToken = error.response.data.token;
@@ -166,6 +166,8 @@ const LoginScreen = ({ navigation }) => {
         } catch (error) {
           console.error("Kakao signup failed", error);
         }
+      } else {
+        console.error("Kakao login failed", error);
       }
     }
   }
