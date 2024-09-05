@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import Config from 'react-native-config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
@@ -13,6 +14,7 @@ import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
 const ProfileUpdateScreen = ({ navigation, route }) => {
   let imgFormData = new FormData();
   const { setIsLoggedIn } = useAuth();
+  const [disableEmailInput, setDisableEmailInput] = useState(true);
   const [formValue, setFormValue] = useState({
     mb_nick: route.params.mb_nick,
     mb_email: route.params.mb_email,
@@ -49,6 +51,14 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
   let retryCount = 0;
 
   useEffect(() => {
+    const setCurrnetLoginMethod = async () => {
+      const method = await AsyncStorage.getItem('login_method');
+      if (method != 'server' && method != 'kakao') {
+        setDisableEmailInput(false);
+      }
+    }
+
+    setCurrnetLoginMethod();
     if (route.params.zonecode) {
       setFormValue(prevState => ({
         ...prevState,
@@ -208,6 +218,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
         placeholderTextColor={Colors.text_placeholder_black}
         value={formValue.mb_email}
         onChangeText={(value) => handleChange('mb_email', value)}
+        editable={disableEmailInput}
       />
       <TextInput
         style={styles.input}
