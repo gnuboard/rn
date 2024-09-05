@@ -71,14 +71,12 @@ const LoginScreen = ({ navigation }) => {
   }
 
   async function naverLogin () {
-    let socialAccssToken;
-    let socialRefreshToken;
-    try {
-      const tokens = await getNaverTokens();
-      socialAccssToken = tokens.accessToken;
-      socialRefreshToken = tokens.refreshToken;
-      const profileData = await naverProfileRequest(socialAccssToken);
+    const tokens = await getNaverTokens();
+    const socialAccssToken = tokens.accessToken;
+    const socialRefreshToken = tokens.refreshToken;
+    const profileData = await naverProfileRequest(socialAccssToken);
 
+    try {
       // 소셜 로그인 서버 요청
       const serverSocialLoginResponse = await socialLoginRequest('naver', socialAccssToken);
       const { access_token, refresh_token } = serverSocialLoginResponse.data;
@@ -123,14 +121,12 @@ const LoginScreen = ({ navigation }) => {
   }
 
   async function kakaoLogin () {
-    let socialAccssToken;
-    let socialRefreshToken;
-    try {
-      const tokens = await getKakaoTokens();
-      socialAccssToken = tokens.accessToken;
-      socialRefreshToken = tokens.refreshToken;
-      const profileData = await getKakaoProfile();
+    const tokens = await getKakaoTokens();
+    const socialAccssToken = tokens.accessToken;
+    const socialRefreshToken = tokens.refreshToken;
+    const profileData = await getKakaoProfile();
 
+    try {
       // 소셜 로그인 서버 요청
       const serverSocialLoginResponse = await socialLoginRequest('kakao', socialAccssToken);
       const { access_token, refresh_token } = serverSocialLoginResponse.data;
