@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, TextInput, TouchableWithoutFeedback,
-  TouchableOpacity, Keyboard, StyleSheet, Image
+  TouchableOpacity, Keyboard, StyleSheet, Image, ActivityIndicator
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -28,7 +28,7 @@ import {
 } from "@react-native-seoul/kakao-login";
 
 const LoginScreen = ({ navigation }) => {
-  const { setIsLoggedIn } = useAuth();
+  const { setIsLoggedIn, loading, setLoading } = useAuth();
   const [ formValue, setFormValue ] = useState({
     username: '',
     password: '',
@@ -38,6 +38,7 @@ const LoginScreen = ({ navigation }) => {
 
   async function handleAfterLogin () {
     fetchPersonalInfo().then(() => {
+      setLoading(false);
       setIsLoggedIn(true);
       setFormValue({ username: '', password: '' });
       setSaveLoginInfo(false);
@@ -52,12 +53,16 @@ const LoginScreen = ({ navigation }) => {
     socialRefreshToken,
     login_method='server',
   ) {
+    setLoading(true);
+
     if (!access_token || !refresh_token) {
+      setLoading(false);
       return { isSuccess: false, message: 'Failed to login - !access_token' };
     }
   
     const saveTokenResult = await saveTokens(access_token, refresh_token);
     if (!saveTokenResult.isSuccess) {
+      setLoading(false);
       return { isSuccess: false, message: 'Failed to save tokens' };
     }
 
@@ -65,6 +70,7 @@ const LoginScreen = ({ navigation }) => {
       const socialTokenName = `${login_method}_login_tokens`;
       const saveSocialTokenResult = await saveSocialLoginTokens(socialTokenName, socialAccssToken, socialRefreshToken);
       if (!saveSocialTokenResult.isSuccess) {
+        setLoading(false);
         return { isSuccess: false, message: 'Failed to save tokens' };
       }
     }
@@ -314,21 +320,24 @@ const LoginScreen = ({ navigation }) => {
             />
             <Text style={styles.label}>로그인 정보 저장</Text>
           </View>
-          <TouchableOpacity style={styles.loginButton} onPress={login}>
-            <Text style={styles.loginButtonText}>로그인</Text>
+          <TouchableOpacity style={loading ? styles.loginButtonLoading : styles.loginButton } onPress={login} disabled={loading}>
+            {loading
+              ? <ActivityIndicator size="small" />
+              : <Text style={styles.loginButtonText}>로그인</Text>
+            }
           </TouchableOpacity>
           <View style={styles.socialLoginGroupContainer}>
-            <TouchableOpacity onPress={naverLogin}>
+            <TouchableOpacity onPress={naverLogin} disabled={loading}>
               <Image source={naverLogoCircle} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={kakaoLogin}>
+            <TouchableOpacity onPress={kakaoLogin} disabled={loading}>
               <Image source={kakaoLogo} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={googleLogin}>
+            <TouchableOpacity onPress={googleLogin} disabled={loading}>
               <Image source={googleLogo} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('회원가입')}>
+          <TouchableOpacity onPress={() => navigation.navigate('회원가입')} disabled={loading}>
             <Text style={styles.forgotPassword}>계정이 없으신가요? 회원가입</Text>
           </TouchableOpacity>
         </View>
@@ -393,6 +402,13 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: Colors.btn_blue,
+    padding: 10,
+    borderRadius: 3,
+    marginTop: 10,
+    width: '100%',
+  },
+  loginButtonLoading: {
+    backgroundColor: Colors.btn_gray,
     padding: 10,
     borderRadius: 3,
     marginTop: 10,

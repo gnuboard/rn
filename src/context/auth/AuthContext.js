@@ -85,6 +85,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         setIsLoggedIn,
         getCurrentUserData,
+        setLoading,
       }}
     >
       {children}
