@@ -193,7 +193,7 @@ const LoginScreen = ({ navigation }) => {
       // 소셜 로그인 서버 요청
       const serverSocialLoginResponse = await socialLoginRequest('google', socialAccssToken);
       const { access_token, refresh_token } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleTokens(access_token, refresh_token, socialAccssToken, null, 'kakao');
+      const tokenHandleResult = await handleTokens(access_token, refresh_token, socialAccssToken, 'empty', 'google');
       if (!tokenHandleResult.isSuccess) {
         console.error(tokenHandleResult.message);
         return;
@@ -213,7 +213,7 @@ const LoginScreen = ({ navigation }) => {
         try {
           const serverSocialSignupResponse = await socialSignupRequest('google', serverAccessToken, randomNick);
           const { access_token, refresh_token } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleTokens(access_token, refresh_token, socialAccssToken, null, 'google');
+          const tokenHandleResult = await handleTokens(access_token, refresh_token, socialAccssToken, 'empty', 'google');
           if (!tokenHandleResult.isSuccess) {
             console.error(tokenHandleResult.message);
             return;
