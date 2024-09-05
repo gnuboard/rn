@@ -242,6 +242,8 @@ const LoginScreen = ({ navigation }) => {
         return;
       }
 
+      AsyncStorage.setItem('login_method', 'server');
+
       await saveLoginPreferences({ saveLoginInfo });
       if (saveLoginInfo) {
         await saveCredentials(formValue.username, formValue.password);
