@@ -28,7 +28,7 @@ export const saveSocialLoginTokens = async (tokenName, accessToken, refreshToken
     console.log(`${tokenName} saved successfully`);
     return { isSuccess: true };
   } catch (error) {
-    console.error('Error saving naver tokens', error);
+    console.error(`Error saving ${tokenName} tokens`, error);
     return { isSuccess: false };
   }
 }
