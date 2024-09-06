@@ -10,7 +10,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import {
   fetchBoardConfigRequest, createWriteRequest,
-  updateWriteRequest, uploadFilesRequest
+  updateWriteRequest, uploadFilesRequest, fetchSecretWriteRequest
 } from '../../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
@@ -122,11 +122,21 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 if (fileFormData._parts.length) {
                   await uploadFilesRequest(bo_table, wr_id, fileFormData);
                 }
+
+                // 작성된 게시글로 이동하기 위한 params 설정
+                let params = { bo_table, wr_id };
+                if (formValue.secret) {
+                  const secretWriteResponse = await fetchSecretWriteRequest(bo_table, wrId, formValue.wr_password);
+                  const writeData = secretWriteResponse.data;
+                  params.isVerified = true;
+                  params.writeData = writeData;
+                }
+
                 navigation.navigate(
                   'Boards',
                   {
                     screen: 'Write',
-                    params: { bo_table, wr_id },
+                    params: params,
                     initial: false,
                   }
                 );
