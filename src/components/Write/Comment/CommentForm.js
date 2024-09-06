@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     marginBottom: 10,
+    color: Colors.text_black,
   },
   formFooter: {
     marginTop: 10,

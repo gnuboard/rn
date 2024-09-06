@@ -17,7 +17,7 @@ const ModalComponent = ({ title, visible, password, setPassword, handlePasswordS
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text>{title}의 비밀번호를 입력해주세요</Text>
+          <Text style={styles.modalDescription}>{title}의 비밀번호를 입력해주세요</Text>
           <TextInput
             secureTextEntry={true}
             style={styles.textInput}
@@ -137,12 +137,16 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5
   },
+  modalDescription: {
+    color: Colors.text_black,
+  },
   textInput: {
     width: 200,
     height: 40,
     marginVertical: 15,
     borderWidth: 1,
     padding: 10,
+    color: Colors.text_black,
   },
   buttonContainer: {
     flexDirection: 'row',

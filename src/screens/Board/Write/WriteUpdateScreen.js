@@ -247,12 +247,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
             <TextInput
               style={[styles.input, styles.innerInput]}
               placeholder="이름"
+              placeholderTextColor={Colors.text_placeholder_black}
               value={formValue.wr_name}
               onChangeText={text => setFormValue({ ...formValue, wr_name: text })}
             />
             <TextInput
               style={[styles.input, styles.innerInput]}
               placeholder="비밀번호"
+              placeholderTextColor={Colors.text_placeholder_black}
               secureTextEntry={true}
               value={formValue.wr_password}
               onChangeText={text => setFormValue({ ...formValue, wr_password: text })}
@@ -263,12 +265,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           <TextInput
             style={[styles.input, styles.innerInput]}
             placeholder="이메일"
+            placeholderTextColor={Colors.text_placeholder_black}
             value={formValue.wr_email}
             onChangeText={text => setFormValue({ ...formValue, wr_email: text })}
           />
           <TextInput
             style={[styles.input, styles.innerInput]}
             placeholder="홈페이지"
+            placeholderTextColor={Colors.text_placeholder_black}
             value={formValue.wr_homepage}
             onChangeText={text => setFormValue({ ...formValue, wr_homepage: text })}
           />
@@ -280,22 +284,26 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 name="notice"
                 value={formValue.notice}
                 onValueChange={() => setFormValue({ ...formValue, notice: !formValue.notice })}
+                tintColors={{ false: Colors.checkbox_border }}
               />
-              <Text>공지글</Text>
+              <Text style={styles.checkboxText}>공지글</Text>
             </View>
           )}
           <View style={styles.checkboxInnerContainer}>
             <CheckBox
               name="secret"
               value={formValue.secret}
+              
               onValueChange={() => setFormValue({ ...formValue, secret: !formValue.secret })}
+              tintColors={{ false: Colors.checkbox_border }}
             />
-            <Text>비밀글</Text>
+            <Text style={styles.checkboxText}>비밀글</Text>
           </View>
         </View>
         <TextInput
           style={styles.input}
           placeholder="제목"
+          placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.wr_subject}
           onChangeText={text => setFormValue({ ...formValue, wr_subject: text })}
         />
@@ -309,12 +317,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
         <TextInput
           style={styles.input}
           placeholder="링크 #1"
+          placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.wr_link1}
           onChangeText={text => setFormValue({ ...formValue, wr_link1: text })}
         />
         <TextInput
           style={styles.input}
           placeholder="링크 #2"
+          placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.wr_link2}
           onChangeText={text => setFormValue({ ...formValue, wr_link2: text })}
         />
@@ -401,6 +411,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
+    color: Colors.text_black,
   },
   innerInput: {
     width: '48%',
@@ -457,7 +468,9 @@ const styles = StyleSheet.create({
   fileButtonText: {
     color: Colors.text_black,
   },
-
+  checkboxText: {
+    color: Colors.text_black,
+  }
 });
 
 export default WriteUpdateScreen;
