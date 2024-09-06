@@ -6,8 +6,12 @@ import {
 import { WebView } from 'react-native-webview';
 import CheckBox from '@react-native-community/checkbox';
 import { Picker } from '@react-native-picker/picker';
+import DocumentPicker from 'react-native-document-picker';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
-import { fetchBoardConfigRequest, createWriteRequest, updateWriteRequest } from '../../../services/api/ServerApi';
+import {
+  fetchBoardConfigRequest, createWriteRequest,
+  updateWriteRequest, uploadFilesRequest
+} from '../../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { Colors } from '../../../constants/theme';
@@ -37,6 +41,8 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     wr_link1: '',
     wr_link2: '',
   });
+  const [ uploadFiles, setUploadFiles ] = useState({});
+  let wrId;
 
   useEffect(() => {
     fetchBoardConfigRequest(bo_table)
@@ -46,6 +52,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           bo_category_list: response.data.bo_category_list != "" ? response.data.bo_category_list.split('|') : [],
           bo_upload_count: response.data.bo_upload_count,
         });
+        setUploadFiles(() => {
+            const initialState = {};
+            for (let i = 0; i < response.data.bo_upload_count; i++) {
+              initialState[`file${i+1}`] = null;
+            }
+            return initialState;
+          }
+        );
         setBoardInfoRequested(true);
       })
       .catch(error => console.error('fetchBoardConfigReques - CKEditorForm', error));
@@ -93,7 +107,19 @@ const WriteUpdateScreen = ({ navigation, route }) => {
               const response = await createWriteRequest(bo_table, dataToSend);
               if (response.status === 200) {
                 const wr_id = response.data.wr_id;
+                const fileFormData = new FormData();
+                wrId = wr_id;
+                Object.entries(uploadFiles).forEach(async ([_, value]) => {
+                  if (value) {
+                    fileFormData.append('files[]', {
+                      name: value.name,
+                      type: value.type,
+                      uri: value.uri,
+                    });
+                  }
+                });
                 await refreshWriteList(bo_table);
+                await uploadFilesRequest(bo_table, wr_id, fileFormData);
                 navigation.navigate(
                   'Boards',
                   {
@@ -104,7 +130,33 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 );
               }
             } catch (error) {
-              console.error('Error creating new write:', error.response);
+              if (error.response) {
+                const { error: errorDetails } = error.response.data;
+                Alert.alert(
+                  'Error',
+                  errorDetails.description,
+                  [
+                    {
+                      text: '확인',
+                      onPress: () => {
+                        if (wrId) {
+                          navigation.navigate(
+                            'Boards',
+                            {
+                              screen: 'Write',
+                              params: { bo_table, wr_id: wrId },
+                              initial: false,
+                            }
+                          )
+                        }
+                      },
+                    },
+                  ],
+                  { cancelable: false }
+                );
+              } else {
+                console.error('Error creating new write:', error);
+              }
             }
           } else {
             // 게시글 수정
@@ -134,6 +186,39 @@ const WriteUpdateScreen = ({ navigation, route }) => {
       console.error('Error parsing event data:', error);
     }
   };
+
+  const handleFilePick = async (fieldName) => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      setUploadFiles({ ...uploadFiles, [fieldName]: res[0] });
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log("User cancelled the picker");
+      } else {
+        throw err;
+      }
+    }
+  };
+
+  const renderUploadFileInputs = () => {
+    let uploadFileInputs = [];
+    for (let i = 0; i < boardInfo.bo_upload_count; i++) {
+      uploadFileInputs.push(
+        <TouchableOpacity 
+          style={styles.fileButton}
+          onPress={() => handleFilePick(`file${i+1}`)}
+          key={i}
+        >
+          <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
+            파일 #{i+1}: {uploadFiles[`file${i+1}`] ? uploadFiles[`file${i+1}`].name : '파일선택'}
+          </Text>
+        </TouchableOpacity>
+      );
+    }
+    return uploadFileInputs
+  }
 
   return (
     <View style={styles.container}>
@@ -233,6 +318,10 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           value={formValue.wr_link2}
           onChangeText={text => setFormValue({ ...formValue, wr_link2: text })}
         />
+
+        {/* 첨부파일 인풋 렌더 */}
+        {renderUploadFileInputs()}
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, styles.buttonCancel]}
@@ -355,6 +444,20 @@ const styles = StyleSheet.create({
     color: Colors.btn_text_white,
     fontWeight: 'bold',
   },
+  fileButton: {
+    width: '100%',
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 10,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+  },
+  fileButtonText: {
+    color: Colors.text_black,
+  },
+
 });
 
 export default WriteUpdateScreen;

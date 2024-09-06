@@ -251,6 +251,24 @@ export const deleteWriteRequest = async (bo_table, wr_id) => {
   }
 }
 
+export const uploadFilesRequest = async (bo_table, wr_id, formData) => {
+  try {
+    const response = await serverApi.post(
+      `/boards/${bo_table}/writes/${wr_id}/files`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Accept': 'application/json'
+        }
+      },
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchCommentsRequest = async (bo_table, wr_id) => {
   try {
     const response = await serverApi.get(`/boards/${bo_table}/writes/${wr_id}/comments`);
