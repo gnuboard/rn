@@ -119,7 +119,9 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                   }
                 });
                 await refreshWriteList(bo_table);
-                await uploadFilesRequest(bo_table, wr_id, fileFormData);
+                if (fileFormData._parts.length) {
+                  await uploadFilesRequest(bo_table, wr_id, fileFormData);
+                }
                 navigation.navigate(
                   'Boards',
                   {
