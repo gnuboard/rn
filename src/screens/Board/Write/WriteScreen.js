@@ -25,6 +25,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { width } = useWindowDimensions();
   const { getCurrentUserData } = useAuth();
   const [ currentMbId, setCurrentMbId ] = useState(null);
+  const [ itemVisible, setItemVisible ] = useState(false);
 
   useEffect(() => {
     if (isVerified) {
@@ -109,20 +110,40 @@ const WriteScreen = ({ navigation, route }) => {
     <ScrollView style={styles.container}>
       <View style={styles.subjectWithButton}>
         <Text style={styles.title}>{write?.wr_subject}</Text>
-        {currentMbId == write.mb_id ? (
+        {itemVisible && (
           <View style={styles.bindedButton}>
-            <TouchableOpacity style={styles.updateButton} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
-              <Text style={styles.buttonText}>수정</Text>
-            </TouchableOpacity>
             <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => showDeleteConfirm(
-                bo_table, write, navigation, refreshWriteList
-              )}>
-              <Text style={styles.buttonText}>삭제</Text>
+              style={[styles.buttonCommon, styles.replyButton]}
+              onPress={() => navigation.navigate(
+                'WriteUpdate',
+                params={
+                  'bo_table': bo_table,
+                  'wr_parent': write.wr_id,
+                  'reply_subject': `Re: ${write.wr_subject}`,
+                }
+              )}
+            >
+              <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
+            {currentMbId == write.mb_id ? (
+              <>
+                <TouchableOpacity style={[styles.buttonCommon, styles.updateButton]} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
+                  <Text style={styles.buttonText}>수정</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.buttonCommon, styles.deleteButton]}
+                  onPress={() => showDeleteConfirm(
+                    bo_table, write, navigation, refreshWriteList
+                  )}>
+                  <Text style={styles.buttonText}>삭제</Text>
+                </TouchableOpacity>
+              </>
+            ): null}
           </View>
-        ): null}
+        )}
+        <TouchableOpacity onPress={() => setItemVisible(!itemVisible)}>
+          <Icon name="ellipsis-vertical" size={20} color="gray" />
+        </TouchableOpacity>
       </View>
       <View style={styles.metaContainer}>
         <View style={styles.authorAvatar}>
@@ -358,34 +379,56 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 16,
+    width: '98%',
+  },
+  buttonCommon: {
+    paddingVertical: 3,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    marginBottom: 10,
+    marginRight: 10,
+    width: 55,
+  },
+  replyButton: {
+    paddingVertical: 3,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.btn_green,
+    borderRadius: 4,
+    marginBottom: 10,
+    marginRight: 10,
+    width: 55,
   },
   updateButton: {
-    paddingVertical: 8,
+    paddingVertical: 3,
     paddingHorizontal: 16,
     backgroundColor: Colors.btn_blue,
     borderRadius: 4,
-    marginBottom: 16,
+    marginBottom: 10,
     marginRight: 10,
+    width: 55,
   },
   buttonText: {
     color: Colors.btn_text_white,
   },
   deleteButton: {
-    paddingVertical: 8,
+    paddingVertical: 3,
     paddingHorizontal: 16,
     backgroundColor: Colors.btn_gray,
     borderRadius: 4,
-    marginBottom: 16,
+    marginBottom: 10,
+    width: 55,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
     color: Colors.text_black,
+    width: '80%',
   },
   bindedButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    position: 'absolute',
+    top: 10,
+    right: 15,
   },
   metaContainer: {
     flexDirection: 'row',

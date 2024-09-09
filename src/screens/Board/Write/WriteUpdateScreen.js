@@ -19,7 +19,7 @@ import { Colors } from '../../../constants/theme';
 const WriteUpdateScreen = ({ navigation, route }) => {
   const { isLoggedIn } = useAuth();
   const webViewRef = useRef(null);
-  const { bo_table, write } = route.params;
+  const { bo_table, write, wr_parent, reply_subject } = route.params;
   const { refreshWriteList } = useWriteListRefresh();
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
   const [ boardInfoRequested, setBoardInfoRequested ] = useState(false);
@@ -36,10 +36,11 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     wr_homepage: write ? write.wr_homepage : '',
     notice: false,
     secret: write ? write.secret : false,
-    wr_subject: write ? write.wr_subject : '',
+    wr_subject: write ? write.wr_subject : (reply_subject ? reply_subject : ''),
     wr_content: write ? write.wr_content : '',
     wr_link1: write ? write.wr_link1 : '',
     wr_link2: write ? write.wr_link2 : '',
+    wr_parent: wr_parent ? wr_parent : 0,
   });
   const [ uploadFiles, setUploadFiles ] = useState({});
 
