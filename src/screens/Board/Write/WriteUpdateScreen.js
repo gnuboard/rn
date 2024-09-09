@@ -76,6 +76,92 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     webViewRef.current.injectJavaScript(`setEditorContent(${JSON.stringify(content)});`);
   };
 
+  const handleWriting = async (message, wr_id) => {
+    // wr_id가 있으면 게시글 수정, 없으면 새 게시글 작성
+    let wrId = wr_id;
+    let response;
+    try {
+      const dataToSend = {
+        ...formValue,
+        wr_content: message.data,
+        secret: formValue.secret ? "secret": "html1"
+      }
+
+      if (!wrId) {
+        response = await createWriteRequest(bo_table, dataToSend);
+      } else {
+        response = await updateWriteRequest(bo_table, wrId, dataToSend);
+      }
+
+      if (response.status === 200) {
+        if (!wrId) {
+          wrId = response.data.wr_id;
+        }
+        const fileFormData = new FormData();
+        Object.entries(uploadFiles).forEach(async ([_, value]) => {
+          if (value) {
+            fileFormData.append('files[]', {
+              name: value.name,
+              type: value.type,
+              uri: value.uri,
+            });
+          }
+        });
+        setWriteRefresh(!writeRefresh);
+        await refreshWriteList(bo_table);
+        if (fileFormData._parts.length) {
+          await uploadFilesRequest(bo_table, wrId, fileFormData);
+        }
+
+        // 작성된 게시글로 이동하기 위한 params 설정
+        let params = { bo_table, wr_id: wrId };
+        if (formValue.secret) {
+          const secretWriteResponse = await fetchSecretWriteRequest(bo_table, wrId, formValue.wr_password);
+          const writeData = secretWriteResponse.data;
+          params.isVerified = true;
+          params.writeData = writeData;
+        }
+
+        navigation.navigate(
+          'Boards',
+          {
+            screen: 'Write',
+            params: params,
+            initial: false,
+          }
+        );
+      }
+    } catch (error) {
+      if (error.response) {
+        const { error: errorDetails } = error.response.data;
+        Alert.alert(
+          'Error',
+          errorDetails.description,
+          [
+            {
+              text: '확인',
+              onPress: () => {
+                if (wrId) {
+                  navigation.navigate(
+                    'Boards',
+                    {
+                      screen: 'Write',
+                      params: { bo_table, wr_id: wrId },
+                      initial: false,
+                    }
+                  )
+                }
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        console.error('Error creating new write:', error);
+      }
+    }
+  }
+
   const handleMessage = async (event) => {
     try {
       const eventData = event.nativeEvent.data;
@@ -98,94 +184,10 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           }
           if (!write) {
             // 새게시글 작성
-            try {
-              const dataToSend = {
-                ...formValue,
-                wr_content: message.data,
-                secret: formValue.secret ? "secret": "html1"
-              }
-              const response = await createWriteRequest(bo_table, dataToSend);
-              if (response.status === 200) {
-                const wr_id = response.data.wr_id;
-                const fileFormData = new FormData();
-                wrId = wr_id;
-                Object.entries(uploadFiles).forEach(async ([_, value]) => {
-                  if (value) {
-                    fileFormData.append('files[]', {
-                      name: value.name,
-                      type: value.type,
-                      uri: value.uri,
-                    });
-                  }
-                });
-                await refreshWriteList(bo_table);
-                if (fileFormData._parts.length) {
-                  await uploadFilesRequest(bo_table, wr_id, fileFormData);
-                }
-
-                // 작성된 게시글로 이동하기 위한 params 설정
-                let params = { bo_table, wr_id };
-                if (formValue.secret) {
-                  const secretWriteResponse = await fetchSecretWriteRequest(bo_table, wrId, formValue.wr_password);
-                  const writeData = secretWriteResponse.data;
-                  params.isVerified = true;
-                  params.writeData = writeData;
-                }
-
-                navigation.navigate(
-                  'Boards',
-                  {
-                    screen: 'Write',
-                    params: params,
-                    initial: false,
-                  }
-                );
-              }
-            } catch (error) {
-              if (error.response) {
-                const { error: errorDetails } = error.response.data;
-                Alert.alert(
-                  'Error',
-                  errorDetails.description,
-                  [
-                    {
-                      text: '확인',
-                      onPress: () => {
-                        if (wrId) {
-                          navigation.navigate(
-                            'Boards',
-                            {
-                              screen: 'Write',
-                              params: { bo_table, wr_id: wrId },
-                              initial: false,
-                            }
-                          )
-                        }
-                      },
-                    },
-                  ],
-                  { cancelable: false }
-                );
-              } else {
-                console.error('Error creating new write:', error);
-              }
-            }
+            handleWriting(message);
           } else {
             // 게시글 수정
-            try {
-              const response = await updateWriteRequest(bo_table, write.wr_id, message.data);
-              if (response.status === 200) {
-                setWriteRefresh(!writeRefresh);
-                await refreshWriteList(bo_table);
-                navigation.goBack();
-              }
-            } catch (error) {
-              if (error.response.status === 403) {
-                alert(error.response.data.detail);
-              } else {
-                console.error('Error updating write:', error);
-              }
-            }
+            handleWriting(message, write.wr_id);
           }
           break
         case 'error':
