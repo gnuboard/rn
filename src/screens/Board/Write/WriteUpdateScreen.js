@@ -29,20 +29,19 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     bo_upload_count: 0,
   });
   const [ formValue, setFormValue ] = useState({
-    ca_name: '',
-    wr_name: '',
+    ca_name: write ? write.ca_name : '',
+    wr_name: write ? write.wr_name : '',
     wr_password: '',
-    wr_email: '',
-    wr_homepage: '',
+    wr_email: write ? write.wr_email : '',
+    wr_homepage: write ? write.wr_homepage : '',
     notice: false,
-    secret: false,
-    wr_subject: '',
-    wr_content: '',
-    wr_link1: '',
-    wr_link2: '',
+    secret: write ? write.secret : false,
+    wr_subject: write ? write.wr_subject : '',
+    wr_content: write ? write.wr_content : '',
+    wr_link1: write ? write.wr_link1 : '',
+    wr_link2: write ? write.wr_link2 : '',
   });
   const [ uploadFiles, setUploadFiles ] = useState({});
-  let wrId;
 
   useEffect(() => {
     fetchBoardConfigRequest(bo_table)
