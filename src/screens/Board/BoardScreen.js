@@ -46,7 +46,7 @@ const BoardListScreen = () => {
     <FlatList
       style={styles.container}
       data={boardWrites}
-      keyExtractor={(_, index) => index.toString()}
+      keyExtractor={(item, index) => `${item.bo_table}-${item.wr_id}-${index}`}
       renderItem={({ item }) => <BoardWrites title={item.title} bo_table={item.bo_table} data={item.data} />}
     />
   );

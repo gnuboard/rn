@@ -94,7 +94,7 @@ const WriteListScreen = ({ route }) => {
   const renderHeader = useCallback(() => (
     <FlatList
       data={notices}
-      keyExtractor={(item) => `notice-${item.wr_id}`}
+      keyExtractor={(item, index) => `notice-${item.wr_id}-${index}`}
       renderItem={renderNotice}
       scrollEnabled={false}
     />
@@ -115,7 +115,7 @@ const WriteListScreen = ({ route }) => {
       <WriteListToolbar bo_table={bo_table} />
       <FlatList
         data={writes}
-        keyExtractor={(item) => `write-${item.wr_id}`}
+        keyExtractor={(item, index) => `write-${item.wr_id}-${index}`}
         renderItem={renderItem}
         ListHeaderComponent={renderHeader}
         ListHeaderComponentStyle={styles.listHeader}

@@ -82,7 +82,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
       <FlatList
         data={writeData}
         renderItem={renderItem}
-        keyExtractor={item => item.wr_id.toString()}
+        keyExtractor={(item, index) => `galley-${item.wr_id}-${index}`}
         horizontal
         showsHorizontalScrollIndicator={false}
         snapToInterval={ITEM_WIDTH + 10} // Width + marginRight
