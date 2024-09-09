@@ -7,6 +7,7 @@ import { deleteCommentRequest } from '../../../services/api/ServerApi';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 import { CommentPasswordModal } from '../../Modals/Modal';
+import { getReplyPrefix } from '../../../utils/writeFunc';
 
 function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ itemVisible, setItemVisible ] = useState(false);
@@ -52,9 +53,9 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
     <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 10 }]}>
       <View style={styles.divider} />
       <View style={styles.commentHeader}>
-        {comment.wr_comment_reply.length > 0 && (
-          <Icon name="arrow-forward-outline" size={24} color="#000" />
-        )}
+        <Text style={styles.replyPrefix}>
+          {getReplyPrefix(comment.wr_comment_reply)}
+        </Text>
         <Image
           style={styles.avatar}
           source={{ uri: getMemberIconUri(comment) }}
@@ -222,6 +223,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: Colors.text_black,
   },
+  replyPrefix: {
+    color: Colors.text_black,
+  }
 });
 
 export default Comment;
