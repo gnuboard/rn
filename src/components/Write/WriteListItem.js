@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
-import { readWrite } from "../../utils/writeFunc";
+import { readWrite, getReplyPrefix } from "../../utils/writeFunc";
 import { Colors } from "../../constants/theme";
 
 const WriteListItem = ({ bo_table, write }) => {
@@ -18,7 +18,9 @@ const WriteListItem = ({ bo_table, write }) => {
     >
       <View style={styles.writeMainContainer}>
         {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
-        <Text style={styles.wrMainArg}>{write.wr_subject}</Text>
+        <Text style={styles.wrMainArg}>
+          {getReplyPrefix(write.wr_reply)}{write.wr_subject}
+        </Text>
         {write.wr_comment > 0 && <Text style={[styles.wrMainArg, styles.wrCommentText]}> {write.wr_comment}</Text>}
         {write.wr_link1 && <Icon name="link" style={[styles.wrMainArg, styles.wrLink]} />}
         {(write.normal_files.length > 0 || write.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}

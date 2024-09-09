@@ -15,3 +15,14 @@ export function readWrite(
     );
   }
 }
+
+export function getReplyPrefix(wr_reply) {
+  if (!wr_reply) {
+    return '';
+  }
+
+  let replyPrefix = '';
+  replyPrefix = '   '.repeat(wr_reply.length);
+  replyPrefix += '└ ';
+  return replyPrefix;
+}
