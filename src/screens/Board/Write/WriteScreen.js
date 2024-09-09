@@ -212,6 +212,9 @@ const WriteContentWeVview = ({ width, write }) => {
         </style>
       </head>
       <body>
+        ${write?.images.map(image =>
+          `<img src="${image.bf_file}" style="max-width: ${width}px; height: auto;" />`
+        )}
         ${write?.wr_content}
         <script>
           window.ReactNativeWebView.postMessage(document.body.scrollHeight);
