@@ -12,19 +12,19 @@ export const serverApi = axios.create({
   },
 });
 
-export const setupInterceptors = (logout) => {
-  serverApi.interceptors.request.use(
-    async (config) => {
-      const tokens = await getTokens();
-      if (tokens && tokens.access_token) {
-        config.headers.Authorization = `Bearer ${tokens.access_token}`;
-      }
-      return config;
-    },
-  
-    (error) => Promise.reject(error)
-  );
+serverApi.interceptors.request.use(
+  async (config) => {
+    const tokens = await getTokens();
+    if (tokens && tokens.access_token) {
+      config.headers.Authorization = `Bearer ${tokens.access_token}`;
+    }
+    return config;
+  },
 
+  (error) => Promise.reject(error)
+);
+
+export const setupInterceptors = (logout) => {
   serverApi.interceptors.response.use(
     (response) => response,
     async (error) => {
