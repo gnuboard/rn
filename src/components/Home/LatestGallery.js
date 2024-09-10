@@ -39,7 +39,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
     wr_id: item.wr_id,
     wr_subject: item.wr_subject,
     wr_option: item.wr_option,
-    imageUrl: `${Config.SERVER_URL}/${item.thumbnail.src}`,
+    imageUrl: `${item.thumbnail.src}`,
     date: dateToMonthDay(item.wr_datetime)
   }));
 
