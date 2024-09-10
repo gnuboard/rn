@@ -15,7 +15,7 @@ import LoginScreen from '../screens/Auth/Login/LoginScreen';
 import SignupScreen from '../screens/Auth/Signup/SignupScreen';
 import ProfileUpdateScreen from '../screens/Profile/ProfileUpdateScreen';
 import ZipScreen from '../screens/Zip/ZipScreen';
-import { logoutGetter } from '../services/api/ServerApi'
+import { logoutGetter, isLoggedInGetter } from '../services/api/ServerApi'
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -100,7 +100,8 @@ const AppNavigator = () => {
 
   useEffect(() => {
     logoutGetter(logout);
-  }, [logout]);
+    isLoggedInGetter(isLoggedIn);
+  }, [logout, isLoggedIn]);
 
   return (
     <NavigationContainer>

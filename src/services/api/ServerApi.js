@@ -13,17 +13,28 @@ export const serverApi = axios.create({
 });
 
 let logout = null;
+let isLoggedIn = null;
+let tokenInfo = null;
 
 export const logoutGetter = (logoutFunc) => {
   logout = logoutFunc;
 }
 
+export const isLoggedInGetter = (isLoggedInFunc) => {
+  isLoggedIn = isLoggedInFunc;
+}
+
 serverApi.interceptors.request.use(
   async (config) => {
-    const tokens = await getTokens();
-    if (tokens && tokens.access_token) {
-      config.headers.Authorization = `Bearer ${tokens.access_token}`;
+    if (!isLoggedIn) {
+      return config;
     }
+
+    if (!tokenInfo || !tokenInfo.access_token) {
+      tokenInfo = await getTokens();
+    }
+
+    config.headers.Authorization = `Bearer ${tokenInfo.access_token}`;
     return config;
   },
 
@@ -58,6 +69,7 @@ serverApi.interceptors.response.use(
           console.error('Failed to save renewed tokens');
           return;
         }
+        tokenInfo = newTokens;
         originalRequest.headers.Authorization = `Bearer ${access_token}`;
         console.log("Getting new tokens is successful. Retry original request");
         return serverApi(originalRequest);
