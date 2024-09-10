@@ -12,6 +12,12 @@ export const serverApi = axios.create({
   },
 });
 
+let logout = null;
+
+export const logoutGetter = (logoutFunc) => {
+  logout = logoutFunc;
+}
+
 serverApi.interceptors.request.use(
   async (config) => {
     const tokens = await getTokens();
@@ -24,51 +30,55 @@ serverApi.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-export const setupInterceptors = (logout) => {
-  serverApi.interceptors.response.use(
-    (response) => response,
-    async (error) => {
-      const originalRequest = error.config;
-  
-      if (axios.isAxiosError(error)) {
-        if (error.message === 'Network Error') {
-          console.error("axios response interceptors: Network Error");
-          throw error;
+serverApi.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (axios.isAxiosError(error)) {
+      if (error.message === 'Network Error') {
+        console.error("axios response interceptors: Network Error");
+        throw error;
+      }
+    };
+    
+    const tokens = await getTokens();
+
+    if (error.response.status === 401 && tokens && tokens.refresh_token) {
+      if (!logout) {
+        console.log("logout function is not set");
+        return;
+      }
+
+      try {
+        const newTokens = await renewTokenRequest(tokens.refresh_token);
+        const { access_token, refresh_token } = newTokens;
+        const saveTokenResult = await saveTokens(access_token, refresh_token);
+        if (!saveTokenResult.isSuccess) {
+          console.error('Failed to save renewed tokens');
+          return;
         }
-      };
-      
-      const tokens = await getTokens();
-  
-      if (error.response.status === 401 && tokens && tokens.refresh_token) {
-        try {
-          const newTokens = await renewTokenRequest(tokens.refresh_token);
-          const { access_token, refresh_token } = newTokens;
-          const saveTokenResult = await saveTokens(access_token, refresh_token);
-          if (!saveTokenResult.isSuccess) {
-            console.error('Failed to save renewed tokens');
-            return;
-          }
-          originalRequest.headers.Authorization = `Bearer ${access_token}`;
-          return serverApi(originalRequest);
-        } catch(error) {
-          const response = error.response;
-          if (response.status === 401 && response.data.detail.includes("Token has expired")) {
-            delete originalRequest.headers.Authorization;
-            const logoutResult = await logout();
-            if (logoutResult.isSuccess) {
-              return serverApi(originalRequest);
-            } else {
-              console.error("reponse interceptors, Failed to logout");
-            }
+        originalRequest.headers.Authorization = `Bearer ${access_token}`;
+        console.log("Getting new tokens is successful. Retry original request");
+        return serverApi(originalRequest);
+      } catch(error) {
+        const response = error.response;
+        if (response.status === 401 && response.data.detail.includes("Token has expired")) {
+          delete originalRequest.headers.Authorization;
+          const logoutResult = await logout();
+          if (logoutResult.isSuccess) {
+            return serverApi(originalRequest);
           } else {
-            console.error(error);
+            console.error("reponse interceptors, Failed to logout");
           }
+        } else {
+          console.error(error);
         }
       }
-      return Promise.reject(error);
     }
-  );
-}
+    return Promise.reject(error);
+  }
+);
 
 export const signupRequest = async (formData) => {
   try {

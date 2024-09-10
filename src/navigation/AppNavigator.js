@@ -7,7 +7,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { useAuth } from '../context/auth/AuthContext';
-import { setupInterceptors } from '../services/api/ServerApi';
 import HomeScreen from '../screens/Home/HomeScreen';
 import BoardStackScreen from '../screens/Board/BoardStackScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
@@ -16,6 +15,7 @@ import LoginScreen from '../screens/Auth/Login/LoginScreen';
 import SignupScreen from '../screens/Auth/Signup/SignupScreen';
 import ProfileUpdateScreen from '../screens/Profile/ProfileUpdateScreen';
 import ZipScreen from '../screens/Zip/ZipScreen';
+import { logoutGetter } from '../services/api/ServerApi'
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -99,7 +99,7 @@ const AppNavigator = () => {
   const { isLoggedIn, logout } = useAuth();
 
   useEffect(() => {
-    setupInterceptors(logout);
+    logoutGetter(logout);
   }, [logout]);
 
   return (
