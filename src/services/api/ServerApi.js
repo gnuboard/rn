@@ -75,7 +75,7 @@ serverApi.interceptors.response.use(
         return serverApi(originalRequest);
       } catch(error) {
         const response = error.response;
-        if (response.status === 401 && response.data.detail.includes("Token has expired")) {
+        if (response.status === 401 && response.data.detail.includes("Expired")) {
           delete originalRequest.headers.Authorization;
           const logoutResult = await logout();
           if (logoutResult.isSuccess) {
@@ -87,6 +87,8 @@ serverApi.interceptors.response.use(
           console.error(error);
         }
       }
+    } else {
+      console.error("response interceptors error", error);
     }
     return Promise.reject(error);
   }
