@@ -32,6 +32,9 @@ const WriteListItem = ({ bo_table, write }) => {
         <Text style={styles.wrSubArg}>비추 {write.nogood}</Text>
         <Text style={styles.wrSubArg}>
           {(() => {
+            if (!write.wr_datetime) {
+              return '';
+            }
             const date = new Date(write.wr_datetime);
             return date.toISOString().slice(2, 10).replace(/-/g, '-');
           })()}
