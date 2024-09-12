@@ -15,6 +15,17 @@ export const serverApi = axios.create({
 let logout = null;
 let isLoggedIn = null;
 let tokenInfo = null;
+let isRefreshing = false;
+let refreshSubscribers = [];
+
+function subscribeTokenRefresh(cb) {
+  refreshSubscribers.push(cb);
+}
+
+function onRefreshed(newToken) {
+  refreshSubscribers.forEach(cb => cb(newToken));
+  refreshSubscribers = [];
+}
 
 export const logoutGetter = (logoutFunc) => {
   logout = logoutFunc;
@@ -61,32 +72,46 @@ serverApi.interceptors.response.use(
         return;
       }
 
-      try {
-        const newTokens = await renewTokenRequest(tokens.refresh_token);
-        const { access_token, refresh_token } = newTokens;
-        const saveTokenResult = await saveTokens(access_token, refresh_token);
-        if (!saveTokenResult.isSuccess) {
-          console.error('Failed to save renewed tokens');
-          return;
-        }
-        tokenInfo = newTokens;
-        originalRequest.headers.Authorization = `Bearer ${access_token}`;
-        console.log("Getting new tokens is successful. Retry original request");
-        return serverApi(originalRequest);
-      } catch(error) {
-        const response = error.response;
-        if (response.status === 401 && response.data.detail.includes("Expired")) {
-          delete originalRequest.headers.Authorization;
-          const logoutResult = await logout();
-          if (logoutResult.isSuccess) {
-            return serverApi(originalRequest);
-          } else {
-            console.error("reponse interceptors, Failed to logout");
+      if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+          const newTokens = await renewTokenRequest(tokens.refresh_token);
+          const { access_token, refresh_token, access_token_expire_at, refresh_token_expire_at } = newTokens;
+          const saveTokenResult = await saveTokens(access_token, refresh_token, access_token_expire_at, refresh_token_expire_at);
+          if (!saveTokenResult.isSuccess) {
+            console.error('Failed to save renewed tokens');
+            return;
           }
-        } else {
-          console.error(error);
+          tokenInfo = newTokens;
+          originalRequest.headers.Authorization = `Bearer ${access_token}`;
+          isRefreshing = false;
+          onRefreshed(access_token);
+          console.log("Getting new tokens is successful. Retry original request");
+          return serverApi(originalRequest);
+        } catch(error) {
+          const response = error.response;
+          if (response.status === 401 && response.data.detail.includes("Expired")) {
+            delete originalRequest.headers.Authorization;
+            const logoutResult = await logout();
+            if (logoutResult.isSuccess) {
+              return serverApi(originalRequest);
+            } else {
+              console.error("reponse interceptors, Failed to logout");
+            }
+          } else {
+            console.error(error);
+          }
         }
       }
+
+      const retryOriginalRequest = new Promise((resolve) => {
+        subscribeTokenRefresh((access_token) => {
+          originalRequest.headers.Authorization = `Bearer ${access_token}`;
+          resolve(serverApi(originalRequest));
+        });
+      });
+
+      return retryOriginalRequest;
     } else {
       console.error("response interceptors error", error);
     }
