@@ -14,11 +14,13 @@ const BoardListScreen = () => {
 
   async function getAllBoardWrites() {
     try {
-      const freeResponse = await fetchWriteListRequest('free', { page: 1, per_page: PAGE_SIZE });
-      const galleryResponse = await fetchWriteListRequest('gallery', { page: 1, per_page: PAGE_SIZE });
-      const noticeResponse = await fetchWriteListRequest('notice', { page: 1, per_page: PAGE_SIZE });
-      const qaResponse = await fetchWriteListRequest('qa', { page: 1, per_page: PAGE_SIZE });
-      
+      const [freeResponse, galleryResponse, noticeResponse, qaResponse] = await Promise.all([
+        fetchWriteListRequest('free', { page: 1, per_page: PAGE_SIZE }),
+        fetchWriteListRequest('gallery', { page: 1, per_page: PAGE_SIZE }),
+        fetchWriteListRequest('notice', { page: 1, per_page: PAGE_SIZE }),
+        fetchWriteListRequest('qa', { page: 1, per_page: PAGE_SIZE }),
+      ]);
+
       setBoardWrites([
         { title: "자유게시판", bo_table: "free", data: freeResponse.data.writes },
         { title: "공지사항", bo_table: "notice", data: noticeResponse.data.writes },
