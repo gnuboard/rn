@@ -47,6 +47,8 @@ const LoginScreen = ({ navigation }) => {
   async function handleloginInfo (
     access_token,
     refresh_token,
+    access_token_expire_at,
+    refresh_token_expire_at,
     socialAccssToken,
     socialRefreshToken,
     login_method='server',
@@ -58,7 +60,9 @@ const LoginScreen = ({ navigation }) => {
       return { isSuccess: false, message: 'Failed to login - !access_token' };
     }
   
-    const saveTokenResult = await saveTokens(access_token, refresh_token);
+    const saveTokenResult = await saveTokens(
+      access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+    );
     if (!saveTokenResult.isSuccess) {
       setLoading(false);
       return { isSuccess: false, message: 'Failed to save tokens' };
@@ -87,8 +91,18 @@ const LoginScreen = ({ navigation }) => {
     try {
       // 소셜 로그인 서버 요청
       const serverSocialLoginResponse = await socialLoginRequest('naver', socialAccssToken);
-      const { access_token, refresh_token } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleloginInfo(access_token, refresh_token, socialAccssToken, socialRefreshToken, 'naver');
+      const {
+        access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+       } = serverSocialLoginResponse.data;
+      const tokenHandleResult = await handleloginInfo(
+        access_token,
+        refresh_token,
+        access_token_expire_at,
+        refresh_token_expire_at,
+        socialAccssToken,
+        socialRefreshToken,
+        'naver'
+      );
       if (!tokenHandleResult.isSuccess) {
         console.error(tokenHandleResult.message);
         return;
@@ -107,8 +121,18 @@ const LoginScreen = ({ navigation }) => {
         // 소셜 회원가입 서버 요청
         try {
           const serverSocialSignupResponse = await socialSignupRequest('naver', serverAccessToken, randomNick);
-          const { access_token, refresh_token } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleloginInfo(access_token, refresh_token, socialAccssToken, socialRefreshToken, 'naver');
+          const {
+            access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+          } = serverSocialSignupResponse.data;
+          const tokenHandleResult = await handleloginInfo(
+            access_token,
+            refresh_token,
+            access_token_expire_at,
+            refresh_token_expire_at,
+            socialAccssToken,
+            socialRefreshToken,
+            'naver'
+          );
           if (!tokenHandleResult.isSuccess) {
             console.error(tokenHandleResult.message);
             return;
@@ -137,8 +161,18 @@ const LoginScreen = ({ navigation }) => {
     try {
       // 소셜 로그인 서버 요청
       const serverSocialLoginResponse = await socialLoginRequest('kakao', socialAccssToken);
-      const { access_token, refresh_token } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleloginInfo(access_token, refresh_token, socialAccssToken, socialRefreshToken, 'kakao');
+      const {
+        access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+      } = serverSocialLoginResponse.data;
+      const tokenHandleResult = await handleloginInfo(
+        access_token,
+        refresh_token,
+        access_token_expire_at,
+        refresh_token_expire_at,
+        socialAccssToken,
+        socialRefreshToken,
+        'kakao'
+      );
       if (!tokenHandleResult.isSuccess) {
         console.error(tokenHandleResult.message);
         return;
@@ -156,8 +190,18 @@ const LoginScreen = ({ navigation }) => {
         // 소셜 회원가입 서버 요청
         try {
           const serverSocialSignupResponse = await socialSignupRequest('kakao', serverAccessToken, randomNick);
-          const { access_token, refresh_token } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleloginInfo(access_token, refresh_token, socialAccssToken, socialRefreshToken, 'kakao');
+          const {
+            access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+          } = serverSocialSignupResponse.data;
+          const tokenHandleResult = await handleloginInfo(
+            access_token,
+            refresh_token,
+            access_token_expire_at,
+            refresh_token_expire_at,
+            socialAccssToken,
+            socialRefreshToken,
+            'kakao'
+          );
           if (!tokenHandleResult.isSuccess) {
             console.error(tokenHandleResult.message);
             return;
@@ -198,8 +242,18 @@ const LoginScreen = ({ navigation }) => {
     try {
       // 소셜 로그인 서버 요청
       const serverSocialLoginResponse = await socialLoginRequest('google', socialAccssToken);
-      const { access_token, refresh_token } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleloginInfo(access_token, refresh_token, socialAccssToken, 'empty', 'google');
+      const {
+        access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+      } = serverSocialLoginResponse.data;
+      const tokenHandleResult = await handleloginInfo(
+        access_token,
+        refresh_token,
+        access_token_expire_at,
+        refresh_token_expire_at,
+        socialAccssToken,
+        'empty',
+        'google'
+      );
       if (!tokenHandleResult.isSuccess) {
         console.error(tokenHandleResult.message);
         return;
@@ -218,8 +272,18 @@ const LoginScreen = ({ navigation }) => {
         // 소셜 회원가입 서버 요청
         try {
           const serverSocialSignupResponse = await socialSignupRequest('google', serverAccessToken, randomNick);
-          const { access_token, refresh_token } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleloginInfo(access_token, refresh_token, socialAccssToken, 'empty', 'google');
+          const {
+            access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+          } = serverSocialSignupResponse.data;
+          const tokenHandleResult = await handleloginInfo(
+            access_token,
+            refresh_token,
+            access_token_expire_at,
+            refresh_token_expire_at,
+            socialAccssToken,
+            'empty',
+            'google'
+          );
           if (!tokenHandleResult.isSuccess) {
             console.error(tokenHandleResult.message);
             return;
@@ -241,8 +305,15 @@ const LoginScreen = ({ navigation }) => {
   async function login () {
     try {
       const response = await loginRequest(formValue.username, formValue.password);
-      const { access_token, refresh_token } = response.data;
-      const tokenHandleResult = await handleloginInfo(access_token, refresh_token);
+      const {
+        access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+      } = response.data;
+      const tokenHandleResult = await handleloginInfo(
+        access_token,
+        refresh_token,
+        access_token_expire_at,
+        refresh_token_expire_at
+      );
       if (!tokenHandleResult.isSuccess) {
         console.error(tokenHandleResult.message);
         return;

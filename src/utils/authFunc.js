@@ -10,9 +10,13 @@ export const saveCredentials = async (username, password) => {
   }
 };
 
-export const saveTokens = async (access_token, refresh_token) => {
+export const saveTokens = async (
+  access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
+) => {
   try {
     await Keychain.setInternetCredentials('auth_tokens', access_token, refresh_token);
+    await AsyncStorage.setItem('access_token_expire_at', access_token_expire_at);
+    await AsyncStorage.setItem('refresh_token_expire_at', refresh_token_expire_at);
     console.log('Tokens saved successfully');
     return { isSuccess: true };
   } catch (error) {
@@ -65,7 +69,9 @@ export const getCredentials = async () => {
 export const getTokens = async () => {
   try {
     const tokens = await Keychain.getInternetCredentials('auth_tokens');
-    return tokens ? { access_token: tokens.username, refresh_token: tokens.password } : null;
+    const access_token_expire_at = await AsyncStorage.getItem('access_token_expire_at');
+    const refresh_token_expire_at = await AsyncStorage.getItem('refresh_token_expire_at');
+    return tokens ? { access_token: tokens.username, refresh_token: tokens.password, access_token_expire_at, refresh_token_expire_at } : null;
   } catch (error) {
     console.error('Error retrieving tokens', error);
     return null;
