@@ -70,11 +70,6 @@ serverApi.interceptors.response.use(
     const tokens = await getTokens();
 
     if (error.response.status === 401 && tokens && tokens.refresh_token) {
-      if (!logout) {
-        console.log("logout function is not set");
-        return;
-      }
-
       if (!isRefreshing) {
         isRefreshing = true;
         try {
@@ -85,6 +80,10 @@ serverApi.interceptors.response.use(
             isRefreshing = false;
             if (!isLoggingOut) {
               isLoggingOut = true;
+              if (!logout) {
+                console.log("logout function is not set");
+                return Promise.reject(error);
+              }
               const logoutResult = await logout();
               if (logoutResult.isSuccess) {
                 Alert.alert(
