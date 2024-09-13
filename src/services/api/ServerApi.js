@@ -77,7 +77,6 @@ serverApi.interceptors.response.use(
           try {
             newTokens = await renewTokenRequest(tokens.refresh_token);
           } catch (error) {
-            isRefreshing = false;
             if (!isLoggingOut) {
               isLoggingOut = true;
               if (!logout) {
@@ -92,7 +91,9 @@ serverApi.interceptors.response.use(
                   [{
                     text: "확인",
                     onPress: () => {
+                      isRefreshing = false;
                       isLoggingOut = false;
+                      tokenInfo = null;
                       navigate("Home");
                     }
                   }]
