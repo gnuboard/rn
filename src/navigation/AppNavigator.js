@@ -16,6 +16,7 @@ import SignupScreen from '../screens/Auth/Signup/SignupScreen';
 import ProfileUpdateScreen from '../screens/Profile/ProfileUpdateScreen';
 import ZipScreen from '../screens/Zip/ZipScreen';
 import { logoutGetter, isLoggedInGetter } from '../services/api/ServerApi'
+import { navigationRef } from './RootNavigation';
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
@@ -104,7 +105,7 @@ const AppNavigator = () => {
   }, [logout, isLoggedIn]);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Drawer.Navigator>
         <Stack.Screen name="홈" component={MainStack} options={{headerShown: false}} />
         {isLoggedIn

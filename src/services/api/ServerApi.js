@@ -1,6 +1,8 @@
+import { Alert } from 'react-native';
 import axios from 'axios';
 import Config from 'react-native-config';
 import { getTokens, saveTokens } from '../../utils/authFunc';
+import { navigate } from '../../navigation/RootNavigation';
 
 const baseUrl = `${Config.SERVER_URL}/api/v1`;
 
@@ -16,6 +18,7 @@ let logout = null;
 let isLoggedIn = null;
 let tokenInfo = null;
 let isRefreshing = false;
+let isLoggingOut = false;
 let refreshSubscribers = [];
 
 function subscribeTokenRefresh(cb) {
@@ -75,7 +78,43 @@ serverApi.interceptors.response.use(
       if (!isRefreshing) {
         isRefreshing = true;
         try {
-          const newTokens = await renewTokenRequest(tokens.refresh_token);
+          let newTokens;
+          try {
+            newTokens = await renewTokenRequest(tokens.refresh_token);
+          } catch (error) {
+            isRefreshing = false;
+            if (!isLoggingOut) {
+              isLoggingOut = true;
+              const logoutResult = await logout();
+              if (logoutResult.isSuccess) {
+                Alert.alert(
+                  "로그아웃",
+                  "로그아웃 되었습니다. 홈화면으로 이동합니다.",
+                  [{
+                    text: "확인",
+                    onPress: () => {
+                      isLoggingOut = false;
+                      navigate("Home");
+                    }
+                  }]
+                );
+                return Promise.resolve();
+              } else {
+                console.error("reponse interceptors, Failed to logout");
+              }
+            }
+
+            const retryOriginalRequestWithNoToken = new Promise((resolve) => {
+              subscribeTokenRefresh(() => {
+                delete originalRequest.headers.Authorization;
+                console.log("original headers", originalRequest.headers.Authorization);
+                resolve(serverApi(originalRequest));
+              });
+            });
+
+            return retryOriginalRequestWithNoToken;
+          }
+
           const { access_token, refresh_token, access_token_expire_at, refresh_token_expire_at } = newTokens;
           const saveTokenResult = await saveTokens(access_token, refresh_token, access_token_expire_at, refresh_token_expire_at);
           if (!saveTokenResult.isSuccess) {
@@ -89,18 +128,7 @@ serverApi.interceptors.response.use(
           console.log("Getting new tokens is successful. Retry original request");
           return serverApi(originalRequest);
         } catch(error) {
-          const response = error.response;
-          if (response.status === 401 && response.data.detail.includes("Expired")) {
-            delete originalRequest.headers.Authorization;
-            const logoutResult = await logout();
-            if (logoutResult.isSuccess) {
-              return serverApi(originalRequest);
-            } else {
-              console.error("reponse interceptors, Failed to logout");
-            }
-          } else {
-            console.error(error);
-          }
+          return Promise.reject(error);
         }
       }
 
