@@ -103,16 +103,6 @@ serverApi.interceptors.response.use(
                 console.error("reponse interceptors, Failed to logout");
               }
             }
-
-            const retryOriginalRequestWithNoToken = new Promise((resolve) => {
-              subscribeTokenRefresh(() => {
-                delete originalRequest.headers.Authorization;
-                console.log("original headers", originalRequest.headers.Authorization);
-                resolve(serverApi(originalRequest));
-              });
-            });
-
-            return retryOriginalRequestWithNoToken;
           }
 
           const { access_token, refresh_token, access_token_expire_at, refresh_token_expire_at } = newTokens;
@@ -140,8 +130,6 @@ serverApi.interceptors.response.use(
       });
 
       return retryOriginalRequest;
-    } else {
-      console.error("response interceptors error", error);
     }
     return Promise.reject(error);
   }
@@ -180,7 +168,6 @@ export const renewTokenRequest = async (refresh_token) =>{
   )
   .then(res => res.data)
   .catch(error => {
-    console.error(error);
     throw error;
   });
 }
