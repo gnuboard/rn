@@ -12,6 +12,10 @@ export const Colors = {
   'link_icon_bg': '#edd3fd',
   'file_icon_bg': '#ffefb9',
   'checkbox_border': '#B0B0B0',
+  'dark_mode_background': '#333',
+  'dark_mode_text': '#f5f5f5',
+  'light_mode_background': '#f5f5f5',
+  'light_mode_text': '#333',
 }
 
 export const emptyAvatarPath = '/img/no_profile.gif'

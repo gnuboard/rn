@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import ThemedComponent, { useTheme } from '../../context/theme/ThemeContext';
 
 const SettingsScreen = () => {
+  const { getThemedBackgroundColor } = useTheme();
+
   return (
-    <View style={styles.container}>
-      <Text>Settings Screen</Text>
+    <View style={[styles.container, {backgroundColor: getThemedBackgroundColor()}]}>
+      <View style={styles.itemContainer}>
+        <ThemedComponent />
+      </View>
     </View>
   );
 };
@@ -12,8 +17,9 @@ const SettingsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  itemContainer: {
+    height: 100,
   },
 });
 
