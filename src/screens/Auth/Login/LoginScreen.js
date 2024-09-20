@@ -107,7 +107,7 @@ const LoginScreen = ({ navigation }) => {
       const serverSocialLoginResponse = await socialLoginRequest('naver', socialAccssToken);
       const {
         access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
-       } = serverSocialLoginResponse.data;
+      } = serverSocialLoginResponse.data;
       const tokenHandleResult = await handleloginInfo(
         access_token,
         refresh_token,
