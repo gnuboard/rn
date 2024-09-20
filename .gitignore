@@ -69,3 +69,6 @@ buck-out/
 
 # vscode
 .vscode/
+
+# google-services
+google-services.json
