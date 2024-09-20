@@ -3,14 +3,15 @@ import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteListRefresh } from '../../context/writes/RefreshContext';
+import { useTheme } from '../../context/theme/ThemeContext';
 import WriteListItem from '../../components/Write/WriteListItem';
-import { Colors } from '../../constants/theme';
 
 const PAGE_SIZE = 5;
 
 const BoardListScreen = () => {
   const [ boardWrites, setBoardWrites ] = useState(null);
   const { writeListRefresh } = useWriteListRefresh();
+  const { bgThemedColor, textThemedColor } = useTheme();
 
   async function getAllBoardWrites() {
     try {
@@ -38,15 +39,15 @@ const BoardListScreen = () => {
 
   if (!boardWrites) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.loading_text}>Loading...</Text>
+      <View style={[styles.container, bgThemedColor]}>
+        <Text style={[styles.loading_text, textThemedColor]}>Loading...</Text>
       </View>
     );
   }
 
   return (
     <FlatList
-      style={styles.container}
+      style={[styles.container, bgThemedColor]}
       data={boardWrites}
       keyExtractor={(item, index) => `${item.bo_table}-${item.wr_id}-${index}`}
       renderItem={({ item }) => <BoardWrites title={item.title} bo_table={item.bo_table} data={item.data} />}
@@ -56,9 +57,10 @@ const BoardListScreen = () => {
 
 const BoardWrites = ({ title, bo_table, data }) => {
   const navigation = useNavigation();
+  const { bgThemedColor, textThemedColor } = useTheme();
 
   return (
-    <View style={styles.section}>
+    <View style={[styles.section, bgThemedColor]}>
       <TouchableOpacity
         onPress={() => navigation.navigate(
           'Boards',
@@ -69,7 +71,7 @@ const BoardWrites = ({ title, bo_table, data }) => {
           }
         )}
       >
-        <Text style={styles.sectionTitle}>{title}</Text>
+        <Text style={[styles.sectionTitle, textThemedColor]}>{title}</Text>
       </TouchableOpacity>
       {data.map((write) => (
         <WriteListItem key={write.wr_id.toString()} bo_table={bo_table} write={write} />
@@ -90,11 +92,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
-    color: Colors.text_black,
   },
   loading_text: {
     fontSize: 24,
-    color: Colors.text_black,
   },
 });
 

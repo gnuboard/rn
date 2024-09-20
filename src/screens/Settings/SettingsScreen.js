@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import ThemedComponent, { useTheme } from '../../context/theme/ThemeContext';
 
 const SettingsScreen = () => {
-  const { getThemedBackgroundColor } = useTheme();
+  const { bgThemedColor } = useTheme();
 
   return (
-    <View style={[styles.container, {backgroundColor: getThemedBackgroundColor()}]}>
+    <View style={[styles.container, bgThemedColor]}>
       <View style={styles.itemContainer}>
         <ThemedComponent />
       </View>

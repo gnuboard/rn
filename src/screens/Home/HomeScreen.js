@@ -8,10 +8,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import messaging from '@react-native-firebase/messaging';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
-import { Colors } from '../../constants/theme';
+import { useTheme } from '../../context/theme/ThemeContext';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
+
 
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.openDrawer());
@@ -49,12 +51,13 @@ const HomeScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, bgThemedColor]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={openDrawer} style={styles.menuButton}>
-          <Icon name="menu" size={24} color="black" />
+          <Icon name="menu" size={24} color={getThemedTextColor()} />
         </TouchableOpacity>
-        <Text style={styles.title}>그누보드</Text>
+        <Text style={[styles.title, textThemedColor]}>그누보드</Text>
       </View>
       <ScrollView>
         <View style={styles.content}>
@@ -121,7 +124,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: Colors.text_black,
   },
   row: {
     flexDirection: 'row',

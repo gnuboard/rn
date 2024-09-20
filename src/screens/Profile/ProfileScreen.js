@@ -6,11 +6,13 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeQuotes } from '../../utils/stringFunc';
 import { useAuth } from '../../context/auth/AuthContext';
+import { useTheme } from '../../context/theme/ThemeContext';
 import { Colors } from '../../constants/theme';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 
 const ProfileScreen = ({ navigation }) => {
   const { isLoggedIn } = useAuth();
+  const { bgThemedColor, textThemedColor } = useTheme();
   const [ profileData, setProfileData ] = useState(null);
 
   useEffect(() => {
@@ -43,8 +45,8 @@ const ProfileScreen = ({ navigation }) => {
 
   if (!isLoggedIn) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>로그인이 필요합니다.</Text>
+      <View style={[styles.loadingContainer, bgThemedColor]}>
+        <Text style={[styles.loadingText, textThemedColor]}>로그인이 필요합니다.</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('로그인')}>
           <Text style={styles.buttonText}>로그인하러 가기</Text>
         </TouchableOpacity>
@@ -61,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, bgThemedColor]}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.header}>
           <Image 
@@ -77,9 +79,9 @@ const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.infoContainer}>
-          <Text style={styles.name}>{profileData.mb_name}</Text>
-          <Text style={styles.username}>@{profileData.mb_nick}</Text>
-          <Text style={styles.bio}>{profileData.mb_profile}</Text>
+          <Text style={[styles.name, textThemedColor]}>{profileData.mb_name}</Text>
+          <Text style={[styles.username, textThemedColor]}>@{profileData.mb_nick}</Text>
+          <Text style={[styles.bio, textThemedColor]}>{profileData.mb_profile}</Text>
 
           <View style={styles.detailsContainer}>
             <View style={styles.detailRowContainer}>

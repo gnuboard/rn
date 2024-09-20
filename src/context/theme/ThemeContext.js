@@ -36,11 +36,16 @@ export const ThemeProvider = ({ children }) => {
     return isDarkMode ? Colors.dark_mode_text : Colors.light_mode_text;
   }
 
+  const bgThemedColor = {backgroundColor: getThemedBackgroundColor()};
+  const textThemedColor = {color: getThemedTextColor()};
+
   const contextValue = {
     isDarkMode,
     toggleTheme,
     getThemedBackgroundColor,
     getThemedTextColor,
+    bgThemedColor,
+    textThemedColor,
   }
 
   return (

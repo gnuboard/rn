@@ -5,18 +5,20 @@ import {
 } from 'react-native';
 import { Agreement, SignupForm } from '../../../components/Auth/Signup/SignupForm';
 import { Colors } from '../../../constants/theme';
+import { useTheme } from '../../../context/theme/ThemeContext';
 
 const SignupScreen = ({ navigation }) => {
   const [ allAgreed, setAllAgreed ] = useState(false);
   const [ policySignup, setPolicySignup ] = useState(false);
   const [ policyPrivacy, setPolicyPrivacy ] = useState(false);
   const [ togglePressed, setTogglePressed ] = useState(false);
+  const { bgThemedColor } = useTheme();
 
   const toggleForm = () => setTogglePressed(!togglePressed);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={[styles.container, bgThemedColor]}>
         <View style={styles.formContainer}>
           {togglePressed ? (
             <SignupForm navigation={navigation} />

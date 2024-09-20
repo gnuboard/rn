@@ -6,6 +6,7 @@ import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
 import { logJson } from '../../utils/logFunc';
 import { useAuth } from '../../context/auth/AuthContext';
+import { useTheme } from '../../context/theme/ThemeContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
 import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
@@ -14,6 +15,7 @@ import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 const ProfileUpdateScreen = ({ navigation, route }) => {
   let imgFormData = new FormData();
   const { setIsLoggedIn } = useAuth();
+  const { bgThemedColor, textThemedColor } = useTheme();
   const [ disableEmailInput, setDisableEmailInput ] = useState(true);
   const [ formValue, setFormValue ] = useState({
     mb_nick: route.params.mb_nick,
@@ -196,161 +198,161 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
   const DyanamicTouchView = isSubmitReady ? TouchableOpacity : TouchableOpacity;
 
   return (
-    <>
-    <HeaderBackwardArrow navigation={navigation} />
-    <Text style={styles.title}>SiR</Text>
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-      <View style={styles.inputContainer}>
+    <View style={[styles.container, bgThemedColor]}>
+      <HeaderBackwardArrow navigation={navigation} />
+      <Text style={[styles.title, textThemedColor]}>SiR</Text>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput 
+            style={styles.input}
+            placeholder="별명"
+            placeholderTextColor={Colors.text_placeholder_black}
+            value={formValue.mb_nick}
+            onChangeText={(value) => handleChange('mb_nick', value)}
+          />
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>자동생성</Text>
+          </TouchableOpacity>
+        </View>
         <TextInput 
           style={styles.input}
-          placeholder="별명"
+          placeholder="이메일 주소"
           placeholderTextColor={Colors.text_placeholder_black}
-          value={formValue.mb_nick}
-          onChangeText={(value) => handleChange('mb_nick', value)}
+          value={formValue.mb_email}
+          onChangeText={(value) => handleChange('mb_email', value)}
+          editable={disableEmailInput}
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>자동생성</Text>
-        </TouchableOpacity>
-      </View>
-      <TextInput 
-        style={styles.input}
-        placeholder="이메일 주소"
-        placeholderTextColor={Colors.text_placeholder_black}
-        value={formValue.mb_email}
-        onChangeText={(value) => handleChange('mb_email', value)}
-        editable={disableEmailInput}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="이름"
-        placeholderTextColor={Colors.text_placeholder_black}
-        value={formValue.mb_name}
-        onChangeText={(value) => handleChange('mb_name', value)}
-      />
-      <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="휴대폰번호"
+          placeholder="이름"
           placeholderTextColor={Colors.text_placeholder_black}
-          value={formValue.mb_hp}
-          onChangeText={(value) => handleChange('mb_hp', value)}
+          value={formValue.mb_name}
+          onChangeText={(value) => handleChange('mb_name', value)}
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>인증하기</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="휴대폰번호"
+            placeholderTextColor={Colors.text_placeholder_black}
+            value={formValue.mb_hp}
+            onChangeText={(value) => handleChange('mb_hp', value)}
+          />
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>인증하기</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="우편번호"
+            placeholderTextColor={Colors.text_placeholder_black}
+            value={formValue.mb_zip}
+            onChangeText={(value) => handleChange('mb_zip', value)}
+            editable={false}
+          />
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Zip')}>
+            <Text style={styles.buttonText}>주소검색</Text>
+          </TouchableOpacity>
+        </View>
         <TextInput
           style={styles.input}
-          placeholder="우편번호"
+          placeholder="기본 주소"
           placeholderTextColor={Colors.text_placeholder_black}
-          value={formValue.mb_zip}
-          onChangeText={(value) => handleChange('mb_zip', value)}
-          editable={false}
+          value={formValue.mb_addr1}
+          onChangeText={(value) => handleChange('mb_addr1', value)}
         />
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Zip')}>
-          <Text style={styles.buttonText}>주소검색</Text>
-        </TouchableOpacity>
-      </View>
-      <TextInput
-        style={styles.input}
-        placeholder="기본 주소"
-        placeholderTextColor={Colors.text_placeholder_black}
-        value={formValue.mb_addr1}
-        onChangeText={(value) => handleChange('mb_addr1', value)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="상세 주소"
-        placeholderTextColor={Colors.text_placeholder_black}
-        value={formValue.mb_addr2}
-        onChangeText={(value) => handleChange('mb_addr2', value)}
-      />
-      <View style={styles.fileContainer}>
-        <TouchableOpacity 
-          style={styles.fileButton} 
-          onPress={() => handleFilePick('mb_icon')}
-        >
-          <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
-            회원 아이콘: {
-              formValue.mb_icon_path
-              ? (isEmptyAvatar(formValue.mb_icon_path) ? '선택된 파일 없음' : formValue.mb_icon_path )
-              : '선택된 파일 없음'
-            }
-          </Text>
-        </TouchableOpacity>
-        {
-          mbImages.mb_icon && (
-            <ImageWithDeleteButton
-              imageUri={mbImages.mb_icon.uri ? mbImages.mb_icon.uri : mbImages.mb_icon}
-              onDelete={onDeleteIcon}
-            />
-          )
-        }
-      </View>
-      <View style={styles.fileContainer}>
-        <TouchableOpacity 
-          style={styles.fileButton} 
-          onPress={() => handleFilePick('mb_img')}
-        >
-          <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
-            회원 이미지: {
-              formValue.mb_image_path
-              ? (isEmptyAvatar(formValue.mb_image_path) ? '선택된 파일 없음' : formValue.mb_image_path )
-              : '선택된 파일 없음'
-            }
-          </Text>
-        </TouchableOpacity>
-        {
-          mbImages.mb_img && (
-            <ImageWithDeleteButton
-              imageUri={mbImages.mb_img.uri ? mbImages.mb_img.uri : mbImages.mb_img}
-              onDelete={onDeleteImg}
-            />
-          )
-        }
-      </View>
-      <TextInput 
-        style={[styles.input, styles.multilineInput]} 
-        placeholder="자기소개"
-        placeholderTextColor={Colors.text_placeholder_black}
-        multiline
-        numberOfLines={4}
-        value={formValue.mb_profile}
-        onChangeText={(value) => handleChange('mb_profile', value)}
-      />
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() => handleChange('mb_open', !formValue.mb_open)}
-        >
-          <View style={[styles.checkboxInner, formValue.mb_open && styles.checkboxChecked]} />
-        </TouchableOpacity>
-        <Text style={styles.checkboxLabel}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
-      </View>
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() => handleChange('mb_alarm', !formValue.mb_alarm)}
-        >
-          <View style={[styles.checkboxInner, formValue.mb_alarm && styles.checkboxChecked]} />
-        </TouchableOpacity>
-        <Text style={styles.checkboxLabel}>알림설정 (이곳에서 알림을 받을수 있습니다)</Text>
-      </View>
-      <View style={styles.checkboxContainer}>
-        <TouchableOpacity
-          style={styles.checkbox}
-          onPress={() => handleChange('mb_dummy_data', !formValue.mb_dummy_data)}
-        >
-          <View style={[styles.checkboxInner, formValue.mb_dummy_data && styles.checkboxChecked]} />
-        </TouchableOpacity>
-        <Text style={styles.checkboxLabel}>더미데이터 동의 (내글을 다른분들이 사용할수 있습니다)</Text>
-      </View>
-      <DyanamicTouchView disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>수정하기</Text>
-      </DyanamicTouchView>
-    </ScrollView>
-    </>
+        <TextInput
+          style={styles.input}
+          placeholder="상세 주소"
+          placeholderTextColor={Colors.text_placeholder_black}
+          value={formValue.mb_addr2}
+          onChangeText={(value) => handleChange('mb_addr2', value)}
+        />
+        <View style={styles.fileContainer}>
+          <TouchableOpacity 
+            style={styles.fileButton} 
+            onPress={() => handleFilePick('mb_icon')}
+          >
+            <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
+              회원 아이콘: {
+                formValue.mb_icon_path
+                ? (isEmptyAvatar(formValue.mb_icon_path) ? '선택된 파일 없음' : formValue.mb_icon_path )
+                : '선택된 파일 없음'
+              }
+            </Text>
+          </TouchableOpacity>
+          {
+            mbImages.mb_icon && (
+              <ImageWithDeleteButton
+                imageUri={mbImages.mb_icon.uri ? mbImages.mb_icon.uri : mbImages.mb_icon}
+                onDelete={onDeleteIcon}
+              />
+            )
+          }
+        </View>
+        <View style={styles.fileContainer}>
+          <TouchableOpacity 
+            style={styles.fileButton} 
+            onPress={() => handleFilePick('mb_img')}
+          >
+            <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
+              회원 이미지: {
+                formValue.mb_image_path
+                ? (isEmptyAvatar(formValue.mb_image_path) ? '선택된 파일 없음' : formValue.mb_image_path )
+                : '선택된 파일 없음'
+              }
+            </Text>
+          </TouchableOpacity>
+          {
+            mbImages.mb_img && (
+              <ImageWithDeleteButton
+                imageUri={mbImages.mb_img.uri ? mbImages.mb_img.uri : mbImages.mb_img}
+                onDelete={onDeleteImg}
+              />
+            )
+          }
+        </View>
+        <TextInput 
+          style={[styles.input, styles.multilineInput]} 
+          placeholder="자기소개"
+          placeholderTextColor={Colors.text_placeholder_black}
+          multiline
+          numberOfLines={4}
+          value={formValue.mb_profile}
+          onChangeText={(value) => handleChange('mb_profile', value)}
+        />
+        <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={() => handleChange('mb_open', !formValue.mb_open)}
+          >
+            <View style={[styles.checkboxInner, formValue.mb_open && styles.checkboxChecked]} />
+          </TouchableOpacity>
+          <Text style={[styles.checkboxLabel, textThemedColor]}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
+        </View>
+        <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={() => handleChange('mb_alarm', !formValue.mb_alarm)}
+          >
+            <View style={[styles.checkboxInner, formValue.mb_alarm && styles.checkboxChecked]} />
+          </TouchableOpacity>
+          <Text style={[styles.checkboxLabel, textThemedColor]}>알림설정 (이곳에서 알림을 받을수 있습니다)</Text>
+        </View>
+        <View style={styles.checkboxContainer}>
+          <TouchableOpacity
+            style={styles.checkbox}
+            onPress={() => handleChange('mb_dummy_data', !formValue.mb_dummy_data)}
+          >
+            <View style={[styles.checkboxInner, formValue.mb_dummy_data && styles.checkboxChecked]} />
+          </TouchableOpacity>
+          <Text style={[styles.checkboxLabel, textThemedColor]}>더미데이터 동의 (내글을 다른분들이 사용할수 있습니다)</Text>
+        </View>
+        <DyanamicTouchView disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>수정하기</Text>
+        </DyanamicTouchView>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -372,8 +374,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 15,
     textAlign: 'center',
-    backgroundColor: '#fff',
-    color: Colors.text_black,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -445,7 +445,6 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     flex: 1,
     fontSize: 13,
-    color: Colors.text_black,
   },
   submitButton: {
     backgroundColor: Colors.btn_blue,

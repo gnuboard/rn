@@ -5,6 +5,7 @@ import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
+import { useTheme } from '../../../context/theme/ThemeContext';
 
 const PAGE_SIZE = 10;
 
@@ -19,6 +20,7 @@ const WriteListScreen = ({ route }) => {
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { cacheWrites, setCacheWrites } = useCacheWrites();
+  const { bgThemedColor } = useTheme();
 
   useEffect(() => {
     if (cacheWrites[bo_table].writes.length > 0) {
@@ -88,7 +90,7 @@ const WriteListScreen = ({ route }) => {
   ), [bo_table]);
 
   const renderNotice = useCallback(({ item }) => (
-    <WriteListItem style={styles.noticeItem} bo_table={bo_table} write={item} />
+    <WriteListItem style={styles.noticeItem} bo_table={bo_table} write={item} isNotice={true} />
   ), [bo_table]);
 
   const renderHeader = useCallback(() => (
@@ -111,7 +113,7 @@ const WriteListScreen = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, bgThemedColor]}>
       <WriteListToolbar bo_table={bo_table} />
       <FlatList
         data={writes}

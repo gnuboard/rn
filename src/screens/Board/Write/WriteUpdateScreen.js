@@ -14,10 +14,12 @@ import {
 } from '../../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
+import { useTheme } from '../../../context/theme/ThemeContext';
 import { Colors } from '../../../constants/theme';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   const { isLoggedIn } = useAuth();
+  const { bgThemedColor, textThemedColor } = useTheme();
   const webViewRef = useRef(null);
   const { bo_table, write, wr_parent, reply_subject } = route.params;
   const { refreshWriteList } = useWriteListRefresh();
@@ -225,7 +227,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           onPress={() => handleFilePick(`file${i+1}`)}
           key={i}
         >
-          <Text style={styles.fileButtonText} numberOfLines={1} ellipsizeMode="tail">
+          <Text style={[styles.fileButtonText]} numberOfLines={1} ellipsizeMode="tail">
             파일 #{i+1}: {uploadFiles[`file${i+1}`] ? uploadFiles[`file${i+1}`].name : '파일선택'}
           </Text>
         </TouchableOpacity>
@@ -235,7 +237,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, bgThemedColor]}>
       <HeaderBackwardArrow navigation={navigation} />
       <ScrollView style={styles.scrollContainer}>
         {boardInfo.bo_use_category === 1 && (
@@ -259,14 +261,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
         {!isLoggedIn && (
           <View style={styles.inputContainer}>
             <TextInput
-              style={[styles.input, styles.innerInput]}
+              style={[styles.input, styles.innerInput, textThemedColor]}
               placeholder="이름"
               placeholderTextColor={Colors.text_placeholder_black}
               value={formValue.wr_name}
               onChangeText={text => setFormValue({ ...formValue, wr_name: text })}
             />
             <TextInput
-              style={[styles.input, styles.innerInput]}
+              style={[styles.input, styles.innerInput, textThemedColor]}
               placeholder="비밀번호"
               placeholderTextColor={Colors.text_placeholder_black}
               secureTextEntry={true}
@@ -277,14 +279,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
         )}
         <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.input, styles.innerInput]}
+            style={[styles.input, styles.innerInput, textThemedColor]}
             placeholder="이메일"
             placeholderTextColor={Colors.text_placeholder_black}
             value={formValue.wr_email}
             onChangeText={text => setFormValue({ ...formValue, wr_email: text })}
           />
           <TextInput
-            style={[styles.input, styles.innerInput]}
+            style={[styles.input, styles.innerInput, textThemedColor]}
             placeholder="홈페이지"
             placeholderTextColor={Colors.text_placeholder_black}
             value={formValue.wr_homepage}
@@ -300,7 +302,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 onValueChange={() => setFormValue({ ...formValue, notice: !formValue.notice })}
                 tintColors={{ false: Colors.checkbox_border }}
               />
-              <Text style={styles.checkboxText}>공지글</Text>
+              <Text style={[styles.checkboxText, textThemedColor]}>공지글</Text>
             </View>
           )}
           <View style={styles.checkboxInnerContainer}>
@@ -311,11 +313,11 @@ const WriteUpdateScreen = ({ navigation, route }) => {
               onValueChange={() => setFormValue({ ...formValue, secret: !formValue.secret })}
               tintColors={{ false: Colors.checkbox_border }}
             />
-            <Text style={styles.checkboxText}>비밀글</Text>
+            <Text style={[styles.checkboxText, textThemedColor]}>비밀글</Text>
           </View>
         </View>
         <TextInput
-          style={styles.input}
+          style={[styles.input, textThemedColor]}
           placeholder="제목"
           placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.wr_subject}
@@ -329,14 +331,14 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           write={route.params.write}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, textThemedColor]}
           placeholder="링크 #1"
           placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.wr_link1}
           onChangeText={text => setFormValue({ ...formValue, wr_link1: text })}
         />
         <TextInput
-          style={styles.input}
+          style={[styles.input, textThemedColor]}
           placeholder="링크 #2"
           placeholderTextColor={Colors.text_placeholder_black}
           value={formValue.wr_link2}
@@ -425,7 +427,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
-    color: Colors.text_black,
   },
   innerInput: {
     width: '48%',

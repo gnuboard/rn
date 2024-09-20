@@ -5,6 +5,7 @@ import { CommentForm } from './CommentForm';
 import { Colors } from '../../../constants/theme';
 import { deleteCommentRequest } from '../../../services/api/ServerApi';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
+import { useTheme } from '../../../context/theme/ThemeContext';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 import { CommentPasswordModal } from '../../Modals/Modal';
 import { getReplyPrefix } from '../../../utils/writeFunc';
@@ -17,6 +18,7 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ isSecretCommentVisible, setIsSecretCommentVisible ] = useState(false);
   const [ secretCommentContent, setSecretCommentContent ] = useState(false);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
+  const { getThemedTextColor, textThemedColor } = useTheme();
 
   async function deleteComment() {
     Alert.alert(
@@ -53,7 +55,7 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
     <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 10 }]}>
       <View style={styles.divider} />
       <View style={styles.commentHeader}>
-        <Text style={styles.replyPrefix}>
+        <Text style={textThemedColor}>
           {getReplyPrefix(comment.wr_comment_reply)}
         </Text>
         <Image
@@ -62,8 +64,8 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
         />
         <View style={styles.commentContent}>
           <View style={styles.commentInfo}>
-            <Text style={styles.authorName}>{comment.wr_name}</Text>
-            <Text style={styles.dateTime}>{comment.wr_datetime}</Text>
+            <Text style={[styles.authorName, textThemedColor]}>{comment.wr_name}</Text>
+            <Text style={[styles.dateTime, textThemedColor]}>{comment.wr_datetime}</Text>
           </View>
           <View style={styles.commentBody}>
             {comment.is_secret ? (
@@ -75,8 +77,8 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
                       {display: isSecretCommentVisible ? "none" : "flex"}
                     ]}
                   >
-                    <Icon name="lock-closed" size={16} color="#757575" />
-                    <Text style={styles.commentText}>{comment.save_content}</Text>
+                    <Icon name="lock-closed" size={16} color={getThemedTextColor()} />
+                    <Text style={[styles.commentText, textThemedColor]}>{comment.save_content}</Text>
                   </View>
                 </TouchableOpacity>
                 <View
@@ -85,12 +87,12 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
                     {display: isSecretCommentVisible ? "flex" : "none"}
                   ]}
                 >
-                  <Icon name="lock-closed" size={16} color="#757575" />
-                  <Text style={styles.commentText}>{secretCommentContent}</Text>
+                  <Icon name="lock-closed" size={16} color={getThemedTextColor()} />
+                  <Text style={[styles.commentText, textThemedColor]}>{secretCommentContent}</Text>
                 </View>
               </>
             ) : (
-              <Text style={styles.commentText}>{comment.save_content}</Text>
+              <Text style={[styles.commentText, textThemedColor]}>{comment.save_content}</Text>
             )}
           </View>
         </View>
@@ -127,7 +129,7 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
           </View>
         )}
         <TouchableOpacity style={styles.iconButton} onPress={() => setItemVisible(!itemVisible)}>
-          <Icon name="ellipsis-vertical" size={20} color="gray" />
+          <Icon name="ellipsis-vertical" size={20} color={getThemedTextColor()} />
         </TouchableOpacity>
       </View>
       {isEditFormVisible &&(
@@ -183,11 +185,9 @@ const styles = StyleSheet.create({
   authorName: {
     fontWeight: 'bold',
     marginRight: 10,
-    color: Colors.text_black,
   },
   dateTime: {
     fontSize: 12,
-    color: Colors.text_black,
     marginRight: 10,
   },
   button: {
@@ -221,11 +221,7 @@ const styles = StyleSheet.create({
   },
   commentText: {
     marginLeft: 5,
-    color: Colors.text_black,
   },
-  replyPrefix: {
-    color: Colors.text_black,
-  }
 });
 
 export default Comment;

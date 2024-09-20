@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "../../context/theme/ThemeContext";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
 import { readWrite, getReplyPrefix } from "../../utils/writeFunc";
 import { Colors } from "../../constants/theme";
 
-const WriteListItem = ({ bo_table, write }) => {
+const WriteListItem = ({ bo_table, write, isNotice }) => {
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalWrId, setModalWrId ] = useState(null);
   const navigation = useNavigation();
+  const { getThemedTextColor } = useTheme();
+  const textThemeColor = {color: (isNotice ? Colors.text_black : getThemedTextColor())}
 
   return (
     <TouchableOpacity
@@ -17,8 +20,8 @@ const WriteListItem = ({ bo_table, write }) => {
       onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation)}
     >
       <View style={styles.writeMainContainer}>
-        {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" style={styles.wrMainArg} />}
-        <Text style={styles.wrMainArg}>
+        {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color={getThemedTextColor()} style={styles.wrMainArg} />}
+        <Text style={[styles.wrMainArg, textThemeColor]}>
           {getReplyPrefix(write.wr_reply)}{write.wr_subject}
         </Text>
         {write.wr_comment > 0 && <Text style={[styles.wrMainArg, styles.wrCommentText]}> {write.wr_comment}</Text>}
@@ -26,11 +29,11 @@ const WriteListItem = ({ bo_table, write }) => {
         {(write.normal_files.length > 0 || write.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
       </View>
       <View style={styles.writeSubContainer}>
-        <Text style={styles.wrSubArg}>{write.wr_name}</Text>
-        <Text style={styles.wrSubArg}>조회수 {write.wr_hit}</Text>
-        <Text style={styles.wrSubArg}>추천 {write.good}</Text>
-        <Text style={styles.wrSubArg}>비추 {write.nogood}</Text>
-        <Text style={styles.wrSubArg}>
+        <Text style={[styles.wrSubArg, textThemeColor]}>{write.wr_name}</Text>
+        <Text style={[styles.wrSubArg, textThemeColor]}>조회수 {write.wr_hit}</Text>
+        <Text style={[styles.wrSubArg, textThemeColor]}>추천 {write.good}</Text>
+        <Text style={[styles.wrSubArg, textThemeColor]}>비추 {write.nogood}</Text>
+        <Text style={[styles.wrSubArg, textThemeColor]}>
           {(() => {
             if (!write.wr_datetime) {
               return '';
@@ -64,7 +67,6 @@ const styles = StyleSheet.create({
   },
   wrMainArg: {
     marginRight: 5,
-    color: Colors.text_black,
   },
   writeSubContainer: {
     flexDirection: 'row',
@@ -72,7 +74,6 @@ const styles = StyleSheet.create({
   wrSubArg: {
     marginRight: 10,
     fontSize: 11,
-    color: Colors.text_black,
   },
   wrCommentText: {
     textAlign: 'center',

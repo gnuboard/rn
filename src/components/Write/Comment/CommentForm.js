@@ -5,6 +5,7 @@ import {
 import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
+import { useTheme } from '../../../context/theme/ThemeContext';
 import { createCommentRequest, updateCommentRequest } from '../../../services/api/ServerApi';
 
 export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, isUpdateComment }) {
@@ -18,6 +19,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
     wr_secret_checked: false,
     comment_id: comment?.wr_id ? comment.wr_id : 0,
   });
+  const { textThemedColor } = useTheme();
 
   async function submitComment() {
     const dataToSend = {
@@ -79,7 +81,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
     <View style={styles.container}>
       <View style={styles.divider} />
       <TextInput
-        style={styles.input}
+        style={[styles.input, textThemedColor]}
         multiline
         numberOfLines={3}
         placeholder="댓글내용을 입력해주세요"
@@ -94,7 +96,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
         {!isLoggedIn && (
           <View style={styles.nonLoginInputs}>
             <TextInput
-              style={styles.smallInput}
+              style={[styles.smallInput, textThemedColor]}
               placeholder="작성자 이름"
               placeholderTextColor={Colors.text_placeholder_black}
               value={commentFormValue.wr_name}
@@ -104,7 +106,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
               })}
             />
             <TextInput
-              style={styles.smallInput}
+              style={[styles.smallInput, textThemedColor]}
               placeholder="비밀번호"
               placeholderTextColor={Colors.text_placeholder_black}
               secureTextEntry
@@ -128,7 +130,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
                 wr_secret_checked: value
               })}
             />
-            <Text style={styles.secretCommentText}>비밀댓글</Text>
+            <Text style={[styles.secretCommentText, textThemedColor]}>비밀댓글</Text>
           </View>
           <TouchableOpacity
             style={styles.submitButton}
@@ -157,7 +159,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     marginBottom: 10,
-    color: Colors.text_black,
   },
   formFooter: {
     marginTop: 10,
@@ -173,7 +174,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     width: '48%',
-    color: Colors.text_black,
   },
   errorText: {
     color: 'red',
@@ -192,7 +192,6 @@ const styles = StyleSheet.create({
   secretCommentText: {
     marginLeft: 8,
     fontSize: 14,
-    color: Colors.text_black,
   },
   submitButton: {
     backgroundColor: Colors.btn_blue,

@@ -4,9 +4,9 @@ import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
+import { useTheme } from '../../context/theme/ThemeContext';
 import { WritePasswordModal } from '../Modals/Modal';
 import { readWrite } from '../../utils/writeFunc';
-import { Colors } from '../../constants/theme';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -19,6 +19,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();
+  const { textThemedColor } = useTheme();
 
   useEffect(() => {
     fetchWriteListRequest(bo_table, { view_type, rows})
@@ -54,10 +55,10 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
           resizeMode="cover"
         />
         <View style={styles.textContainer}>
-          <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
+          <Text style={[styles.itemTitle, textThemedColor]} numberOfLines={1} ellipsizeMode="tail">
             {item.wr_subject}
           </Text>
-          <Text style={styles.itemDate}>{item.date}</Text>
+          <Text style={[styles.itemDate, textThemedColor]}>{item.date}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -76,7 +77,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
         )}
         activeOpacity={1}
       >
-        <Text style={styles.title}>갤러리</Text>
+        <Text style={[styles.title, textThemedColor]}>갤러리</Text>
       </TouchableOpacity>
       <FlatList
         data={writeData}
@@ -107,7 +108,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     paddingHorizontal: 16,
-    color: Colors.text_black,
   },
   itemContainer: {
     width: ITEM_WIDTH,
@@ -128,11 +128,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     marginRight: 8,
-    color: Colors.text_black,
   },
   itemDate: {
     fontSize: 12,
-    color: Colors.text_black,
   },
 });
 

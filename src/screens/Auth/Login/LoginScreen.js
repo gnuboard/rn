@@ -18,6 +18,7 @@ import {
   getCredentials, saveSocialLoginTokens, getRandomNick
 } from '../../../utils/authFunc';
 import { useAuth } from '../../../context/auth/AuthContext';
+import { useTheme } from '../../../context/theme/ThemeContext';
 import { Colors } from '../../../constants/theme';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
 import kakaoLogo from '../../../assets/img/socialLogin/kakao/logo.png'
@@ -31,6 +32,7 @@ import {
 
 const LoginScreen = ({ navigation }) => {
   const { setIsLoggedIn, loading, setLoading } = useAuth();
+  const { bgThemedColor } = useTheme();
   const [ formValue, setFormValue ] = useState({
     username: '',
     password: '',
@@ -371,7 +373,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
+      <View style={[styles.container, bgThemedColor]}>
         <HeaderBackwardArrow navigation={navigation} />
         <View style={styles.formContainer}>
           <TextInput
@@ -439,7 +441,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
   },
   backButton: {
     position: 'absolute',

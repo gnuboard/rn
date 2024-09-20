@@ -13,6 +13,7 @@ import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { fetchWriteRequest, fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
+import { useTheme } from '../../../context/theme/ThemeContext';
 import { requestStoragePermission } from '../../../utils/os/android/permission';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 
@@ -26,6 +27,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { getCurrentUserData } = useAuth();
   const [ currentMbId, setCurrentMbId ] = useState(null);
   const [ itemVisible, setItemVisible ] = useState(false);
+  const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
 
   useEffect(() => {
     if (isVerified) {
@@ -107,9 +109,9 @@ const WriteScreen = ({ navigation, route }) => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, bgThemedColor]}>
       <View style={styles.subjectWithButton}>
-        <Text style={styles.title}>{write?.wr_subject}</Text>
+        <Text style={[styles.title, textThemedColor]}>{write?.wr_subject}</Text>
         {itemVisible && (
           <View style={styles.bindedButton}>
             <TouchableOpacity
@@ -142,7 +144,7 @@ const WriteScreen = ({ navigation, route }) => {
           </View>
         )}
         <TouchableOpacity onPress={() => setItemVisible(!itemVisible)}>
-          <Icon name="ellipsis-vertical" size={20} color="gray" />
+          <Icon name="ellipsis-vertical" size={20} color={getThemedTextColor()} />
         </TouchableOpacity>
       </View>
       <View style={styles.metaContainer}>
@@ -153,8 +155,8 @@ const WriteScreen = ({ navigation, route }) => {
           />
         </View>
         <View style={styles.metaInfo}>
-        <Text style={styles.author}>{write?.wr_name}</Text>
-          <Text style={styles.date}>{write?.wr_datetime}</Text>
+        <Text style={[styles.author, textThemedColor]}>{write?.wr_name}</Text>
+          <Text style={[styles.date, textThemedColor]}>{write?.wr_datetime}</Text>
         </View>
       </View>
       <WriteContentWeVview width={width} write={write} />
@@ -164,10 +166,10 @@ const WriteScreen = ({ navigation, route }) => {
             <Icon name="download" style={styles.wrFile} />
             <View>
               <View style={styles.fileSubject}>
-                <Text style={styles.fileName}>{file.bf_source}</Text>
-                <Text style={styles.fileSize}> ({file.bf_filesize}byte)</Text>
+                <Text style={[styles.fileName, textThemedColor]}>{file.bf_source}</Text>
+                <Text style={[styles.fileSize, textThemedColor]}> ({file.bf_filesize}byte)</Text>
               </View>
-              <Text style={styles.fileDownload}>{file.bf_download}회 다운로드 | Date: {file.bf_datetime}</Text>
+              <Text style={[styles.fileDownload, textThemedColor]}>{file.bf_download}회 다운로드 | Date: {file.bf_datetime}</Text>
             </View>
           </TouchableOpacity>
         ))
@@ -177,7 +179,7 @@ const WriteScreen = ({ navigation, route }) => {
           <View style={styles.linkContainer}>
             <Icon name="link" style={styles.wrLink} />
             <Text
-              style={styles.linkText}
+              style={[styles.linkText, textThemedColor]}
               onPress={() => {Linking.openURL(`${write.wr_link1}`)}}
             >
               {write.wr_link1}
@@ -199,7 +201,7 @@ const WriteScreen = ({ navigation, route }) => {
         )
       }
       <View style={styles.commentContainer}>
-        <Text style={styles.commentHeaderText}>댓글</Text>
+        <Text style={[styles.commentHeaderText, textThemedColor]}>댓글</Text>
         {comments.length > 0
         ? comments.map((comment, index) => (
             <Comment
@@ -210,7 +212,7 @@ const WriteScreen = ({ navigation, route }) => {
               currentMbId={currentMbId}
             />
           ))
-        : <Text style={styles.noCommentText}>등록된 댓글이 없습니다.</Text>}
+        : <Text style={[styles.noCommentText, textThemedColor]}>등록된 댓글이 없습니다.</Text>}
         <CommentForm bo_table={bo_table} wr_id={wr_id} />
       </View>
     </ScrollView>
@@ -371,7 +373,6 @@ const downloadFile = async (file) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
     padding: 16,
   },
   subjectWithButton: {
@@ -422,7 +423,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: Colors.text_black,
     width: '80%',
   },
   bindedButton: {
@@ -460,11 +460,9 @@ const styles = StyleSheet.create({
   author: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: Colors.text_black,
   },
   date: {
     fontSize: 14,
-    color: Colors.text_black,
   },
   content: {
     fontSize: 16,
@@ -477,11 +475,9 @@ const styles = StyleSheet.create({
   commentHeaderText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: Colors.text_black,
   },
   noCommentText: {
     textAlign: 'center',
-    color: Colors.text_black,
   },
   linkContainer: {
     flexDirection: 'row',
@@ -541,7 +537,6 @@ const styles = StyleSheet.create({
   },
   loading_text: {
     fontSize: 24,
-    color: Colors.text_black,
   },
 });
 
