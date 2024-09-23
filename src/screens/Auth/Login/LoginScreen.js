@@ -54,6 +54,8 @@ const LoginScreen = ({ navigation }) => {
     fetchPersonalInfo().then(() => {
       setFormValue({ username: '', password: '' });
       setSaveLoginInfo(false);
+      setLoading(false);
+      setIsLoggedIn(true);
       navigation.navigate('Home');
     });
   }
@@ -91,8 +93,6 @@ const LoginScreen = ({ navigation }) => {
       }
     }
 
-    setLoading(false);
-    setIsLoggedIn(true);
     return { isSuccess: true };
   }
 
