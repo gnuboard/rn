@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
@@ -322,21 +323,21 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           onChangeText={(value) => handleChange('mb_profile', value)}
         />
         <View style={styles.checkboxContainer}>
-          <TouchableOpacity
+          <CheckBox
             style={styles.checkbox}
-            onPress={() => handleChange('mb_open', !formValue.mb_open)}
-          >
-            <View style={[styles.checkboxInner, formValue.mb_open && styles.checkboxChecked]} />
-          </TouchableOpacity>
+            value={formValue.mb_open}
+            onValueChange={() => handleChange('mb_open', !formValue.mb_open)}
+            tintColors={{ false: Colors.checkbox_border }}
+          />
           <Text style={[styles.checkboxLabel, textThemedColor]}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
         </View>
         <View style={styles.checkboxContainer}>
-          <TouchableOpacity
+          <CheckBox
             style={styles.checkbox}
-            onPress={() => handleChange('mb_alarm', !formValue.mb_alarm)}
-          >
-            <View style={[styles.checkboxInner, formValue.mb_alarm && styles.checkboxChecked]} />
-          </TouchableOpacity>
+            value={formValue.mb_alarm}
+            onValueChange={() => handleChange('mb_alarm', !formValue.mb_alarm)}
+            tintColors={{ false: Colors.checkbox_border }}
+          />
           <Text style={[styles.checkboxLabel, textThemedColor]}>알림설정 (이곳에서 알림을 받을수 있습니다)</Text>
         </View>
         <View style={styles.checkboxContainer}>
