@@ -390,3 +390,18 @@ export const deleteCommentRequest = async (bo_table, wr_id, comment_id) => {
     throw error;
   }
 }
+
+export const enrollFCMTokenRequest = async (fcmToken, platform) => {
+  try {
+    const response = await serverApi.post(
+      '/alarm',
+      {
+        fcm_token: fcmToken,
+        platform: platform,
+      }
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}

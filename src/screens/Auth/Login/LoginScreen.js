@@ -5,9 +5,11 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import messaging from '@react-native-firebase/messaging';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import {
-  loginRequest, socialLoginRequest, socialSignupRequest
+  loginRequest, socialLoginRequest, socialSignupRequest,
+  enrollFCMTokenRequest
 } from '../../../services/api/ServerApi';
 import { fetchPersonalInfo, handleInputChange } from '../../../utils/componentsFunc';
 import { logJson } from '../../../utils/logFunc';
@@ -37,6 +39,16 @@ const LoginScreen = ({ navigation }) => {
   const passwordInputRef = useRef(null);
 
   async function handleAfterLogin () {
+    // Backend 서버에 Firebase Cloud Messaging Token 등록
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      try {
+        await enrollFCMTokenRequest(fcmToken, 'android');
+      } catch (error) {
+        logJson(error.response, true);
+      }
+    }
+
     fetchPersonalInfo().then(() => {
       setFormValue({ username: '', password: '' });
       setSaveLoginInfo(false);
