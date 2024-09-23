@@ -1,5 +1,6 @@
 import * as Keychain from 'react-native-keychain';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { profileKeys } from '../constants/profile';
 
 export const saveCredentials = async (username, password) => {
   try {
@@ -95,19 +96,7 @@ export const deleteAllSecureData = async () => {
 
 export const deleteUserInfo = async () => {
   try {
-    const keys = [
-      'mb_id',
-      'mb_nick',
-      'mb_email',
-      'mb_point',
-      'mb_profile',
-      'mb_icon_path',
-      'mb_image_path',
-      'mb_name',
-      'mb_memo_cnt',
-      'mb_scrap_cnt',
-    ];
-    await AsyncStorage.multiRemove(keys);
+    await AsyncStorage.multiRemove(profileKeys);
     return {isSuccess: true};
   } catch (error) {
     console.error('deleteUserInfo, Error deleting user info', error);

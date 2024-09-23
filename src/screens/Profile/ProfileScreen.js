@@ -9,6 +9,7 @@ import { useAuth } from '../../context/auth/AuthContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { Colors } from '../../constants/theme';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
+import { profileKeys } from '../../constants/profile';
 
 const ProfileScreen = ({ navigation }) => {
   const { isLoggedIn } = useAuth();
@@ -18,19 +19,7 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const keys = [
-          'mb_id',
-          'mb_nick',
-          'mb_email',
-          'mb_point',
-          'mb_profile',
-          'mb_icon_path',
-          'mb_image_path',
-          'mb_name',
-          'mb_memo_cnt',
-          'mb_scrap_cnt',
-        ];
-        const results = await AsyncStorage.multiGet(keys);
+        const results = await AsyncStorage.multiGet(profileKeys);
         const data = Object.fromEntries(
           results.map(([key, value]) => [key, removeQuotes(value)])
         );

@@ -5,6 +5,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { getTokens, deleteAllSecureData, deleteUserInfo } from '../../utils/authFunc';
 import { removeQuotes } from '../../utils/stringFunc';
 import { naverLogout } from '../../services/api/NaverApi';
+import { profileKeys } from '../../constants/profile';
 
 const AuthContext = createContext();
 
@@ -58,19 +59,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getCurrentUserData = async () => {
-    const keys = [
-      'mb_id',
-      'mb_nick',
-      'mb_email',
-      'mb_point',
-      'mb_profile',
-      'mb_icon_path',
-      'mb_image_path',
-      'mb_name',
-      'mb_memo_cnt',
-      'mb_scrap_cnt',
-    ];
-    const results = await AsyncStorage.multiGet(keys);
+    const results = await AsyncStorage.multiGet(profileKeys);
     const data = Object.fromEntries(
       results.map(([key, value]) => [key, removeQuotes(value)])
     );
