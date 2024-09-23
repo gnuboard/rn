@@ -340,15 +340,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           />
           <Text style={[styles.checkboxLabel, textThemedColor]}>알림설정 (이곳에서 알림을 받을수 있습니다)</Text>
         </View>
-        <View style={styles.checkboxContainer}>
-          <TouchableOpacity
-            style={styles.checkbox}
-            onPress={() => handleChange('mb_dummy_data', !formValue.mb_dummy_data)}
-          >
-            <View style={[styles.checkboxInner, formValue.mb_dummy_data && styles.checkboxChecked]} />
-          </TouchableOpacity>
-          <Text style={[styles.checkboxLabel, textThemedColor]}>더미데이터 동의 (내글을 다른분들이 사용할수 있습니다)</Text>
-        </View>
         <DyanamicTouchView disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>수정하기</Text>
         </DyanamicTouchView>
