@@ -1,7 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  View, Text, StyleSheet, ScrollView,
+  SafeAreaView, TouchableOpacity, PermissionsAndroid
+} from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import messaging from '@react-native-firebase/messaging';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
 import { Colors } from '../../constants/theme';
@@ -12,6 +16,37 @@ const HomeScreen = () => {
   const openDrawer = () => {
     navigation.dispatch(DrawerActions.openDrawer());
   }
+
+  useEffect(() => {
+    // 알람에 대한 권한을 요청합니다.
+    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+
+    //  메시지가 전송되었을 때, 백그라운드에서 처리할 로직을 작성할 수 있습니다.
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      console.log('Background handling', remoteMessage);
+    });
+
+    // 앱이 백그라운드에서 실행 중일 때, push 알림을 클릭하여 앱을 열었을 때 실행되는 로직을 작성할 수 있습니다.
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('Opening handling from background state', remoteMessage.notification);
+      navigation.navigate('Boards');
+    });
+
+    // 앱이 종료된 상태에서 push 알림을 클릭하여 앱을 열었을 때 실행되는 로직을 작성할 수 있습니다.
+    messaging().getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log('Opening handling from quit state', remoteMessage.notification,);
+          navigation.navigate('Profile');
+        }
+      });
+
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body);
+    });
+
+    return unsubscribe;
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
