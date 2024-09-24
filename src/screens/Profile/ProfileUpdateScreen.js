@@ -34,8 +34,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_open: route.params.mb_open == "1" ? true : false,
     mb_sms: route.params.mb_sms == "1" ? true : false,
     mb_mailing: route.params.mb_mailing == "1" ? true : false,
-    mb_alarm: false,
-    mb_dummy_data: false,
     mb_1: route.params.mb_1,
     mb_2: route.params.mb_2,
     mb_3: route.params.mb_3,
@@ -333,15 +331,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
             tintColors={{ false: Colors.checkbox_border }}
           />
           <Text style={[styles.checkboxLabel, textThemedColor]}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
-        </View>
-        <View style={styles.checkboxContainer}>
-          <CheckBox
-            style={styles.checkbox}
-            value={formValue.mb_alarm}
-            onValueChange={() => handleChange('mb_alarm', !formValue.mb_alarm)}
-            tintColors={{ false: Colors.checkbox_border }}
-          />
-          <Text style={[styles.checkboxLabel, textThemedColor]}>알림설정 (이곳에서 알림을 받을수 있습니다)</Text>
         </View>
         <DyanamicTouchView disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>수정하기</Text>
