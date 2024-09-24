@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
-  Platform, PermissionsAndroid
+  Platform, PermissionsAndroid, Linking
 } from 'react-native';
 import ThemedComponent, { useTheme } from '../../context/theme/ThemeContext';
 
@@ -22,13 +22,20 @@ const SettingsScreen = () => {
     }
   }, []);
 
+  const handleSettings = () => {
+    Linking.openSettings();
+  }
+
   return (
     <View style={[styles.container, bgThemedColor]}>
       <View style={styles.itemContainer}>
         <ThemedComponent />
       </View>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.itemContainer}>
+        <TouchableOpacity
+          style={styles.itemContainer}
+          onPress={handleSettings}
+        >
           <Text style={[styles.text, textThemedColor]}>
             알림설정:
             <Text style={[styles.text, textThemedColor]}>
