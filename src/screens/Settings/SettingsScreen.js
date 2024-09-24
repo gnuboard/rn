@@ -1,14 +1,41 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View, Text, StyleSheet, TouchableOpacity,
+  Platform, PermissionsAndroid
+} from 'react-native';
 import ThemedComponent, { useTheme } from '../../context/theme/ThemeContext';
 
 const SettingsScreen = () => {
-  const { bgThemedColor } = useTheme();
+  const { bgThemedColor, textThemedColor } = useTheme();
+  const [ isAlarmAllowed, setIsAlarmAllowed ] = useState(false);
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
+      .then(result => {
+        if (result === 'granted') {
+          setIsAlarmAllowed(true);
+        } else {
+          setIsAlarmAllowed(false);
+        }
+      });
+    }
+  }, []);
 
   return (
     <View style={[styles.container, bgThemedColor]}>
       <View style={styles.itemContainer}>
         <ThemedComponent />
+      </View>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.itemContainer}>
+          <Text style={[styles.text, textThemedColor]}>
+            알림설정:
+            <Text style={[styles.text, textThemedColor]}>
+              {isAlarmAllowed ? '허용' : '거부'}
+            </Text>
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -19,7 +46,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemContainer: {
+    justifyContent: 'center',
+    borderWidth: 0.5,
+    borderColor: 'gray',
     height: 100,
+    paddingLeft: 20,
+  },
+  text: {
+    fontSize: 24,
   },
 });
 
