@@ -1,5 +1,4 @@
 import React, { useState, useContext, createContext, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -56,48 +55,3 @@ export const ThemeProvider = ({ children }) => {
 };
 
 export const useTheme = () => useContext(ThemeContext);
-
-
-const ThemeToggle = () => {
-  const { isDarkMode, toggleTheme } = useTheme();
-
-  return (
-    <TouchableOpacity onPress={toggleTheme}>
-      <Text style={{fontSize: 24}} >{isDarkMode ? '🌙' : '☀️'}</Text>
-    </TouchableOpacity>
-  );
-};
-
-const ThemedComponent = () => {
-  const { getThemedBackgroundColor, getThemedTextColor } = useTheme();
-
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: getThemedBackgroundColor(),
-      flex: 1,
-      justifyContent: 'center',
-      borderWidth: 0.5,
-      borderColor: 'gray'
-    },
-    itemContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginLeft: 20,
-    },
-    text: {
-      color: getThemedTextColor(),
-      fontSize: 24,
-    },
-  });
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.itemContainer}>
-        <Text style={styles.text}>밝기모드 </Text>
-        <ThemeToggle />
-      </View>
-    </View>
-  );
-};
-
-export default ThemedComponent;

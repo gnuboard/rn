@@ -3,10 +3,10 @@ import {
   View, Text, StyleSheet, TouchableOpacity,
   Platform, PermissionsAndroid, Linking, AppState
 } from 'react-native';
-import ThemedComponent, { useTheme } from '../../context/theme/ThemeContext';
+import { useTheme } from '../../context/theme/ThemeContext';
 
 const SettingsScreen = () => {
-  const { bgThemedColor, textThemedColor } = useTheme();
+  const { bgThemedColor, textThemedColor, isDarkMode, toggleTheme } = useTheme();
   const [ isAlarmAllowed, setIsAlarmAllowed ] = useState(false);
   const [ isCheckingPermission, setIsCheckingPermission ] = useState(false);
   const appState = useRef(AppState.currentState);
@@ -70,22 +70,26 @@ const SettingsScreen = () => {
 
   return (
     <View style={[styles.container, bgThemedColor]}>
-      <View style={styles.itemContainer}>
-        <ThemedComponent />
-      </View>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.itemContainer}
-          onPress={handleSettings}
-        >
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={toggleTheme}
+      >
+        <Text style={[styles.text, textThemedColor]}>
+          밝기모드
+          <Text style={{fontSize: 24}} >{isDarkMode ? '🌙' : '☀️'}</Text>
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.itemContainer}
+        onPress={handleSettings}
+      >
+        <Text style={[styles.text, textThemedColor]}>
+          알림설정:
           <Text style={[styles.text, textThemedColor]}>
-            알림설정:
-            <Text style={[styles.text, textThemedColor]}>
-              {isAlarmAllowed ? '허용' : '거부'}
-            </Text>
+            {isAlarmAllowed ? '허용' : '거부'}
           </Text>
-        </TouchableOpacity>
-      </View>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
