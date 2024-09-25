@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, Alert,
+  View, Text, StyleSheet, ScrollView, Alert, Platform,
   SafeAreaView, TouchableOpacity, PermissionsAndroid
 } from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -21,7 +21,10 @@ const HomeScreen = () => {
 
   useEffect(() => {
     // 알람에 대한 권한을 요청합니다.
-    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    if (Platform.OS === 'android' && Platform.Version >= 33) {
+      // 안드로이드 13 이상의 버전에서만 알람 설정 권한을 요청합니다.
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+    }
 
     //  메시지가 전송되었을 때, 백그라운드에서 처리할 로직을 작성할 수 있습니다.
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
