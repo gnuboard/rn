@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
-  Platform, PermissionsAndroid, Linking, AppState
+  Platform, Linking, AppState
 } from 'react-native';
+import { Notifications } from 'react-native-notifications';
 import { useTheme } from '../../context/theme/ThemeContext';
 
 const SettingsScreen = () => {
@@ -16,16 +17,10 @@ const SettingsScreen = () => {
   useEffect(() => {
     const subscription = AppState.addEventListener('change', handleAppStateChange);
 
-    if (Platform.OS === 'android') {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS)
-      .then(result => {
-        if (result === 'granted') {
-          setIsAlarmAllowed(true);
-        } else {
-          setIsAlarmAllowed(false);
-        }
+    Notifications.isRegisteredForRemoteNotifications()
+      .then((registered) => {
+        setIsAlarmAllowed(registered);
       });
-    }
 
     return () => {
       subscription.remove();
@@ -53,14 +48,10 @@ const SettingsScreen = () => {
     lastCheckTime.current = Date.now();
 
     try {
-      const result = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-      );
-      if (result === 'granted') {
-        setIsAlarmAllowed(true);
-      } else {
-        setIsAlarmAllowed(false);
-      }
+      Notifications.isRegisteredForRemoteNotifications()
+      .then((registered) => {
+        setIsAlarmAllowed(registered);
+      });
     } catch (error) {
       console.error("Error requesting notification permission:", error);
     } finally {
