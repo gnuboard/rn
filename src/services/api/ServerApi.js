@@ -47,9 +47,6 @@ serverApi.interceptors.request.use(
     if (!tokenInfo || !tokenInfo.access_token) {
       tokenInfo = await getTokens();
     }
-    console.log("acces expire", tokenInfo.access_token_expire_at);
-    console.log("refresh expire", tokenInfo.refresh_token_expire_at);
-    // console.log("refesh token", tokenInfo.refresh_token);
 
     config.headers.Authorization = `Bearer ${tokenInfo.access_token}`;
     return config;
