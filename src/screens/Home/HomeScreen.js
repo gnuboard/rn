@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView,
+  View, Text, StyleSheet, ScrollView, Alert,
   SafeAreaView, TouchableOpacity, PermissionsAndroid
 } from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -31,7 +31,7 @@ const HomeScreen = () => {
     // 앱이 백그라운드에서 실행 중일 때, push 알림을 클릭하여 앱을 열었을 때 실행되는 로직을 작성할 수 있습니다.
     messaging().onNotificationOpenedApp(remoteMessage => {
       console.log('Opening handling from background state', remoteMessage.notification);
-      navigation.navigate('Boards');
+      handleMessage(remoteMessage);
     });
 
     // 앱이 종료된 상태에서 push 알림을 클릭하여 앱을 열었을 때 실행되는 로직을 작성할 수 있습니다.
@@ -44,11 +44,38 @@ const HomeScreen = () => {
       });
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body);
+      Alert.alert(
+        remoteMessage.notification.title,
+        remoteMessage.notification.body,
+        [
+          {
+            text: '취소',
+            style: 'cancel',
+          },
+          {
+            text: '확인',
+            onPress: () => handleMessage(remoteMessage),
+          }
+        ]
+      );
     });
 
     return unsubscribe;
   }, []);
+
+  const handleMessage = (remoteMessage) => {
+    if (remoteMessage.data.alarm_type === 'comment') {
+      const {bo_table, wr_id} = remoteMessage.data;
+      navigation.navigate(
+        'Boards',
+        {
+          screen: 'Write',
+          params: {bo_table, wr_id},
+          initial: false,
+        }
+      );
+    }
+  }
 
   return (
     <SafeAreaView
