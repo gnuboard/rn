@@ -68,12 +68,12 @@ const HomeScreen = () => {
 
   const handleMessage = (remoteMessage) => {
     if (remoteMessage.data.alarm_type === 'comment') {
-      const {bo_table, wr_id} = remoteMessage.data;
+      const {bo_table, wr_id, comment_id} = remoteMessage.data;
       navigation.navigate(
         'Boards',
         {
           screen: 'Write',
-          params: {bo_table, wr_id},
+          params: {bo_table, wr_id, comment_id},
           initial: false,
         }
       );

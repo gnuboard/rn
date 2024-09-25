@@ -18,7 +18,7 @@ import { requestStoragePermission } from '../../../utils/os/android/permission';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 
 const WriteScreen = ({ navigation, route }) => {
-  const { bo_table, wr_id, isVerified, writeData } = route.params;
+  const { bo_table, wr_id, isVerified, writeData, comment_id } = route.params;
   const [ write, setWrite ] = useState(null);
   const [ comments, setComments ] = useState([]);
   const { writeRefresh } = useWriteRefresh();
@@ -28,6 +28,8 @@ const WriteScreen = ({ navigation, route }) => {
   const [ currentMbId, setCurrentMbId ] = useState(null);
   const [ itemVisible, setItemVisible ] = useState(false);
   const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
+  const scrollViewRef = useRef(null);
+  const [componentPositions, setComponentPositions] = useState({});
 
   useEffect(() => {
     if (isVerified) {
@@ -46,6 +48,12 @@ const WriteScreen = ({ navigation, route }) => {
       fetchWriteTotally();
     }
   }, [bo_table, wr_id, writeData, writeRefresh]);
+
+  useEffect(() => {
+    if (comment_id && componentPositions[`comment_${comment_id}`]) {
+      scrollToComment(`comment_${comment_id}`);
+    }
+  }, [componentPositions])
 
   async function fetchWriteTotally() {
     try {
@@ -104,12 +112,26 @@ const WriteScreen = ({ navigation, route }) => {
     }
   }
 
+  const handleLayout = (id) => (event) => {
+    const layout = event.nativeEvent.layout;
+    setComponentPositions(prev => ({
+      ...prev,
+      [id]: layout.y
+    }));
+  };
+
+  const scrollToComment = (id) => {
+    if (scrollViewRef.current && componentPositions[id] !== undefined) {
+      scrollViewRef.current.scrollTo({ y: componentPositions[id], animated: true });
+    }
+  };
+
   if (!write) {
     return <Text style={styles.loading_text}>Loading...</Text>;
   }
 
   return (
-    <ScrollView style={[styles.container, bgThemedColor]}>
+    <ScrollView style={[styles.container, bgThemedColor]} ref={scrollViewRef}>
       <View style={styles.subjectWithButton}>
         <Text style={[styles.title, textThemedColor]}>{write?.wr_subject}</Text>
         {itemVisible && (
@@ -204,13 +226,14 @@ const WriteScreen = ({ navigation, route }) => {
         <Text style={[styles.commentHeaderText, textThemedColor]}>댓글</Text>
         {comments.length > 0
         ? comments.map((comment, index) => (
-            <Comment
-              key={index}
-              comment={comment}
-              bo_table={bo_table}
-              wr_id={wr_id}
-              currentMbId={currentMbId}
-            />
+            <View key={index} onLayout={handleLayout(`comment_${comment.wr_id}`)}>
+              <Comment
+                comment={comment}
+                bo_table={bo_table}
+                wr_id={wr_id}
+                currentMbId={currentMbId}
+              />
+            </View>
           ))
         : <Text style={[styles.noCommentText, textThemedColor]}>등록된 댓글이 없습니다.</Text>}
         <CommentForm bo_table={bo_table} wr_id={wr_id} />
