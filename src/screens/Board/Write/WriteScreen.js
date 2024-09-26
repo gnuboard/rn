@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, Linking,
   useWindowDimensions, TouchableOpacity, Alert, Platform
@@ -38,7 +38,7 @@ const WriteScreen = ({ navigation, route }) => {
   const [ itemVisible, setItemVisible ] = useState(false);
   const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
   const scrollViewRef = useRef(null);
-  const [componentPositions, setComponentPositions] = useState({});
+  const commentRefs = useRef({});
   const [ highlightedCommentId, setHighlightedCommentId ] = useState(null);
 
   useEffect(() => {
@@ -60,10 +60,10 @@ const WriteScreen = ({ navigation, route }) => {
   }, [bo_table, wr_id, writeData, writeRefresh]);
 
   useEffect(() => {
-    if (comment_id && componentPositions[`comment_${comment_id}`]) {
-      scrollToComment(`comment_${comment_id}`);
+    if (comment_id) {
+      scrollToComment();
     }
-  }, [componentPositions])
+  }, []);
 
   async function fetchWriteTotally() {
     try {
@@ -138,30 +138,51 @@ const WriteScreen = ({ navigation, route }) => {
     .catch(error => console.error("onCommentPageChange", error));
   }
 
-  const handleLayout = (id) => (event) => {
-    const layout = event.nativeEvent.layout;
-    setComponentPositions(prev => ({
-      ...prev,
-      [id]: layout.y
-    }));
-  };
+  const scrollToComment = useCallback(() => {
+    const promises = comments.map(comment =>
+      new Promise(resolve => {
+        if (commentRefs.current[comment.wr_id]) {
+          commentRefs.current[comment.wr_id].measureLayout(
+            scrollViewRef.current,
+            (x, y) => {
+              resolve({ id: comment.wr_id, y });
+            },
+            () => resolve(null)
+          );
+        } else {
+          resolve(null);
+        }
+      })
+    );
 
-  const scrollToComment = (id) => {
-    if (scrollViewRef.current && componentPositions[id] !== undefined) {
-      scrollViewRef.current.scrollTo({ y: componentPositions[id], animated: true });
+    Promise.all(promises).then(() => {
+      if (commentRefs.current[comment_id]) {
+        commentRefs.current[comment_id].measureLayout(
+          scrollViewRef.current,
+          (x, y) => {
+            scrollViewRef.current.scrollTo({ y, animated: true });
+          },
+          () => console.log('Failed to measure comment layout')
+        );
 
-      // Highlight comment after scrolling
-      setHighlightedCommentId(id);
-      setTimeout(() => setHighlightedCommentId(null), 2000);
-    }
-  };
+        // Highlight comment after scrolling
+        setHighlightedCommentId(`comment_${comment_id}`);
+        setTimeout(() => setHighlightedCommentId(null), 2000);
+      }
+    });
+  }, []);
 
   if (!write) {
     return <Text style={styles.loading_text}>Loading...</Text>;
   }
 
   return (
-    <ScrollView style={[styles.container, bgThemedColor]} ref={scrollViewRef}>
+    <ScrollView
+      style={[styles.container, bgThemedColor]}
+      ref={scrollViewRef}
+      onContentSizeChange={scrollToComment}
+      onLayout={scrollToComment}
+    >
       <View style={styles.subjectWithButton}>
         <Text style={[styles.title, textThemedColor]}>{write?.wr_subject}</Text>
         {itemVisible && (
@@ -258,7 +279,7 @@ const WriteScreen = ({ navigation, route }) => {
         ? comments.map((comment, index) => (
             <View
               key={index}
-              onLayout={handleLayout(`comment_${comment.wr_id}`)}
+              ref={ref => commentRefs.current[comment.wr_id] = ref}
             >
               <Comment
                 comment={comment}
