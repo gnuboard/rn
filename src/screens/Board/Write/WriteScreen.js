@@ -16,11 +16,13 @@ import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
 import { requestStoragePermission } from '../../../utils/os/android/permission';
 import { getMemberIconUri } from '../../../utils/fileFunc';
+import { Pagination } from '../../../components/Pagination/Pagination';
 
 const WriteScreen = ({ navigation, route }) => {
   const { bo_table, wr_id, isVerified, writeData, comment_id } = route.params;
   const [ write, setWrite ] = useState(null);
   const [ comments, setComments ] = useState([]);
+  const [ commentsPage, setCommentsPage ] = useState({ currentPage: 1, totalPages: 1});
   const { writeRefresh } = useWriteRefresh();
   const { refreshWriteList } = useWriteListRefresh();
   const { width } = useWindowDimensions();
@@ -68,6 +70,10 @@ const WriteScreen = ({ navigation, route }) => {
 
       // 댓글
       setComments(fetchCommentResponse.data.comments);
+      setCommentsPage({
+        currentPage: fetchCommentResponse.data.current_page,
+        totalPages: fetchCommentResponse.data.total_pages,
+      })
 
       // 현재 사용자 정보
       setCurrentMbId(currentUserData.mb_id);
@@ -110,6 +116,18 @@ const WriteScreen = ({ navigation, route }) => {
         return;
       }
     }
+  }
+
+  const onCommentPageChange = (page) => {
+    fetchCommentsRequest(bo_table, wr_id, page)
+    .then(response => {
+      setComments(response.data.comments);
+      setCommentsPage({
+        currentPage: response.data.current_page,
+        totalPages: response.data.total_pages,
+      });
+    })
+    .catch(error => console.error("onCommentPageChange", error));
   }
 
   const handleLayout = (id) => (event) => {
@@ -236,6 +254,13 @@ const WriteScreen = ({ navigation, route }) => {
             </View>
           ))
         : <Text style={[styles.noCommentText, textThemedColor]}>등록된 댓글이 없습니다.</Text>}
+        <View style={styles.commentsPAgeContainer}>
+          <Pagination
+            totalPages={commentsPage.totalPages}
+            currentPage={commentsPage.currentPage}
+            onPageChange={(page) => onCommentPageChange(page)}
+          />
+        </View>
         <CommentForm bo_table={bo_table} wr_id={wr_id} />
       </View>
     </ScrollView>
@@ -560,6 +585,9 @@ const styles = StyleSheet.create({
   },
   loading_text: {
     fontSize: 24,
+  },
+  commentsPAgeContainer: {
+    alignItems: 'center',
   },
 });
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Config from 'react-native-config';
 import { getTokens, saveTokens } from '../../utils/authFunc';
 import { navigate } from '../../navigation/RootNavigation';
+import { apiConfig } from './config/ServerApiConfig';
 
 const baseUrl = `${Config.SERVER_URL}/api/v1`;
 
@@ -333,9 +334,15 @@ export const uploadFilesRequest = async (bo_table, wr_id, formData) => {
   }
 }
 
-export const fetchCommentsRequest = async (bo_table, wr_id) => {
+export const fetchCommentsRequest = async (bo_table, wr_id, page) => {
+  if (!page) {
+    page = 1;
+  }
+
   try {
-    const response = await serverApi.get(`/boards/${bo_table}/writes/${wr_id}/comments`);
+    const response = await serverApi.get(
+      `/boards/${bo_table}/writes/${wr_id}/comments?per_page=${apiConfig.commentsPerPage}&page=${page}`
+    );
     return response;
   } catch (error) {
     throw error;
