@@ -39,6 +39,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
   const scrollViewRef = useRef(null);
   const commentRefs = useRef({});
+  const [ alarmCommentId, setAlarmCommentId ] = useState(comment_id);
   const [ highlightedCommentId, setHighlightedCommentId ] = useState(null);
 
   useEffect(() => {
@@ -60,9 +61,7 @@ const WriteScreen = ({ navigation, route }) => {
   }, [bo_table, wr_id, writeData, writeRefresh]);
 
   useEffect(() => {
-    if (comment_id) {
-      scrollToComment();
-    }
+    scrollToComment();
   }, []);
 
   async function fetchWriteTotally() {
@@ -156,8 +155,8 @@ const WriteScreen = ({ navigation, route }) => {
     );
 
     Promise.all(promises).then(() => {
-      if (commentRefs.current[comment_id]) {
-        commentRefs.current[comment_id].measureLayout(
+      if (commentRefs.current[alarmCommentId]) {
+        commentRefs.current[alarmCommentId].measureLayout(
           scrollViewRef.current,
           (x, y) => {
             scrollViewRef.current.scrollTo({ y, animated: true });
@@ -166,8 +165,11 @@ const WriteScreen = ({ navigation, route }) => {
         );
 
         // Highlight comment after scrolling
-        setHighlightedCommentId(`comment_${comment_id}`);
-        setTimeout(() => setHighlightedCommentId(null), 2000);
+        setHighlightedCommentId(`comment_${alarmCommentId}`);
+        setTimeout(() => {
+          setHighlightedCommentId(null);
+          setAlarmCommentId(null);
+        }, 2000);
       }
     });
   }, []);
@@ -180,7 +182,6 @@ const WriteScreen = ({ navigation, route }) => {
     <ScrollView
       style={[styles.container, bgThemedColor]}
       ref={scrollViewRef}
-      onContentSizeChange={scrollToComment}
       onLayout={scrollToComment}
     >
       <View style={styles.subjectWithButton}>
