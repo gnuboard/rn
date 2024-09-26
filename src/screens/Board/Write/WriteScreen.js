@@ -39,6 +39,7 @@ const WriteScreen = ({ navigation, route }) => {
   const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
   const scrollViewRef = useRef(null);
   const [componentPositions, setComponentPositions] = useState({});
+  const [ highlightedCommentId, setHighlightedCommentId ] = useState(null);
 
   useEffect(() => {
     if (isVerified) {
@@ -148,6 +149,10 @@ const WriteScreen = ({ navigation, route }) => {
   const scrollToComment = (id) => {
     if (scrollViewRef.current && componentPositions[id] !== undefined) {
       scrollViewRef.current.scrollTo({ y: componentPositions[id], animated: true });
+
+      // Highlight comment after scrolling
+      setHighlightedCommentId(id);
+      setTimeout(() => setHighlightedCommentId(null), 2000);
     }
   };
 
@@ -260,6 +265,7 @@ const WriteScreen = ({ navigation, route }) => {
                 bo_table={bo_table}
                 wr_id={wr_id}
                 currentMbId={currentMbId}
+                isHighlighted={highlightedCommentId === `comment_${comment.wr_id}`}
               />
             </View>
           ))

@@ -16,6 +16,7 @@ export const Colors = {
   'dark_mode_text': '#f5f5f5',
   'light_mode_background': '#f5f5f5',
   'light_mode_text': '#333',
+  'highlight_gray': 'gray',
 }
 
 export const emptyAvatarPath = '/img/no_profile.gif'

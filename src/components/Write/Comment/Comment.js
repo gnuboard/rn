@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+  View, Text, TouchableOpacity, StyleSheet,
+  Image, Alert, Animated
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CommentForm } from './CommentForm';
 import { Colors } from '../../../constants/theme';
@@ -10,7 +13,7 @@ import { getMemberIconUri } from '../../../utils/fileFunc';
 import { CommentPasswordModal } from '../../Modals/Modal';
 import { getReplyPrefix } from '../../../utils/writeFunc';
 
-function Comment({ comment, bo_table, wr_id, currentMbId }) {
+function Comment({ comment, bo_table, wr_id, currentMbId, isHighlighted }) {
   const [ itemVisible, setItemVisible ] = useState(false);
   const [ isEditFormVisible, setIsEditFormVisible ] = useState(false);
   const [ isUpdateComment, setIsUpdateComment ] = useState(false);
@@ -18,7 +21,30 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
   const [ isSecretCommentVisible, setIsSecretCommentVisible ] = useState(false);
   const [ secretCommentContent, setSecretCommentContent ] = useState(false);
   const { writeRefresh, setWriteRefresh } = useWriteRefresh();
-  const { getThemedTextColor, textThemedColor } = useTheme();
+  const { getThemedTextColor, textThemedColor, getThemedBackgroundColor } = useTheme();
+  const highlightAnimation = useRef(new Animated.Value(0)).current;
+  const highlightedBackgroundColor = highlightAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [getThemedBackgroundColor(), Colors.highlight_gray],
+  });
+
+  useEffect(() => {
+    if (isHighlighted) {
+      Animated.sequence([
+        Animated.timing(highlightAnimation, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: false,
+        }),
+        Animated.timing(highlightAnimation, {
+          toValue: 0,
+          duration: 300,
+          delay: 200,
+          useNativeDriver: false,
+        }),
+      ]).start();
+    }
+  }, [isHighlighted]);
 
   async function deleteComment() {
     Alert.alert(
@@ -52,7 +78,15 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
   }
 
   return (
-    <View style={[styles.container, { marginLeft: comment.wr_comment_reply.length * 10 }]}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          backgroundColor: highlightedBackgroundColor,
+          marginLeft: comment.wr_comment_reply.length * 10
+        }
+      ]}
+    >
       <View style={styles.divider} />
       <View style={styles.commentHeader}>
         <Text style={textThemedColor}>
@@ -150,7 +184,7 @@ function Comment({ comment, bo_table, wr_id, currentMbId }) {
         wr_id={wr_id}
         comment_id={comment.wr_id}
       />
-    </View>
+    </Animated.View>
   );
 }
 
