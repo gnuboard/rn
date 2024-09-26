@@ -9,6 +9,7 @@ import messaging from '@react-native-firebase/messaging';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
 import { useTheme } from '../../context/theme/ThemeContext';
+import { apiConfig } from '../../services/api/config/ServerApiConfig';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -68,12 +69,13 @@ const HomeScreen = () => {
 
   const handleMessage = (remoteMessage) => {
     if (remoteMessage.data.alarm_type === 'comment') {
-      const {bo_table, wr_id, comment_id} = remoteMessage.data;
+      const {bo_table, wr_id, comment_id, order} = remoteMessage.data;
+      const commentPage = Math.ceil(order / apiConfig.commentsPerPage);
       navigation.navigate(
         'Boards',
         {
           screen: 'Write',
-          params: {bo_table, wr_id, comment_id},
+          params: {bo_table, wr_id, comment_id, commentPage},
           initial: false,
         }
       );

@@ -19,7 +19,14 @@ import { getMemberIconUri } from '../../../utils/fileFunc';
 import { Pagination } from '../../../components/Pagination/Pagination';
 
 const WriteScreen = ({ navigation, route }) => {
-  const { bo_table, wr_id, isVerified, writeData, comment_id } = route.params;
+  const {
+    bo_table,
+    wr_id,
+    isVerified,
+    writeData,
+    comment_id,
+    commentPage,
+  } = route.params;
   const [ write, setWrite ] = useState(null);
   const [ comments, setComments ] = useState([]);
   const [ commentsPage, setCommentsPage ] = useState({ currentPage: 1, totalPages: 1});
@@ -61,7 +68,7 @@ const WriteScreen = ({ navigation, route }) => {
     try {
       const [ fetchWriteResponse, fetchCommentResponse, currentUserData ] = await Promise.all([
         fetchWriteRequest(bo_table, wr_id),
-        fetchCommentsRequest(bo_table, wr_id),
+        fetchCommentsRequest(bo_table, wr_id, commentPage),
         getCurrentUserData(),
       ]);
 
@@ -244,7 +251,10 @@ const WriteScreen = ({ navigation, route }) => {
         <Text style={[styles.commentHeaderText, textThemedColor]}>댓글</Text>
         {comments.length > 0
         ? comments.map((comment, index) => (
-            <View key={index} onLayout={handleLayout(`comment_${comment.wr_id}`)}>
+            <View
+              key={index}
+              onLayout={handleLayout(`comment_${comment.wr_id}`)}
+            >
               <Comment
                 comment={comment}
                 bo_table={bo_table}
