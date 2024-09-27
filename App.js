@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, TouchableWithoutFeedback, StyleSheet, Keyboard } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/context/auth/AuthContext';
 import { WriteListRefreshProvider, WriteRefreshProvider } from './src/context/writes/RefreshContext';
@@ -16,7 +16,12 @@ const App = () => {
           <WriteRefreshProvider>
           <SearchWritesProvider>
           <SafeAreaView style={styles.container}>
-            <AppNavigator />
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <AppNavigator />
+            </TouchableWithoutFeedback>
           </SafeAreaView>
           </SearchWritesProvider>
           </WriteRefreshProvider>

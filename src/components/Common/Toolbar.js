@@ -1,4 +1,5 @@
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { useSearchWrites } from '../../context/writes/SearchWritesContext';
@@ -9,6 +10,12 @@ export const WriteListToolbar = ({ bo_table }) => {
   const navigation = useNavigation();
   const { getThemedTextColor } = useTheme();
   const { isSearchInputActive, setIsSearchInputActive } = useSearchWrites();
+
+  useEffect(() => {
+    if (!isSearchInputActive) {
+      Keyboard.dismiss();
+    }
+  }, [isSearchInputActive]);
 
   const onSearchPress = () => {
     setIsSearchInputActive(!isSearchInputActive);
