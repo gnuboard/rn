@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/context/auth/AuthContext';
 import { WriteListRefreshProvider, WriteRefreshProvider } from './src/context/writes/RefreshContext';
+import { SearchWritesProvider } from './src/context/writes/SearchWritesContext';
 import { CacheWritesProvider } from './src/context/writes/CacheWritesContext';
 import { ThemeProvider } from './src/context/theme/ThemeContext';
 
@@ -13,9 +14,11 @@ const App = () => {
         <ThemeProvider>
           <WriteListRefreshProvider>
           <WriteRefreshProvider>
+          <SearchWritesProvider>
           <SafeAreaView style={styles.container}>
             <AppNavigator />
           </SafeAreaView>
+          </SearchWritesProvider>
           </WriteRefreshProvider>
           </WriteListRefreshProvider>
         </ThemeProvider>
