@@ -26,7 +26,7 @@ const WriteListItem = ({ bo_table, write, isNotice }) => {
         </Text>
         {write.wr_comment > 0 && <Text style={[styles.wrMainArg, styles.wrCommentText]}> {write.wr_comment}</Text>}
         {write.wr_link1 && <Icon name="link" style={[styles.wrMainArg, styles.wrLink]} />}
-        {(write.normal_files.length > 0 || write.images.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
+        {(write.normal_files?.length > 0 || write.images?.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
       </View>
       <View style={styles.writeSubContainer}>
         <Text style={[styles.wrSubArg, textThemeColor]}>{write.wr_name}</Text>
