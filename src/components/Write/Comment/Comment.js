@@ -13,7 +13,15 @@ import { getMemberIconUri } from '../../../utils/fileFunc';
 import { CommentPasswordModal } from '../../Modals/Modal';
 import { getReplyPrefix } from '../../../utils/writeFunc';
 
-function Comment({ comment, bo_table, wr_id, currentMbId, isHighlighted }) {
+function Comment({
+  comment,
+  bo_table,
+  wr_id,
+  currentMbId,
+  isHighlighted,
+  isCommentPageChanged,
+  setIsCommentPageChanged,
+}) {
   const [ itemVisible, setItemVisible ] = useState(false);
   const [ isEditFormVisible, setIsEditFormVisible ] = useState(false);
   const [ isUpdateComment, setIsUpdateComment ] = useState(false);
@@ -45,6 +53,14 @@ function Comment({ comment, bo_table, wr_id, currentMbId, isHighlighted }) {
       ]).start();
     }
   }, [isHighlighted]);
+
+  useEffect(() => {
+    if (isCommentPageChanged) {
+      setIsEditFormVisible(false);
+      setItemVisible(false);
+      setIsCommentPageChanged(false);
+    }
+  }, [isCommentPageChanged]);
 
   async function deleteComment() {
     Alert.alert(

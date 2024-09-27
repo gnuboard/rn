@@ -30,6 +30,7 @@ const WriteScreen = ({ navigation, route }) => {
   const [ write, setWrite ] = useState(null);
   const [ comments, setComments ] = useState([]);
   const [ commentsPage, setCommentsPage ] = useState({ currentPage: 1, totalPages: 1});
+  const [ isCommentPageChanged, setIsCommentPageChanged ] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { refreshWriteList } = useWriteListRefresh();
   const { width } = useWindowDimensions();
@@ -133,6 +134,7 @@ const WriteScreen = ({ navigation, route }) => {
         currentPage: response.data.current_page,
         totalPages: response.data.total_pages,
       });
+      setIsCommentPageChanged(true);
     })
     .catch(error => console.error("onCommentPageChange", error));
   }
@@ -288,6 +290,8 @@ const WriteScreen = ({ navigation, route }) => {
                 wr_id={wr_id}
                 currentMbId={currentMbId}
                 isHighlighted={highlightedCommentId === `comment_${comment.wr_id}`}
+                isCommentPageChanged={isCommentPageChanged}
+                setIsCommentPageChanged={setIsCommentPageChanged}
               />
             </View>
           ))
