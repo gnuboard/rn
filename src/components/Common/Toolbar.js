@@ -16,26 +16,26 @@ export const WriteListToolbar = ({ bo_table }) => {
 
   return (
     <View>
-    <View style={styles.toolbar}>
-      <TouchableOpacity style={styles.iconButton} onPress={onSearchPress}>
-        <Icon name="search" size={24} color={getThemedTextColor()} />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.iconButton}
-        onPress={() => navigation.navigate('WriteUpdate', {'bo_table': bo_table})}
-      >
-        <Icon name="create" size={24} color={getThemedTextColor()} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.iconButton}>
-        <Icon name="ellipsis-vertical" size={24} color={getThemedTextColor()} />
-      </TouchableOpacity>
-    </View>
-    <TextInput
-      style={[
-        styles.searchInput,
-        !isSearchingActive && {display: 'none'}
-      ]} 
-    />
+      <View style={styles.toolbar}>
+        <TouchableOpacity style={styles.iconButton} onPress={onSearchPress}>
+          <Icon name="search" size={24} color={getThemedTextColor()} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('WriteUpdate', {'bo_table': bo_table})}
+        >
+          <Icon name="create" size={24} color={getThemedTextColor()} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconButton}>
+          <Icon name="ellipsis-vertical" size={24} color={getThemedTextColor()} />
+        </TouchableOpacity>
+      </View>
+      <TextInput
+        style={[
+          styles.searchInput,
+          !isSearchingActive && {display: 'none'}
+        ]} 
+      />
     </View>
   );
 };
