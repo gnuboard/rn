@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { debounce } from 'lodash';
 import { Colors } from '../../constants/theme';
@@ -7,6 +7,12 @@ import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 export const SearchInput = () => {
   const { isSearchInputActive } = useSearchWrites();
   const [ searchTerm, setSearchTerm ] = useState('');
+
+  useEffect(() => {
+    if (!isSearchInputActive) {
+      setSearchTerm('');
+    }
+  }, [isSearchInputActive]);
 
   const debouncedSearch = useCallback(
     debounce((text) => {
