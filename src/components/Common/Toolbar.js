@@ -1,17 +1,17 @@
-import { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/theme/ThemeContext';
+import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchInput } from './Inputs';
 
 export const WriteListToolbar = ({ bo_table }) => {
   const navigation = useNavigation();
   const { getThemedTextColor } = useTheme();
-  const [ isSearchingActive, setIsSearchingActive ] = useState(false);
+  const { isSearchInputActive, setIsSearchInputActive } = useSearchWrites();
 
   const onSearchPress = () => {
-    setIsSearchingActive(!isSearchingActive);
+    setIsSearchInputActive(!isSearchInputActive);
   }
 
   return (
@@ -30,7 +30,7 @@ export const WriteListToolbar = ({ bo_table }) => {
           <Icon name="ellipsis-vertical" size={24} color={getThemedTextColor()} />
         </TouchableOpacity>
       </View>
-      <SearchInput isSearchingActive={isSearchingActive} />
+      <SearchInput onetable={bo_table}/>
     </View>
   );
 };

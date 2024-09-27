@@ -2,8 +2,10 @@ import React, { useState, useCallback } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { debounce } from 'lodash';
 import { Colors } from '../../constants/theme';
+import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 
-export const SearchInput = ({ isSearchingActive }) => {
+export const SearchInput = () => {
+  const { isSearchInputActive } = useSearchWrites();
   const [ searchTerm, setSearchTerm ] = useState('');
 
   const debouncedSearch = useCallback(
@@ -23,7 +25,7 @@ export const SearchInput = ({ isSearchingActive }) => {
       <TextInput
         style={[
           styles.searchInput,
-          !isSearchingActive && {display: 'none'}
+          !isSearchInputActive && {display: 'none'}
         ]} 
         value={searchTerm}
         onChangeText={handleTextChange}
