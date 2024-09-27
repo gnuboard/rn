@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/theme/ThemeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Colors } from '../../constants/theme';
+import { SearchInput } from './Inputs';
 
 export const WriteListToolbar = ({ bo_table }) => {
   const navigation = useNavigation();
@@ -30,12 +30,7 @@ export const WriteListToolbar = ({ bo_table }) => {
           <Icon name="ellipsis-vertical" size={24} color={getThemedTextColor()} />
         </TouchableOpacity>
       </View>
-      <TextInput
-        style={[
-          styles.searchInput,
-          !isSearchingActive && {display: 'none'}
-        ]} 
-      />
+      <SearchInput isSearchingActive={isSearchingActive} />
     </View>
   );
 };
@@ -47,13 +42,5 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     marginHorizontal: 8,
-  },
-  searchInput: {
-    marginTop: 15,
-    marginHorizontal: 8,
-    padding: 8,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: Colors.border_gray,
   },
 });
