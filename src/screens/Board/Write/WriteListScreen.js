@@ -31,12 +31,9 @@ const WriteListScreen = ({ route }) => {
     }
 
     if (writeListRefresh) {
-      setNotices([]);
-      setWrites([]);
-      setPage(1);
-      setHasMore(true);
-      setRefreshing(false);
+      refreshBoardWrites(bo_table);
       setWriteListRefresh(false);
+      setRefreshing(false);
     } else {
       loadMorePosts();
     }
@@ -85,6 +82,21 @@ const WriteListScreen = ({ route }) => {
     }
   };
 
+  const refreshBoardWrites = async (bo_table) => {
+    setNotices([]);
+    setWrites([]);
+    setPage(1);
+    setHasMore(true);
+    setCacheWrites(prevCacheWrites => ({
+      ...prevCacheWrites,
+      [bo_table]: {
+        page: 1,
+        notices: [],
+        writes: [],
+      },
+    }));
+  }
+
   const renderItem = useCallback(({ item }) => (
     <WriteListItem bo_table={bo_table} write={item} />
   ), [bo_table]);
@@ -130,18 +142,7 @@ const WriteListScreen = ({ route }) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => {
-              setPage(1);
-              setNotices([]);
-              setWrites([]);
-              setHasMore(true);
-              setCacheWrites(prevCacheWrites => ({
-                ...prevCacheWrites,
-                [bo_table]: {
-                  page: 1,
-                  notices: [],
-                  writes: [],
-                },
-              }));
+              refreshBoardWrites(bo_table);
               setWriteListRefresh(true);
               setRefreshing(true);
             }}
