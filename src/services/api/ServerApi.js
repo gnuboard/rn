@@ -395,6 +395,18 @@ export const deleteCommentRequest = async (bo_table, wr_id, comment_id) => {
   }
 }
 
+export const searchBoardWritesRequest = async (data) => {
+  try {
+    const response = await serverApi.get(
+      '/search',
+      { params: data }
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const enrollFCMTokenRequest = async (fcmToken, platform) => {
   try {
     const response = await serverApi.post(

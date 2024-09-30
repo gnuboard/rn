@@ -5,6 +5,7 @@ import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
+import { useSearchWrites } from '../../../context/writes/SearchWritesContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
 
 const PAGE_SIZE = 10;
@@ -20,6 +21,7 @@ const WriteListScreen = ({ route }) => {
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { cacheWrites, setCacheWrites } = useCacheWrites();
+  const { isSearchInputActive, searchedWrites } = useSearchWrites();
   const { bgThemedColor } = useTheme();
 
   useEffect(() => {
@@ -39,8 +41,16 @@ const WriteListScreen = ({ route }) => {
     }
   }, [writeRefresh, writeListRefresh]);
 
+  useEffect(() => {
+    if (isSearchInputActive) {
+      setWrites(searchedWrites);
+    } else {
+      setWrites(cacheWrites[bo_table].writes);
+    }
+  }, [isSearchInputActive, searchedWrites]);
+
   const loadMorePosts = async () => {
-    if (loading || !hasMore) {
+    if (loading || !hasMore || isSearchInputActive) {
       return;
     }
 
@@ -142,6 +152,9 @@ const WriteListScreen = ({ route }) => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={() => {
+              if (isSearchInputActive) {
+                return;
+              }
               refreshBoardWrites(bo_table);
               setWriteListRefresh(true);
               setRefreshing(true);
