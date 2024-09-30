@@ -28,6 +28,7 @@ export const WriteListRefreshProvider = ({ children }) => {
       ...prevCacheWrites,
       [bo_table]: {
         page: 1,
+        notices: [],
         writes: [],
       }
     }));
