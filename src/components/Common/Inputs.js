@@ -26,7 +26,9 @@ export const SearchInput = ({ onetable }) => {
   }, [isSearchInputActive]);
 
   useEffect(() => {
-    debouncedSearch(searchingData);
+    if (searchingData.stx.length >= 2) {
+      debouncedSearch(searchingData);
+    }
   }, [searchingData]);
 
   const debouncedSearch = useCallback(
