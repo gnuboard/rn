@@ -6,25 +6,28 @@ import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 import { searchBoardWritesRequest } from '../../services/api/ServerApi';
 
 export const SearchInput = ({ onetable }) => {
-  const { isSearchInputActive, setSearchedWrites } = useSearchWrites();
+  const { isSearchInputActive, setSearchedWrites, searchingData, setSearchingData } = useSearchWrites();
   const [ searchTerm, setSearchTerm ] = useState('');
-  const [ searchedData, setSearchedData ] = useState({
-    onetable,
-    page: 1,
-    per_page: 10,
-    stx: '',
-  });
 
   useEffect(() => {
     if (!isSearchInputActive) {
       setSearchTerm('');
+      setSearchingData({
+        ...searchingData,
+        stx: '',
+      });
       setSearchedWrites([]);
+    } else {
+      setSearchingData({
+        ...searchingData,
+        onetable,
+      })
     }
   }, [isSearchInputActive]);
 
   useEffect(() => {
-    debouncedSearch(searchedData);
-  }, [searchedData])
+    debouncedSearch(searchingData);
+  }, [searchingData]);
 
   const debouncedSearch = useCallback(
     debounce(async (searchData) => {
@@ -36,8 +39,8 @@ export const SearchInput = ({ onetable }) => {
 
   const handleTextChange = (text) => {
     setSearchTerm(text);
-    setSearchedData({
-      ...searchedData,
+    setSearchingData({
+      ...searchingData,
       stx: text,
     });
   };
