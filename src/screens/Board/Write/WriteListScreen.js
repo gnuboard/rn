@@ -44,9 +44,11 @@ const WriteListScreen = ({ route }) => {
 
   useEffect(() => {
     if (isSearchInputActive) {
+      setNotices([]);
       setWrites(searchedWrites);
       setIsSearched(true);
     } else {
+      setNotices(cacheWrites[bo_table].notices);
       setWrites(cacheWrites[bo_table].writes);
       setIsSearched(false);
     }
