@@ -56,6 +56,7 @@ const WriteScreen = ({ navigation, route }) => {
         }))
       })
       .catch(error =>console.error("fetchBoardConfigRequest", error));
+      fetchCommentAndUserData();
     } else {
       fetchWriteTotally();
     }
@@ -64,6 +65,27 @@ const WriteScreen = ({ navigation, route }) => {
   useEffect(() => {
     scrollToComment();
   }, []);
+
+  async function fetchCommentAndUserData() {
+    try {
+      const [ fetchCommentResponse, currentUserData ] = await Promise.all([
+        fetchCommentsRequest(bo_table, writeData.wr_id, commentPage),
+        getCurrentUserData(),
+      ]);
+
+      // 댓글
+      setComments(fetchCommentResponse.data.comments);
+      setCommentsPage({
+        currentPage: fetchCommentResponse.data.current_page,
+        totalPages: fetchCommentResponse.data.total_pages,
+      });
+
+      // 현재 사용자 정보
+      setCurrentMbId(currentUserData.mb_id);
+    } catch (error) {
+      console.error("fetchCommentAndUserData", error);
+    }
+  }
 
   async function fetchWriteTotally() {
     try {
