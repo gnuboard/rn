@@ -38,7 +38,9 @@ const ModalComponent = ({ title, visible, password, setPassword, handlePasswordS
   )
 }
 
-export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) => {
+export const WritePasswordModal = ({
+  visible, onClose, bo_table, modalWrId, comment_id, commentPage
+}) => {
   const [ password, setPassword ] = useState('');
   const navigation = useNavigation();
 
@@ -50,7 +52,14 @@ export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) =>
         'Boards',
         {
           screen: 'Write',
-          params: { bo_table, wr_id: modalWrId, isVerified: true, writeData },
+          params: {
+            bo_table,
+            wr_id: modalWrId,
+            isVerified: true,
+            writeData,
+            comment_id,
+            commentPage,
+          },
           initial: false,
         }
       );

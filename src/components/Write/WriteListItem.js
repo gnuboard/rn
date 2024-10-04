@@ -13,11 +13,14 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const navigation = useNavigation();
   const { getThemedTextColor } = useTheme();
   const textThemeColor = {color: (isNotice ? Colors.text_black : getThemedTextColor())}
+  const wr_id = isSearched ? write.wr_parent : write.wr_id;
+  const comment_id = isSearched ? write.wr_id : null;
+  const commentPage = isSearched ? Math.ceil(write.comment_order / 10) : null;
 
   return (
     <TouchableOpacity
       style={styles.writeContainer}
-      onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation)}
+      onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation, isSearched)}
     >
       <View style={styles.writeMainContainer}>
         {isSearched && write.type === 'comment' ? (
@@ -63,8 +66,10 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         bo_table={bo_table}
-        wr_id={write.wr_id}
+        wr_id={wr_id}
         modalWrId={modalWrId}
+        comment_id={comment_id}
+        commentPage={commentPage}
       />
     </TouchableOpacity>
   );

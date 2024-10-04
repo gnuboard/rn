@@ -1,20 +1,28 @@
 import { apiConfig } from "../services/api/config/ServerApiConfig";
 
 export function readWrite(
-  bo_table, write, setModalVisible, setModalWrId, navigation
+  bo_table, write, setModalVisible, setModalWrId, navigation, isSearched
 ) {
-  if (write.type === 'comment') {
-    const order = write.comment_order;
-    const commentPage = Math.ceil(order / apiConfig.commentsPerPage);
-    navigation.navigate(
-      'Boards',
-      {
-        screen: 'Write',
-        params: {bo_table, 'wr_id': write.wr_parent, 'comment_id': write.wr_id, commentPage},
-        initial: false,
-      },
-    )
-    return;
+  if (isSearched) {
+    if (write.type === 'comment') {
+      const order = write.comment_order;
+      const commentPage = Math.ceil(order / apiConfig.commentsPerPage);
+      if (write.wr_parent_option.includes('secret')) {
+        setModalWrId(write.wr_parent);
+        setModalVisible(true);
+        return;
+      } else {
+        navigation.navigate(
+          'Boards',
+          {
+            screen: 'Write',
+            params: {bo_table, 'wr_id': write.wr_parent, 'comment_id': write.wr_id, commentPage},
+            initial: false,
+          },
+        )
+        return;
+      }
+    }
   }
 
   if (write.wr_option.includes('secret')) {
