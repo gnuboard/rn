@@ -50,7 +50,7 @@ export const WritePasswordModal = ({ visible, onClose, bo_table, modalWrId }) =>
         'Boards',
         {
           screen: 'Write',
-          params: { bo_table, modalWrId, isVerified: true, writeData },
+          params: { bo_table, wr_id: modalWrId, isVerified: true, writeData },
           initial: false,
         }
       );
