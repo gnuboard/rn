@@ -20,7 +20,11 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
       onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation)}
     >
       <View style={styles.writeMainContainer}>
-        {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color={getThemedTextColor()} style={styles.wrMainArg} />}
+        {isSearched && write.type === 'comment' ? (
+          write.wr_parent_option.includes('secret') && <Icon name="lock-closed" size={15} color={getThemedTextColor()} style={styles.wrMainArg} />
+        ) : (
+          write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color={getThemedTextColor()} style={styles.wrMainArg} />
+        )}
         <Text style={[styles.wrMainArg, textThemeColor]}>
           {getReplyPrefix(write.wr_reply)}{write.wr_subject}
         </Text>
