@@ -18,6 +18,7 @@ const WriteListScreen = ({ route }) => {
   const [ loading, setLoading ] = useState(false);
   const [ hasMore, setHasMore ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
+  const [ isSearched, setIsSearched ] = useState(false);
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { cacheWrites, setCacheWrites } = useCacheWrites();
@@ -44,8 +45,10 @@ const WriteListScreen = ({ route }) => {
   useEffect(() => {
     if (isSearchInputActive) {
       setWrites(searchedWrites);
+      setIsSearched(true);
     } else {
       setWrites(cacheWrites[bo_table].writes);
+      setIsSearched(false);
     }
   }, [isSearchInputActive, searchedWrites]);
 
@@ -108,8 +111,8 @@ const WriteListScreen = ({ route }) => {
   }
 
   const renderItem = useCallback(({ item }) => (
-    <WriteListItem bo_table={bo_table} write={item} />
-  ), [bo_table]);
+    <WriteListItem bo_table={bo_table} write={item} isSearched={isSearched} />
+  ), [bo_table, isSearched]);
 
   const renderNotice = useCallback(({ item }) => (
     <WriteListItem style={styles.noticeItem} bo_table={bo_table} write={item} isNotice={true} />

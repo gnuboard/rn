@@ -7,7 +7,7 @@ import { WritePasswordModal } from "../Modals/Modal";
 import { readWrite, getReplyPrefix } from "../../utils/writeFunc";
 import { Colors } from "../../constants/theme";
 
-const WriteListItem = ({ bo_table, write, isNotice }) => {
+const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalWrId, setModalWrId ] = useState(null);
   const navigation = useNavigation();
@@ -28,6 +28,18 @@ const WriteListItem = ({ bo_table, write, isNotice }) => {
         {write.wr_link1 && <Icon name="link" style={[styles.wrMainArg, styles.wrLink]} />}
         {(write.normal_files?.length > 0 || write.images?.length > 0) && <Icon name="download" style={[styles.wrMainArg, styles.wrFile]} />}
       </View>
+      {isSearched && (
+        <View>
+          {write.type === 'write' ? (
+            <Text>{write.wr_content}</Text>
+          ) : (
+            <View style={styles.writeSubContainer}>
+              <Icon name="chatbubble-ellipses-outline"/>
+              <Text> {write.wr_content}</Text>
+            </View>
+          )}
+        </View>
+      )}
       <View style={styles.writeSubContainer}>
         <Text style={[styles.wrSubArg, textThemeColor]}>{write.wr_name}</Text>
         <Text style={[styles.wrSubArg, textThemeColor]}>조회수 {write.wr_hit}</Text>
