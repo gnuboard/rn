@@ -16,7 +16,12 @@ export function readWrite(
           'Boards',
           {
             screen: 'Write',
-            params: {bo_table, 'wr_id': write.wr_parent, 'comment_id': write.wr_id, commentPage},
+            params: {
+              bo_table,
+              wr_id: write.wr_parent,
+              comment_id: write.wr_id,
+              commentPage,
+            },
             initial: false,
           },
         )
