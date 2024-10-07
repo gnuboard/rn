@@ -168,11 +168,14 @@ const WriteListScreen = ({ route }) => {
             />
           }
         />
-      ) : (
-        <View style={styles.noWritesContainer}>
-          <Text style={[styles.noWritesText, textThemedColor]}>게시글이 없습니다.</Text>
-        </View>
-      )}
+      ) : loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <View style={styles.noWritesContainer}>
+            <Text style={[styles.noWritesText, textThemedColor]}>게시글이 없습니다.</Text>
+          </View>
+        )
+      }
     </View>
   );
 };
