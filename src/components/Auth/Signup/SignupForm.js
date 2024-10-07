@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import {
+  View, Text, TextInput, StyleSheet, ScrollView,
+  TouchableOpacity, TouchableWithoutFeedback, Alert
+} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { signupRequest } from '../../../services/api/ServerApi';
 import { Colors } from '../../../constants/theme';
@@ -42,7 +45,9 @@ export const Agreement = ({
           onValueChange={setPolicySignup}
           tintColors={{ false: Colors.checkbox_border }}
         />
-        <Text style={styles.label}>회원가입약관에 동의합니다.</Text>
+        <TouchableWithoutFeedback onPress={() => setPolicySignup(!policySignup)}>
+          <Text style={styles.label}>회원가입약관에 동의합니다.</Text>
+        </TouchableWithoutFeedback>
       </View>
       
       <Text style={styles.sectionTitle}>개인정보처리방침</Text>
@@ -69,7 +74,9 @@ export const Agreement = ({
           onValueChange={setPolicyPrivacy}
           tintColors={{ false: Colors.checkbox_border }}
         />
-        <Text style={styles.label}>개인정보처리방침에 동의합니다.</Text>
+        <TouchableWithoutFeedback onPress={() => setPolicyPrivacy(!policyPrivacy)}>
+          <Text style={styles.label}>개인정보처리방침에 동의합니다.</Text>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.checkboxContainer}>
         <CheckBox
@@ -77,7 +84,9 @@ export const Agreement = ({
           onValueChange={toggleAll}
           tintColors={{ false: Colors.checkbox_border }}
         />
-        <Text style={styles.label}>위 내용에 모두 동의합니다.</Text>
+        <TouchableWithoutFeedback onPress={() => toggleAll(!allAgreed)}>
+          <Text style={styles.label}>위 내용에 모두 동의합니다.</Text>
+        </TouchableWithoutFeedback>
       </View>
     </View>
   );
