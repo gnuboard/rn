@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { signupRequest } from '../../../services/api/ServerApi';
@@ -7,11 +7,24 @@ import { Colors } from '../../../constants/theme';
 export const Agreement = ({ 
   allAgreed, setAllAgreed, policySignup, setPolicySignup, policyPrivacy, setPolicyPrivacy
  }) => {
+
+  useEffect(() => {
+    agreeAllAuto();
+  }, [policySignup, policyPrivacy]);
+
   const toggleAll = (value) => {
     setAllAgreed(value);
     setPolicySignup(value);
     setPolicyPrivacy(value);
   };
+
+  const agreeAllAuto = () => {
+    if (policySignup && policyPrivacy) {
+      setAllAgreed(true);
+    } else {
+      setAllAgreed(false);
+    }
+  }
 
   return (
     <View style={styles.agreementContainer}>
