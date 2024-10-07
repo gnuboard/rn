@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, FlatList, RefreshControl, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, FlatList, RefreshControl, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
@@ -23,7 +23,7 @@ const WriteListScreen = ({ route }) => {
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { cacheWrites, setCacheWrites } = useCacheWrites();
   const { isSearchInputActive, searchedWrites } = useSearchWrites();
-  const { bgThemedColor } = useTheme();
+  const { bgThemedColor, textThemedColor } = useTheme();
 
   useEffect(() => {
     if (cacheWrites[bo_table].writes.length > 0) {
@@ -142,31 +142,37 @@ const WriteListScreen = ({ route }) => {
   return (
     <View style={[styles.container, bgThemedColor]}>
       <WriteListToolbar bo_table={bo_table} />
-      <FlatList
-        data={writes}
-        keyExtractor={(item, index) => `write-${item.wr_id}-${index}`}
-        renderItem={renderItem}
-        ListHeaderComponent={renderHeader}
-        ListHeaderComponentStyle={styles.listHeader}
-        ListFooterComponent={renderFooter}
-        style={styles.container}
-        nestedScrollEnabled={true}
-        onEndReached={loadMorePosts}
-        onEndReachedThreshold={0.5}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={() => {
-              if (isSearchInputActive) {
-                return;
-              }
-              refreshBoardWrites(bo_table);
-              setWriteListRefresh(true);
-              setRefreshing(true);
-            }}
-          />
-        }
-      />
+      { writes.length > 0 ? (
+        <FlatList
+          data={writes}
+          keyExtractor={(item, index) => `write-${item.wr_id}-${index}`}
+          renderItem={renderItem}
+          ListHeaderComponent={renderHeader}
+          ListHeaderComponentStyle={styles.listHeader}
+          ListFooterComponent={renderFooter}
+          style={styles.container}
+          nestedScrollEnabled={true}
+          onEndReached={loadMorePosts}
+          onEndReachedThreshold={0.5}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                if (isSearchInputActive) {
+                  return;
+                }
+                refreshBoardWrites(bo_table);
+                setWriteListRefresh(true);
+                setRefreshing(true);
+              }}
+            />
+          }
+        />
+      ) : (
+        <View style={styles.noWritesContainer}>
+          <Text style={[styles.noWritesText, textThemedColor]}>게시글이 없습니다.</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -186,6 +192,14 @@ const styles = StyleSheet.create({
   indicatorFooter: {
     padding: 10,
   },
+  noWritesContainer: {
+    flex: 0.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noWritesText: {
+    fontSize: 16,
+  }
 })
 
 export default WriteListScreen;
