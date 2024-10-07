@@ -32,7 +32,10 @@ const SignupScreen = ({ navigation }) => {
               setPolicyPrivacy={setPolicyPrivacy}
             />
           )}
-          <TouchableOpacity style={[styles.button, styles.snsButton]}>
+          <TouchableOpacity
+            style={[styles.button, styles.snsButton]}
+            onPress={() => navigation.navigate('로그인')}
+          >
             <Text style={styles.snsButtonText}>SNS 계정으로 가입</Text>
           </TouchableOpacity>
           <TouchableOpacity
