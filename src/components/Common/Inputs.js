@@ -3,10 +3,12 @@ import { View, TextInput, StyleSheet } from 'react-native';
 import { debounce } from 'lodash';
 import { Colors } from '../../constants/theme';
 import { useSearchWrites } from '../../context/writes/SearchWritesContext';
+import { useTheme } from '../../context/theme/ThemeContext';
 import { searchBoardWritesRequest } from '../../services/api/ServerApi';
 
 export const SearchInput = ({ onetable }) => {
   const { isSearchInputActive, setSearchedWrites, searchingData, setSearchingData } = useSearchWrites();
+  const { textThemedColor } = useTheme();
   const [ searchTerm, setSearchTerm ] = useState('');
 
   useEffect(() => {
@@ -52,11 +54,13 @@ export const SearchInput = ({ onetable }) => {
       <TextInput
         style={[
           styles.searchInput,
+          textThemedColor,
           !isSearchInputActive && {display: 'none'}
         ]} 
         value={searchTerm}
         onChangeText={handleTextChange}
         placeholder="게시글 검색"
+        placeholderTextColor={Colors.text_placeholder_black}
       />
     </View>
   );
