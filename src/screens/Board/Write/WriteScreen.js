@@ -11,10 +11,14 @@ import { Colors } from '../../../constants/theme';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
-import { fetchWriteRequest, fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
+import {
+  fetchWriteRequest, fetchCommentsRequest,
+  deleteWriteRequest, checkDownloadFileAccessRequest
+} from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
 import { getMemberIconUri } from '../../../utils/fileFunc';
+import { getTokens } from '../../../utils/authFunc';
 import { Pagination } from '../../../components/Pagination/Pagination';
 
 const WriteScreen = ({ navigation, route }) => {
@@ -450,6 +454,21 @@ const downloadFile = async (file) => {
   const fileName = file.bf_source;
   const { fs } = RNFetchBlob;
   const downloadPath = `${fs.dirs.DownloadDir}/${fileName}`;
+  const tokenInfo = await getTokens();
+  const authorization = (tokenInfo && tokenInfo.access_token) ? `Bearer ${tokenInfo.access_token}` : ''
+
+  try {
+    const response = await checkDownloadFileAccessRequest(url);
+    if (response.status !== 200) {
+      Alert.alert('파일 다운로드 실패', '파일 다운로드 과정에서 문제가 발생했습니다.');
+      return;
+    }
+  } catch (error) {
+    if (error.response.status === 403) {
+      Alert.alert('권한 없음', '파일 다운로드 권한이 없습니다.');
+      return;
+    }
+  }
 
   RNFetchBlob
     .config({
@@ -462,7 +481,7 @@ const downloadFile = async (file) => {
         description: 'Downloading file...',
       },
     })
-    .fetch('GET', url)
+    .fetch('GET', url, {Authorization: authorization})
     .then((res) => {
       Alert.alert('파일 다운로드 완료', `저장장소: ${res.path()}`);
     })

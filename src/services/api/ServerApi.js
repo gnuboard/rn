@@ -334,6 +334,15 @@ export const uploadFilesRequest = async (bo_table, wr_id, formData) => {
   }
 }
 
+export const checkDownloadFileAccessRequest = async (url) => {
+  try {
+    const response = await serverApi.get(url);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const fetchCommentsRequest = async (bo_table, wr_id, page) => {
   if (!page) {
     page = 1;
