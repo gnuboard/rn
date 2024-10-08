@@ -6,7 +6,7 @@ import { useAuth } from "../../context/auth/AuthContext";
 import { useTheme } from "../../context/theme/ThemeContext";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
-import { readWrite, getReplyPrefix } from "../../utils/writeFunc";
+import { handleReadWrite, getReplyPrefix } from "../../utils/writeFunc";
 import { Colors } from "../../constants/theme";
 
 const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
@@ -21,22 +21,19 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const comment_id = isSearched ? write.wr_id : null;
   const commentPage = isSearched ? Math.ceil(write.comment_order / 10) : null;
 
-  const handleReadWrite = async () => {
-    const userData = await getCurrentUserData();
-    const { bo_read_level } = boardsConfig[bo_table];
-    const hasReadAllowed = (bo_read_level == 1) || (userData && userData.mb_level >= bo_read_level);
-
-    if (hasReadAllowed) {
-      readWrite(bo_table, write, setModalVisible, setModalWrId, navigation, isSearched);
-    } else {
-      Alert.alert('글 읽기', '해당 게시판의 글을 읽을 권한이 없습니다.');
-    }
-  }
-
   return (
     <TouchableOpacity
       style={styles.writeContainer}
-      onPress={handleReadWrite}
+      onPress={() => handleReadWrite(
+        getCurrentUserData,
+        boardsConfig,
+        bo_table,
+        write,
+        setModalVisible,
+        setModalWrId,
+        navigation,
+        isSearched,
+      )}
     >
       <View style={styles.writeMainContainer}>
         {isSearched && write.type === 'comment' ? (

@@ -3,10 +3,12 @@ import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions }
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
+import { useBoards } from '../../context/boards/BoardsContext';
+import { useAuth } from '../../context/auth/AuthContext';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { WritePasswordModal } from '../Modals/Modal';
-import { readWrite } from '../../utils/writeFunc';
+import { handleReadWrite } from '../../utils/writeFunc';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -16,6 +18,8 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
   const [ boardWrites, setBoardWrites ] = useState([]);
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalWrId, setModalWrId ] = useState(null);
+  const { boardsConfig } = useBoards();
+  const { getCurrentUserData } = useAuth();
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();
@@ -45,7 +49,15 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      onPress={() => readWrite(bo_table, item, setModalVisible, setModalWrId, navigation)}
+      onPress={() => handleReadWrite(
+        getCurrentUserData,
+        boardsConfig,
+        bo_table,
+        item,
+        setModalVisible,
+        setModalWrId,
+        navigation,
+      )}
       activeOpacity={1}
     >
       <View style={styles.itemContainer}>

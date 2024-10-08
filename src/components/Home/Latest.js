@@ -4,15 +4,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
+import { useBoards } from '../../context/boards/BoardsContext';
+import { useAuth } from '../../context/auth/AuthContext';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { WritePasswordModal } from '../Modals/Modal';
-import { readWrite } from '../../utils/writeFunc';
+import { handleReadWrite } from '../../utils/writeFunc';
 import { Colors } from '../../constants/theme';
 
 const Latest = ({ title, bo_table, rows }) => {
   const [ boardWrites, setBoardWrites ] = useState([]);
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalWrId, setModalWrId ] = useState(null);
+  const { boardsConfig } = useBoards();
+  const { getCurrentUserData } = useAuth();
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh } = useWriteListRefresh();
   const navigation = useNavigation();
@@ -37,7 +41,15 @@ const Latest = ({ title, bo_table, rows }) => {
       {boardWrites.map((write) => (
         <TouchableOpacity
           key={write.wr_id}
-          onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation)}
+          onPress={() => handleReadWrite(
+            getCurrentUserData,
+            boardsConfig,
+            bo_table,
+            write,
+            setModalVisible,
+            setModalWrId,
+            navigation,
+          )}
         >
         <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>

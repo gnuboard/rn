@@ -1,3 +1,4 @@
+import { Alert } from "react-native";
 import { apiConfig } from "../services/api/config/ServerApiConfig";
 
 export function readWrite(
@@ -42,6 +43,27 @@ export function readWrite(
         initial: false,
       },
     );
+  }
+}
+
+export const handleReadWrite = async (
+  getCurrentUserData,
+  boardsConfig,
+  bo_table,
+  write,
+  setModalVisible,
+  setModalWrId,
+  navigation,
+  isSearched
+) => {
+  const userData = await getCurrentUserData();
+  const { bo_read_level } = boardsConfig[bo_table];
+  const hasReadAllowed = (bo_read_level == 1) || (userData && userData.mb_level >= bo_read_level);
+
+  if (hasReadAllowed) {
+    readWrite(bo_table, write, setModalVisible, setModalWrId, navigation, isSearched);
+  } else {
+    Alert.alert('글 읽기', '해당 게시판의 글을 읽을 권한이 없습니다.');
   }
 }
 
