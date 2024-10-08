@@ -113,6 +113,7 @@ export const SignupForm = ({ navigation }) => {
   const [ isSignupLoading, setIsSignupLoading ] = useState(false);
   const [ idError, setIdError ] = useState('');
   const [ emailError, setEmailError ] = useState('');
+  const [ passwordReError, setPasswordReError ] = useState('');
 
   const handleInputChange = (name, value) => {
     setFormData(prevState => ({
@@ -125,6 +126,7 @@ export const SignupForm = ({ navigation }) => {
     e.preventDefault();
     setIsSignupLoading(true);
     setIdError('');
+    setPasswordReError('');
     setEmailError('');
     try {
       const response = await signupRequest(formData);
@@ -148,18 +150,19 @@ export const SignupForm = ({ navigation }) => {
       }
     } catch (error) {
       console.error('Error creating member:', error);
-      if (error.response.data.detail) {
-        if (Array.isArray(error.response.data.detail)) {
-          for (let detail of error.response.data.detail) {
-            alert(detail.msg);
-          }
+      if (error.response.data.error.description) {
+        const errorDescription = error.response.data.error.description;
+        if (errorDescription.includes('아이디')) {
+          setIdError(errorDescription);
+          mbIdRef.current.focus();
+        } else if (errorDescription.includes('비밀번호')) {
+          setPasswordReError(errorDescription);
+          mbPasswordReRef.current.focus();
+        } else if (errorDescription.includes('이메일')) {
+          setEmailError(errorDescription);
+          mbEmailRef.current.focus();
         } else {
-          const errorMsg = error.response.data.detail;
-          if (errorMsg == "이미 가입된 아이디입니다.") {
-            setIdError(errorMsg);
-          } else if (errorMsg == "이미 가입된 이메일입니다.") {
-            setEmailError(errorMsg);
-          }
+          alert(error.response.data.error.description);
         }
       } else {
         alert(error);
@@ -209,7 +212,7 @@ export const SignupForm = ({ navigation }) => {
         returnKeyType="next"
         onSubmitEditing={() => mbEmailRef.current.focus()}
       />
-
+      {passwordReError && <Text style={styles.errorText}>{passwordReError}</Text>}
       <TextInput
         ref={mbEmailRef}
         style={styles.input}
