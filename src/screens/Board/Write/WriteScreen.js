@@ -14,7 +14,6 @@ import { CommentForm } from '../../../components/Write/Comment/CommentForm';
 import { fetchWriteRequest, fetchCommentsRequest, deleteWriteRequest } from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
-import { requestStoragePermission } from '../../../utils/os/android/permission';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 import { Pagination } from '../../../components/Pagination/Pagination';
 
@@ -449,15 +448,6 @@ const showDeleteConfirm = (bo_table, write, navigation, refreshWriteList) => {
 const downloadFile = async (file) => {
   const url = file.bf_file;
   const fileName = file.bf_source;
-
-  if (Platform.OS === 'android') {
-    const granted = await requestStoragePermission();
-    if (!granted) {
-      Alert.alert('권한이 거절되었습니다.', '파일 다운로드를 위해선 저장소 접근 권한이 필요합니다.');
-      return;
-    }
-  }
-
   const { fs } = RNFetchBlob;
   const downloadPath = `${fs.dirs.DownloadDir}/${fileName}`;
 
