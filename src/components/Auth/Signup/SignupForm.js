@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View, Text, TextInput, StyleSheet, ScrollView,
   TouchableOpacity, TouchableWithoutFeedback, Alert
@@ -105,6 +105,10 @@ export const SignupForm = ({ navigation }) => {
     mb_open: false,
   };
 
+  const mbIdRef = useRef(null);
+  const mbPasswordRef = useRef(null);
+  const mbPasswordReRef = useRef(null);
+  const mbEmailRef = useRef(null);
   const [ formData, setFormData ] = useState(initalFormData);
   const [ isSignupLoading, setIsSignupLoading ] = useState(false);
   const [ idError, setIdError ] = useState('');
@@ -169,6 +173,7 @@ export const SignupForm = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.sectionTitle}>사이트 이용정보 입력</Text>
       <TextInput
+        ref={mbIdRef}
         style={styles.input}
         placeholder="아이디 (필수)*"
         placeholderTextColor={Colors.text_placeholder_black}
@@ -178,32 +183,43 @@ export const SignupForm = ({ navigation }) => {
           handleInputChange('mb_nick', text);
           handleInputChange('mb_name', text);
         }}
+        returnKeyType="next"
+        onSubmitEditing={() => mbPasswordRef.current.focus()}
       />
       {idError && <Text style={styles.errorText}>{idError}</Text>}
       <TextInput
+        ref={mbPasswordRef}
         style={styles.input}
         placeholder="비밀번호 (필수)*"
         placeholderTextColor={Colors.text_placeholder_black}
         secureTextEntry
         value={formData.mb_password}
         onChangeText={(text) => handleInputChange('mb_password', text)}
+        returnKeyType="next"
+        onSubmitEditing={() => mbPasswordReRef.current.focus()}
       />
       <TextInput
+        ref={mbPasswordReRef}
         style={styles.input}
         placeholder="비밀번호 확인 (필수)*"
         placeholderTextColor={Colors.text_placeholder_black}
         secureTextEntry
         value={formData.mb_password_re}
         onChangeText={(text) => handleInputChange('mb_password_re', text)}
+        returnKeyType="next"
+        onSubmitEditing={() => mbEmailRef.current.focus()}
       />
 
       <TextInput
+        ref={mbEmailRef}
         style={styles.input}
         placeholder="E-mail (필수)*"
         placeholderTextColor={Colors.text_placeholder_black}
         value={formData.mb_email}
         onChangeText={(text) => handleInputChange('mb_email', text)}
         keyboardType="email-address"
+        returnKeyType="done"
+        onSubmitEditing={handleSubmit}
       />
       {emailError && <Text style={styles.errorText}>{emailError}</Text>}
 
