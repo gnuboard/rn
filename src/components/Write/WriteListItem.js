@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../../context/theme/ThemeContext";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -7,7 +7,7 @@ import { WritePasswordModal } from "../Modals/Modal";
 import { readWrite, getReplyPrefix } from "../../utils/writeFunc";
 import { Colors } from "../../constants/theme";
 
-const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
+const WriteListItem = ({ bo_table, write, isNotice, isSearched, readAllowed }) => {
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalWrId, setModalWrId ] = useState(null);
   const navigation = useNavigation();
@@ -17,10 +17,18 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const comment_id = isSearched ? write.wr_id : null;
   const commentPage = isSearched ? Math.ceil(write.comment_order / 10) : null;
 
+  const handleReadWrite = () => {
+    if (readAllowed) {
+      readWrite(bo_table, write, setModalVisible, setModalWrId, navigation, isSearched);
+    } else {
+      Alert.alert('글 읽기', '해당 게시판의 글을 읽을 권한이 없습니다.');
+    }
+  }
+
   return (
     <TouchableOpacity
       style={styles.writeContainer}
-      onPress={() => readWrite(bo_table, write, setModalVisible, setModalWrId, navigation, isSearched)}
+      onPress={handleReadWrite}
     >
       <View style={styles.writeMainContainer}>
         {isSearched && write.type === 'comment' ? (
