@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, FlatList, RefreshControl, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
-import { fetchWriteListRequest } from '../../../services/api/ServerApi';
+import { fetchBoardConfigRequest, fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
+import { useAuth } from '../../../context/auth/AuthContext';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
 import { useSearchWrites } from '../../../context/writes/SearchWritesContext';
@@ -19,11 +20,27 @@ const WriteListScreen = ({ route }) => {
   const [ hasMore, setHasMore ] = useState(true);
   const [ refreshing, setRefreshing ] = useState(false);
   const [ isSearched, setIsSearched ] = useState(false);
+  const [ writeAllowed, setWriteAllowed ] = useState(false);
+  const { getCurrentUserData } = useAuth();
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
   const { cacheWrites, setCacheWrites } = useCacheWrites();
   const { isSearchInputActive, searchedWrites } = useSearchWrites();
   const { bgThemedColor, textThemedColor } = useTheme();
+
+  useEffect(() => {
+    fetchBoardConfigRequest(bo_table)
+      .then(response => {
+        const boardConfig = response.data;
+        getCurrentUserData()
+          .then(result => {
+            const mbLevel = result.mb_level;
+            if (boardConfig.bo_write_level == 1 || (mbLevel && mbLevel >= boardConfig.bo_write_level)) {
+              setWriteAllowed(true);
+            }
+          })
+      })
+  }, [bo_table]);
 
   useEffect(() => {
     if (cacheWrites[bo_table].writes.length > 0) {
@@ -141,7 +158,7 @@ const WriteListScreen = ({ route }) => {
 
   return (
     <View style={[styles.container, bgThemedColor]}>
-      <WriteListToolbar bo_table={bo_table} />
+      <WriteListToolbar bo_table={bo_table} writeAllowed={writeAllowed} />
       { writes.length > 0 ? (
         <FlatList
           data={writes}

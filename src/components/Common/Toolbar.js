@@ -6,7 +6,7 @@ import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchInput } from './Inputs';
 
-export const WriteListToolbar = ({ bo_table }) => {
+export const WriteListToolbar = ({ bo_table, writeAllowed }) => {
   const navigation = useNavigation();
   const { getThemedTextColor } = useTheme();
   const { isSearchInputActive, setIsSearchInputActive } = useSearchWrites();
@@ -27,12 +27,14 @@ export const WriteListToolbar = ({ bo_table }) => {
         <TouchableOpacity style={styles.iconButton} onPress={onSearchPress}>
           <Icon name="search" size={24} color={getThemedTextColor()} />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconButton}
-          onPress={() => navigation.navigate('WriteUpdate', {'bo_table': bo_table})}
-        >
-          <Icon name="create" size={24} color={getThemedTextColor()} />
-        </TouchableOpacity>
+        {writeAllowed && (
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.navigate('WriteUpdate', {'bo_table': bo_table})}
+          >
+            <Icon name="create" size={24} color={getThemedTextColor()} />
+          </TouchableOpacity>
+        )}
         <TouchableOpacity style={styles.iconButton}>
           <Icon name="ellipsis-vertical" size={24} color={getThemedTextColor()} />
         </TouchableOpacity>
