@@ -9,12 +9,15 @@ import messaging from '@react-native-firebase/messaging';
 import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
 import { useTheme } from '../../context/theme/ThemeContext';
+import { useBoards } from '../../context/boards/BoardsContext';
 import { apiConfig } from '../../services/api/config/ServerApiConfig';
 import { requestStoragePermission } from '../../utils/os/android/permission';
+import { fetchBoardConfigRequest } from '../../services/api/ServerApi';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
   const { bgThemedColor, getThemedTextColor, textThemedColor } = useTheme();
+  const { setBoardsConfig } = useBoards();
 
 
   const openDrawer = () => {
@@ -70,6 +73,26 @@ const HomeScreen = () => {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    fetchBoardsConfig();
+  }, []);
+
+  const fetchBoardsConfig = async () => {
+    const  [ freeConfig, galleryConfig, noticeConfig, qaConfig ] = await Promise.all([
+      fetchBoardConfigRequest('free'),
+      fetchBoardConfigRequest('gallery'),
+      fetchBoardConfigRequest('notice'),
+      fetchBoardConfigRequest('qa'),
+    ]);
+
+    setBoardsConfig({
+      free: freeConfig.data,
+      gallery: galleryConfig.data,
+      notice: noticeConfig.data,
+      qa: qaConfig.data,
+    });
+  }
 
   const handleMessage = (remoteMessage) => {
     if (remoteMessage.data.alarm_type === 'comment') {

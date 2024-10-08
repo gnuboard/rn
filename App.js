@@ -6,12 +6,14 @@ import { WriteListRefreshProvider, WriteRefreshProvider } from './src/context/wr
 import { SearchWritesProvider } from './src/context/writes/SearchWritesContext';
 import { CacheWritesProvider } from './src/context/writes/CacheWritesContext';
 import { ThemeProvider } from './src/context/theme/ThemeContext';
+import { BoardsProvider } from './src/context/boards/BoardsContext';
 
 const App = () => {
   return (
     <AuthProvider>
       <CacheWritesProvider>
         <ThemeProvider>
+        <BoardsProvider>
           <WriteListRefreshProvider>
           <WriteRefreshProvider>
           <SearchWritesProvider>
@@ -26,6 +28,7 @@ const App = () => {
           </SearchWritesProvider>
           </WriteRefreshProvider>
           </WriteListRefreshProvider>
+        </BoardsProvider>
         </ThemeProvider>
       </CacheWritesProvider>
     </AuthProvider>
