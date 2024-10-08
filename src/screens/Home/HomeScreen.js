@@ -10,6 +10,7 @@ import Latest from '../../components/Home/Latest';
 import LatestGallery from '../../components/Home/LatestGallery';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { apiConfig } from '../../services/api/config/ServerApiConfig';
+import { requestStoragePermission } from '../../utils/os/android/permission';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -21,6 +22,9 @@ const HomeScreen = () => {
   }
 
   useEffect(() => {
+    // 저장공간에 대한 권한을 요청합니다.
+    requestStoragePermission();
+
     // 알람에 대한 권한을 요청합니다.
     if (Platform.OS === 'android' && Platform.Version >= 33) {
       // 안드로이드 13 이상의 버전에서만 알람 설정 권한을 요청합니다.
