@@ -21,7 +21,6 @@ const WriteListScreen = ({ route }) => {
   const [ refreshing, setRefreshing ] = useState(false);
   const [ isSearched, setIsSearched ] = useState(false);
   const [ writeAllowed, setWriteAllowed ] = useState(false);
-  const [ readAllowed, setReadAllowed ] = useState(false);
   const { getCurrentUserData } = useAuth();
   const { writeRefresh } = useWriteRefresh();
   const { writeListRefresh, setWriteListRefresh } = useWriteListRefresh();
@@ -38,9 +37,6 @@ const WriteListScreen = ({ route }) => {
             const mbLevel = result.mb_level;
             if (boardConfig.bo_write_level == 1 || (mbLevel && mbLevel >= boardConfig.bo_write_level)) {
               setWriteAllowed(true);
-            }
-            if (boardConfig.bo_read_level == 1 || (mbLevel && mbLevel >= boardConfig.bo_read_level)) {
-              setReadAllowed(true);
             }
           })
       })
@@ -134,11 +130,11 @@ const WriteListScreen = ({ route }) => {
   }
 
   const renderItem = useCallback(({ item }) => (
-    <WriteListItem bo_table={bo_table} write={item} isSearched={isSearched} readAllowed={readAllowed} />
+    <WriteListItem bo_table={bo_table} write={item} isSearched={isSearched} />
   ), [bo_table, isSearched]);
 
   const renderNotice = useCallback(({ item }) => (
-    <WriteListItem style={styles.noticeItem} bo_table={bo_table} write={item} isNotice={true} readAllowed={readAllowed} />
+    <WriteListItem style={styles.noticeItem} bo_table={bo_table} write={item} isNotice={true} />
   ), [bo_table]);
 
   const renderHeader = useCallback(() => (
