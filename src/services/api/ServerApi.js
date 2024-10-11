@@ -136,6 +136,19 @@ serverApi.interceptors.response.use(
   }
 );
 
+export const handleGuestToken = async () => {
+  let { guestToken, guestTokenExpireAt } = await getGuestToken();
+  if (!guestToken || !guestTokenExpireAt  || new Date(guestTokenExpireAt) < new Date()) {
+    const guestTokenResponse = await fetchGuestTokenRequest();
+    if (guestTokenResponse.data.access_token) {
+      guestToken = guestTokenResponse.data.access_token;
+      guestTokenExpireAt = guestTokenResponse.data.access_token_expire_at;
+      await setGuestToken(guestToken, guestTokenExpireAt);
+    }
+  }
+  return guestToken;
+}
+
 export const fetchGuestTokenRequest = async () => {
   try {
     const response = await serverApi.post('/token/guest');
@@ -318,15 +331,7 @@ export const updateWriteRequest = async (bo_table, wr_id, data) => {
 
 export const createGuestWriteRequest = async (bo_table, data) => {
   try {
-    let { guestToken, guestTokenExpireAt } = await getGuestToken();
-    if (!guestToken || !guestTokenExpireAt  || new Date(guestTokenExpireAt) < new Date()) {
-      const guestTokenResponse = await fetchGuestTokenRequest();
-      if (guestTokenResponse.data.access_token) {
-        guestToken = guestTokenResponse.data.access_token;
-        guestTokenExpireAt = guestTokenResponse.data.access_token_expire_at;
-        await setGuestToken(guestToken, guestTokenExpireAt);
-      }
-    }
+    const guestToken = await handleGuestToken();
     const response = await axios.post(
       `${baseUrl}/boards/${bo_table}/writes`,
       data,
@@ -428,15 +433,7 @@ export const updateCommentRequest = async (bo_table, wr_id, comment_id, data) =>
 
 export const createGuestCommentRequest = async (bo_table, wr_id, data) => {
   try {
-    let { guestToken, guestTokenExpireAt } = await getGuestToken();
-    if (!guestToken || !guestTokenExpireAt  || new Date(guestTokenExpireAt) < new Date()) {
-      const guestTokenResponse = await fetchGuestTokenRequest();
-      if (guestTokenResponse.data.access_token) {
-        guestToken = guestTokenResponse.data.access_token;
-        guestTokenExpireAt = guestTokenResponse.data.access_token_expire_at;
-        await setGuestToken(guestToken, guestTokenExpireAt);
-      }
-    }
+    const guestToken = await handleGuestToken();
     const response = await axios.post(
       `${baseUrl}/boards/${bo_table}/writes/${wr_id}/comments`,
       data,
