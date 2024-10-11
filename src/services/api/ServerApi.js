@@ -426,6 +426,28 @@ export const updateCommentRequest = async (bo_table, wr_id, comment_id, data) =>
   }
 }
 
+export const createGuestCommentRequest = async (bo_table, wr_id, data) => {
+  try {
+    let { guestToken, guestTokenExpireAt } = await getGuestToken();
+    if (!guestToken || !guestTokenExpireAt  || new Date(guestTokenExpireAt) < new Date()) {
+      const guestTokenResponse = await fetchGuestTokenRequest();
+      if (guestTokenResponse.data.access_token) {
+        guestToken = guestTokenResponse.data.access_token;
+        guestTokenExpireAt = guestTokenResponse.data.access_token_expire_at;
+        await setGuestToken(guestToken, guestTokenExpireAt);
+      }
+    }
+    const response = await axios.post(
+      `${baseUrl}/boards/${bo_table}/writes/${wr_id}/comments`,
+      data,
+      { headers: { 'Authorization': `Bearer ${guestToken}` } },
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const deleteCommentRequest = async (bo_table, wr_id, comment_id) => {
   try {
     const response = await serverApi.delete(`/boards/${bo_table}/writes/${wr_id}/comments/${comment_id}`);

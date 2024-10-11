@@ -6,7 +6,9 @@ import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
-import { createCommentRequest, updateCommentRequest } from '../../../services/api/ServerApi';
+import { 
+  createCommentRequest, updateCommentRequest, createGuestCommentRequest
+} from '../../../services/api/ServerApi';
 
 export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, isUpdateComment }) {
   const { isLoggedIn } = useAuth();
@@ -48,7 +50,11 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
       if (isUpdateComment) {
         response = await updateCommentRequest(bo_table, wr_id, comment.wr_id, dataToSend);
       } else {
-        response = await createCommentRequest(bo_table, wr_id, dataToSend);
+        if (isLoggedIn) {
+          response = await createCommentRequest(bo_table, wr_id, dataToSend);
+        } else {
+          response = await createGuestCommentRequest(bo_table, wr_id, dataToSend);
+        }
       }
       setCommentFormValue({
         wr_content: '',
