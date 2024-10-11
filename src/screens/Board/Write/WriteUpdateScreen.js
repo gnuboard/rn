@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 import DocumentPicker from 'react-native-document-picker';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import {
-  fetchBoardConfigRequest, createWriteRequest,
+  fetchBoardConfigRequest, createWriteRequest, createGuestWriteRequest,
   updateWriteRequest, uploadFilesRequest, fetchSecretWriteRequest
 } from '../../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
@@ -90,12 +90,16 @@ const WriteUpdateScreen = ({ navigation, route }) => {
       }
 
       if (!wrId) {
-        response = await createWriteRequest(bo_table, dataToSend);
+        if (isLoggedIn) {
+          response = await createWriteRequest(bo_table, dataToSend);
+        } else {
+          response = await createGuestWriteRequest(bo_table, dataToSend);
+        }
       } else {
         response = await updateWriteRequest(bo_table, wrId, dataToSend);
       }
 
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201) {
         if (!wrId) {
           wrId = response.data.wr_id;
         }

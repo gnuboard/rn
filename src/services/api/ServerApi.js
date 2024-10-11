@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import axios from 'axios';
 import Config from 'react-native-config';
-import { getTokens, saveTokens } from '../../utils/authFunc';
+import { getTokens, saveTokens, getGuestToken, setGuestToken } from '../../utils/authFunc';
 import { navigate } from '../../navigation/RootNavigation';
 import { apiConfig } from './config/ServerApiConfig';
 
@@ -135,6 +135,15 @@ serverApi.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export const fetchGuestTokenRequest = async () => {
+  try {
+    const response = await serverApi.post('/token/guest');
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const signupRequest = async (formData) => {
   try {
@@ -300,6 +309,28 @@ export const updateWriteRequest = async (bo_table, wr_id, data) => {
     const response = await serverApi.put(
       `/boards/${bo_table}/writes/${wr_id}`,
       data,
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const createGuestWriteRequest = async (bo_table, data) => {
+  try {
+    let { guestToken, guestTokenExpireAt } = await getGuestToken();
+    if (!guestToken || !guestTokenExpireAt  || new Date(guestTokenExpireAt) < new Date()) {
+      const guestTokenResponse = await fetchGuestTokenRequest();
+      if (guestTokenResponse.data.access_token) {
+        guestToken = guestTokenResponse.data.access_token;
+        guestTokenExpireAt = guestTokenResponse.data.access_token_expire_at;
+        await setGuestToken(guestToken, guestTokenExpireAt);
+      }
+    }
+    const response = await axios.post(
+      `${baseUrl}/boards/${bo_table}/writes`,
+      data,
+      { headers: { 'Authorization': `Bearer ${guestToken}` } },
     );
     return response;
   } catch (error) {

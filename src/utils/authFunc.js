@@ -79,6 +79,28 @@ export const getTokens = async () => {
   }
 };
 
+export const setGuestToken = async (guestToken, guestTokenExpireAt) => {
+  try {
+    await AsyncStorage.setItem('guest_token', guestToken);
+    await AsyncStorage.setItem('guest_token_expire_at', guestTokenExpireAt);
+    return { isSuccess: true, guestToken };
+  } catch (error) {
+    console.error('Error setting guest token', error);
+    return { isSuccess: false };
+  }
+}
+
+export const getGuestToken = async () => {
+  try {
+    const guestToken = await AsyncStorage.getItem('guest_token');
+    const guestTokenExpireAt = await AsyncStorage.getItem('guest_token_expire_at');
+    return { guestToken, guestTokenExpireAt };
+  } catch (error) {
+    console.error('Error retrieving guest token', error);
+    return null;
+  }
+}
+
 export const deleteAllSecureData = async () => {
   try {
     await Keychain.resetInternetCredentials('user_credentials');
