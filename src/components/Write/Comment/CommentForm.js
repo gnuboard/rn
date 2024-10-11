@@ -64,8 +64,8 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
       }
       return response.data;
     } catch (error) {
-      if (error.response.status === 429) {
-        setError(error.response.data.message);
+      if (error.response.status === 429 || error.response.status === 403) {
+        setError(error.response.data.error.description);
       } else {
         if (isUpdateComment) {
           setError('댓글 수정에 실패했습니다.');
