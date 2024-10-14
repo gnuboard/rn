@@ -70,7 +70,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
       }
       return response.data;
     } catch (error) {
-      if (error.response.status === 429 || error.response.status === 403) {
+      if (error.response.data.error.description)  {
         setError(error.response.data.error.description);
       } else {
         if (isUpdateComment) {
