@@ -45,8 +45,8 @@ const ProfileScreen = ({ navigation }) => {
 
   if (!profileData) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Loading...</Text>
+      <View style={[styles.loadingContainer, bgThemedColor]}>
+        <Text style={[styles.loadingText, textThemedColor]}>Loading...</Text>
       </View>
     );
   }

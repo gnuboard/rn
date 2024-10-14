@@ -202,7 +202,11 @@ const WriteScreen = ({ navigation, route }) => {
   }, []);
 
   if (!write) {
-    return <Text style={styles.loading_text}>Loading...</Text>;
+    return (
+      <View style={[styles.container, bgThemedColor]}>
+        <Text style={[styles.loading_text, textThemedColor]}>Loading...</Text>
+      </View>
+    );
   }
 
   return (
