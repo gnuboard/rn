@@ -60,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
     });
   }
 
-  async function handleloginInfo (
+  async function handleLoginInfo (
     access_token,
     refresh_token,
     access_token_expire_at,
@@ -100,8 +100,6 @@ const LoginScreen = ({ navigation }) => {
     const tokens = await getNaverTokens();
     const socialAccssToken = tokens.accessToken;
     const socialRefreshToken = tokens.refreshToken;
-    console.log("socialAccssToken", socialAccssToken);
-    console.log("socialRefreshToken", socialRefreshToken);
     const profileData = await naverProfileRequest(socialAccssToken);
 
     try {
@@ -110,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
       const {
         access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
       } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleloginInfo(
+      const tokenHandleResult = await handleLoginInfo(
         access_token,
         refresh_token,
         access_token_expire_at,
@@ -140,7 +138,7 @@ const LoginScreen = ({ navigation }) => {
           const {
             access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
           } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleloginInfo(
+          const tokenHandleResult = await handleLoginInfo(
             access_token,
             refresh_token,
             access_token_expire_at,
@@ -180,7 +178,7 @@ const LoginScreen = ({ navigation }) => {
       const {
         access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
       } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleloginInfo(
+      const tokenHandleResult = await handleLoginInfo(
         access_token,
         refresh_token,
         access_token_expire_at,
@@ -209,7 +207,7 @@ const LoginScreen = ({ navigation }) => {
           const {
             access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
           } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleloginInfo(
+          const tokenHandleResult = await handleLoginInfo(
             access_token,
             refresh_token,
             access_token_expire_at,
@@ -261,7 +259,7 @@ const LoginScreen = ({ navigation }) => {
       const {
         access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
       } = serverSocialLoginResponse.data;
-      const tokenHandleResult = await handleloginInfo(
+      const tokenHandleResult = await handleLoginInfo(
         access_token,
         refresh_token,
         access_token_expire_at,
@@ -291,7 +289,7 @@ const LoginScreen = ({ navigation }) => {
           const {
             access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
           } = serverSocialSignupResponse.data;
-          const tokenHandleResult = await handleloginInfo(
+          const tokenHandleResult = await handleLoginInfo(
             access_token,
             refresh_token,
             access_token_expire_at,
@@ -324,9 +322,7 @@ const LoginScreen = ({ navigation }) => {
       const {
         access_token, refresh_token, access_token_expire_at, refresh_token_expire_at
       } = response.data;
-      console.log("server access token", access_token);
-      console.log("server refresh token", refresh_token);
-      const tokenHandleResult = await handleloginInfo(
+      const tokenHandleResult = await handleLoginInfo(
         access_token,
         refresh_token,
         access_token_expire_at,

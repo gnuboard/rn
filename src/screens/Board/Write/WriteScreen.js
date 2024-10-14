@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, Image, Linking,
-  useWindowDimensions, TouchableOpacity, Alert, Platform
+  useWindowDimensions, TouchableOpacity, Alert
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -230,7 +230,12 @@ const WriteScreen = ({ navigation, route }) => {
             </TouchableOpacity>
             {currentMbId == write.mb_id ? (
               <>
-                <TouchableOpacity style={[styles.buttonCommon, styles.updateButton]} onPress={() => navigation.navigate('WriteUpdate', params={'bo_table': bo_table, 'write': write})}>
+                <TouchableOpacity
+                  style={[styles.buttonCommon, styles.updateButton]}
+                  onPress={() => navigation.navigate(
+                    'WriteUpdate', params={'bo_table': bo_table, 'write': write}
+                  )}
+                >
                   <Text style={styles.buttonText}>수정</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -263,14 +268,19 @@ const WriteScreen = ({ navigation, route }) => {
       <WriteContentWeVview width={width} write={write} />
       {
         write.normal_files.map((file, index) => (
-          <TouchableOpacity style={styles.fileContainer} key={index} onPress={() => downloadFile(file)}>
+          <TouchableOpacity
+            style={styles.fileContainer}
+            key={index} onPress={() => downloadFile(file)}
+          >
             <Icon name="download" style={styles.wrFile} />
             <View>
               <View style={styles.fileSubject}>
                 <Text style={[styles.fileName, textThemedColor]}>{file.bf_source}</Text>
                 <Text style={[styles.fileSize, textThemedColor]}> ({file.bf_filesize}byte)</Text>
               </View>
-              <Text style={[styles.fileDownload, textThemedColor]}>{file.bf_download}회 다운로드 | Date: {file.bf_datetime}</Text>
+              <Text style={[styles.fileDownload, textThemedColor]}>
+                {file.bf_download}회 다운로드 | Date: {file.bf_datetime}
+              </Text>
             </View>
           </TouchableOpacity>
         ))

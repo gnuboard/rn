@@ -53,9 +53,7 @@ const SignupScreen = ({ navigation }) => {
           >
             <Text style={styles.outlineButtonText}>취소</Text>
           </TouchableOpacity>
-          
         </View>
-        
       </ScrollView>
     </TouchableWithoutFeedback>
   );

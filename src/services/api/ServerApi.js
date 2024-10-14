@@ -81,7 +81,6 @@ serverApi.interceptors.response.use(
             if (!isLoggingOut) {
               isLoggingOut = true;
               if (!logout) {
-                console.log("logout function is not set");
                 return Promise.reject(error);
               }
               const logoutResult = await logout();
@@ -116,7 +115,6 @@ serverApi.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${access_token}`;
           isRefreshing = false;
           onRefreshed(access_token);
-          console.log("Getting new tokens is successful. Retry original request");
           return serverApi(originalRequest);
         } catch(error) {
           return Promise.reject(error);

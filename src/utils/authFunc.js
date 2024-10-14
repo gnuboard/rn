@@ -5,7 +5,6 @@ import { profileKeys } from '../constants/profile';
 export const saveCredentials = async (username, password) => {
   try {
     await Keychain.setInternetCredentials('user_credentials', username, password);
-    console.log('User credentials saved successfully');
   } catch (error) {
     console.error('Error saving user credentials', error);
   }
@@ -18,7 +17,6 @@ export const saveTokens = async (
     await Keychain.setInternetCredentials('auth_tokens', access_token, refresh_token);
     await AsyncStorage.setItem('access_token_expire_at', access_token_expire_at);
     await AsyncStorage.setItem('refresh_token_expire_at', refresh_token_expire_at);
-    console.log('Tokens saved successfully');
     return { isSuccess: true };
   } catch (error) {
     console.error('Error saving tokens', error);
@@ -30,7 +28,6 @@ export const saveSocialLoginTokens = async (tokenName, accessToken, refreshToken
   // tokenName example: 'naver_login_tokens', 'kakao_login_tokens'
   try {
     await Keychain.setInternetCredentials(tokenName, accessToken, refreshToken);
-    console.log(`${tokenName} saved successfully`);
     return { isSuccess: true };
   } catch (error) {
     console.error(`Error saving ${tokenName} tokens`, error);
@@ -41,7 +38,6 @@ export const saveSocialLoginTokens = async (tokenName, accessToken, refreshToken
 export const saveLoginPreferences = async (preferences) => {
   try {
     await AsyncStorage.setItem('loginPreferences', JSON.stringify(preferences));
-    console.log('Login preferences saved successfully');
   } catch (error) {
     console.error('Error saving login preferences', error);
   }
@@ -108,7 +104,6 @@ export const deleteAllSecureData = async () => {
     await Keychain.resetInternetCredentials('naver_login_tokens');
     await Keychain.resetInternetCredentials('kakao_login_tokens');
     await Keychain.resetInternetCredentials('google_login_tokens');
-    console.log('All secure data deleted successfully');
     return {isSuccess: true};
   } catch (error) {
     console.error('Error deleting secure data', error);
