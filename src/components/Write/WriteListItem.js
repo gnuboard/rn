@@ -1,21 +1,19 @@
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useBoards } from "../../context/boards/BoardsContext";
-import { useAuth } from "../../context/auth/AuthContext";
 import { useTheme } from "../../context/theme/ThemeContext";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
-import { handleReadWrite, getReplyPrefix } from "../../utils/writeFunc";
+import { getReplyPrefix } from "../../utils/writeFunc";
+import { useHandleWrite } from "../../utils/hooks";
 import { Colors } from "../../constants/theme";
 
 const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const [ modalVisible, setModalVisible ] = useState(false);
   const [ modalWrId, setModalWrId ] = useState(null);
   const navigation = useNavigation();
-  const { boardsConfig } = useBoards();
-  const { getCurrentUserData } = useAuth();
   const { getThemedTextColor } = useTheme();
+  const { handleReadWrite } = useHandleWrite();
   const textThemeColor = {color: (isNotice ? Colors.text_black : getThemedTextColor())}
   const wr_id = isSearched ? write.wr_parent : write.wr_id;
   const comment_id = isSearched ? write.wr_id : null;
@@ -25,8 +23,6 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
     <TouchableOpacity
       style={styles.writeContainer}
       onPress={() => handleReadWrite(
-        getCurrentUserData,
-        boardsConfig,
         bo_table,
         write,
         setModalVisible,
