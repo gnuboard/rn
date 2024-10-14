@@ -38,6 +38,7 @@ const LoginScreen = ({ navigation }) => {
     password: '',
   });
   const [ saveLoginInfo, setSaveLoginInfo ] = useState(false);
+  const [ errorDescription, setErrorDescription ] = useState(null);
   const passwordInputRef = useRef(null);
 
   async function handleAfterLogin () {
@@ -342,7 +343,7 @@ const LoginScreen = ({ navigation }) => {
 
       handleAfterLogin();
     } catch (error) {
-      logJson(error.response, true);
+      setErrorDescription(error.response.data.error.description);
     }
   }
 
@@ -397,6 +398,7 @@ const LoginScreen = ({ navigation }) => {
             returnKeyType="done"
             onSubmitEditing={login}
           />
+          {errorDescription ? <Text style={styles.errorText}>{errorDescription}</Text> : null}
           <View style={styles.checkboxContainer}>
             <CheckBox
               value={saveLoginInfo}
@@ -518,6 +520,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 12,
   },
+  errorText: {
+    color: 'red'
+  }
 });
 
 export default LoginScreen;
