@@ -432,10 +432,7 @@ async function deleteWrite(bo_table, write, navigation, refreshWriteList) {
       );
     }
   } catch (error) {
-    console.error(error);
-    if (error.response.status === 403) {
-      alert(error.response.data.detail);
-    }
+    alert(error.response.data.error.description);
   }
 }
 
