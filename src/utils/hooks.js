@@ -7,6 +7,14 @@ export const useHandleWrite = () => {
   const { getCurrentUserData } = useAuth();
   const { boardsConfig } = useBoards();
 
+  const checkCreateWriteAllowed = async (bo_table, setWriteAllowed) => {
+    const userData = await getCurrentUserData();
+    const { bo_write_level } = boardsConfig[bo_table];
+    if ((bo_write_level == 1) || (userData && userData.mb_level >= bo_write_level)) {
+      setWriteAllowed(true);
+    }
+  }
+
   const handleReadWrite = async (
     bo_table, write, setModalVisible, setModalWrId, navigation, isSearched
   ) => {
@@ -38,5 +46,5 @@ export const useHandleWrite = () => {
     }
   }
 
-  return { handleReply, handleReadWrite };
+  return { checkCreateWriteAllowed, handleReply, handleReadWrite };
 }
