@@ -99,7 +99,6 @@ export const getGuestToken = async () => {
 
 export const deleteAllSecureData = async () => {
   try {
-    await Keychain.resetInternetCredentials('user_credentials');
     await Keychain.resetInternetCredentials('auth_tokens');
     await Keychain.resetInternetCredentials('naver_login_tokens');
     await Keychain.resetInternetCredentials('kakao_login_tokens');
