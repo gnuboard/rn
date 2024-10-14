@@ -17,6 +17,7 @@ import {
 } from '../../../services/api/ServerApi';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
+import { useHandleWrite } from '../../../utils/hooks';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 import { getTokens } from '../../../utils/authFunc';
 import { Pagination } from '../../../components/Pagination/Pagination';
@@ -45,6 +46,7 @@ const WriteScreen = ({ navigation, route }) => {
   const commentRefs = useRef({});
   const [ alarmCommentId, setAlarmCommentId ] = useState(comment_id);
   const [ highlightedCommentId, setHighlightedCommentId ] = useState(null);
+  const { handleReply } = useHandleWrite();
 
   useEffect(() => {
     if (isVerified) {
@@ -221,14 +223,7 @@ const WriteScreen = ({ navigation, route }) => {
           <View style={styles.bindedButton}>
             <TouchableOpacity
               style={[styles.buttonCommon, styles.replyButton]}
-              onPress={() => navigation.navigate(
-                'WriteUpdate',
-                params={
-                  'bo_table': bo_table,
-                  'wr_parent': write.wr_id,
-                  'reply_subject': `Re: ${write.wr_subject}`,
-                }
-              )}
+              onPress={() => handleReply(bo_table, write, navigation)}
             >
               <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
