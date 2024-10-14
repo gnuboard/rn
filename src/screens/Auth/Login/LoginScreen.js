@@ -405,7 +405,9 @@ const LoginScreen = ({ navigation }) => {
               onValueChange={setSaveLoginInfo}
               tintColors={{ false: Colors.checkbox_border }}
             />
-            <Text style={styles.label}>로그인 정보 저장</Text>
+            <TouchableWithoutFeedback onPress={() => setSaveLoginInfo(!saveLoginInfo)}>
+              <Text style={styles.label}>로그인 정보 저장</Text>
+            </TouchableWithoutFeedback>
           </View>
           <TouchableOpacity style={loading ? styles.loginButtonLoading : styles.loginButton } onPress={login} disabled={loading}>
             {loading
