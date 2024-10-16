@@ -45,6 +45,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     wr_parent: wr_parent ? wr_parent : 0,
   });
   const [ uploadFiles, setUploadFiles ] = useState({});
+  const uploadedFiles = write ? write.images.concat(write.normal_files) : [];
 
   useEffect(() => {
     fetchBoardConfigRequest(bo_table)
@@ -233,7 +234,11 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           key={i}
         >
           <Text style={[styles.fileButtonText]} numberOfLines={1} ellipsizeMode="tail">
-            파일 #{i+1}: {uploadFiles[`file${i+1}`] ? uploadFiles[`file${i+1}`].name : '파일선택'}
+            파일 #{i+1}: {
+              uploadedFiles[i] ? uploadedFiles[i].bf_source : (
+                uploadFiles[`file${i+1}`] ? uploadFiles[`file${i+1}`].name : '파일 선택'
+              )
+            }
           </Text>
         </TouchableOpacity>
       );
