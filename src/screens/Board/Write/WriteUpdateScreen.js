@@ -116,6 +116,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
         setWriteRefresh(!writeRefresh);
         await refreshWriteList(bo_table);
         if (fileFormData._parts.length) {
+          fileFormData.append('wr_password', formValue.wr_password);
           await uploadFilesRequest(bo_table, wrId, fileFormData);
         }
 
