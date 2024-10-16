@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">gnuboard_react_native</string>
+    <string name="app_name">그누보드</string>
     <string name="kakao_app_key">@string/KAKAO_NATIVE_APP_KEY</string>
 </resources>
