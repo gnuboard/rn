@@ -5,7 +5,6 @@ import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
 import { updatePersonalInfoRequest, updateMbImgRequest } from '../../services/api/ServerApi';
-import { logJson } from '../../utils/logFunc';
 import { useAuth } from '../../context/auth/AuthContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
@@ -112,35 +111,36 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
   };
 
   const handleSubmit = async () => {
+    setIsSubmitReady(false);
     try {
-      const imgSubmitSuccess = await handleImgSubmit();
+      const { imgSubmitSuccess, retry, description } = await handleImgSubmit();
       if (!imgSubmitSuccess) {
-        setIsSubmitReady(false);
-        retryCount += 1;
-        if (retryCount > 10) {
+        if (retry) {
+          setTimeout(() => {
+            handleSubmit();
+          }, 500);
+          return;
+        } else {
+          alert(description);
           setIsSubmitReady(true);
-          alert("이미지 업로드에 실패했습니다. 다시 시도해주세요.");
           return;
         }
-        setTimeout(() => {
-          imgFormData = new FormData();
-          handleSubmit();
-        }, 50);
-        return;
       }
       const response = await updatePersonalInfoRequest(formValue);
       if (response.status && response.status === 200) {
         fetchPersonalInfo().then(() => {
           setIsLoggedIn(false);
           setIsLoggedIn(true);
+          setIsSubmitReady(true);
         })
         .then(() => {navigation.navigate('Profile')});
       } else {
         console.log("handleSubmit log - ProfileUpdateScreen", response);
       }
     } catch (error) {
+      alert(error.response.data.error.description);
+      setIsSubmitReady(true);
       console.error("handleSubmit error - ProfileUpdateScreen", error);
-      logJson(error, true);
     }
   };
 
@@ -164,14 +164,25 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     try {
       const response = await updateMbImgRequest(imgFormData);
       if (response.status === 200) {
-        return {'imgSubmitSuccess': true}
+        return {imgSubmitSuccess : true}
       }
     } catch (error) {
-      if (error.response && error.response.status && error.response.status === 400) {
-        alert(error.response.data.error.description);
-      } else {
-        console.error("handleImgSubmit error - ProfileUpdateScreen", error);
+      if (error.code === 'ERR_NETWORK') {
+        if (retryCount < 5) {
+          retryCount++;
+          return {imgSubmitSuccess: false, retry: true};
+        }
+        return {
+          imgSubmitSuccess: false,
+          retry: false,
+          description: '이미지 업로드에 실패했습니다. 다시 시도해주세요.'
+        };
       }
+      return {
+        imgSubmitSuccess: false,
+        retry: false,
+        description: error.response.data.error.description
+      };
     }
   }
 
@@ -196,8 +207,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       uri: emptyAvatarUri,
     });
   }
-
-  const DyanamicTouchView = isSubmitReady ? TouchableOpacity : TouchableOpacity;
 
   return (
     <View style={[styles.container, bgThemedColor]}>
@@ -332,9 +341,9 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           />
           <Text style={[styles.checkboxLabel, textThemedColor]}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
         </View>
-        <DyanamicTouchView disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
+        <TouchableOpacity disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>수정하기</Text>
-        </DyanamicTouchView>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
