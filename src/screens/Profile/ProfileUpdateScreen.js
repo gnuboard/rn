@@ -221,9 +221,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
             value={formValue.mb_nick}
             onChangeText={(value) => handleChange('mb_nick', value)}
           />
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>자동생성</Text>
-          </TouchableOpacity>
         </View>
         <TextInput 
           style={styles.input}
@@ -248,9 +245,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
             value={formValue.mb_hp}
             onChangeText={(value) => handleChange('mb_hp', value)}
           />
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>인증하기</Text>
-          </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
           <TextInput
