@@ -23,7 +23,6 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_name: route.params.mb_name,
     mb_hp: route.params.mb_hp,
     mb_zip: `${route.params.mb_zip1}${route.params.mb_zip2}`,
-    mb_zip: route.params.mb_zip,
     mb_addr_jibeon: route.params.mb_addr_jibeon,
     mb_addr1: route.params.mb_addr1,
     mb_addr2: route.params.mb_addr2,
