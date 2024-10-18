@@ -269,6 +269,22 @@ android {
     }
 }
 
+tasks.whenTaskAdded { task ->
+    if (task.name == 'bundleRelease') {
+        task.doLast {
+            def date = new Date().format('yyyyMMdd_HHmm')
+            def sourceFile = file("$buildDir/outputs/bundle/release/app-release.aab")
+            def newFileName = "gnuboard_${android.defaultConfig.versionName}_vc${android.defaultConfig.versionCode}_release_${date}.aab"
+            def targetFile = file("$buildDir/outputs/bundle/release/$newFileName")
+            
+            if (sourceFile.exists()) {
+                sourceFile.renameTo(targetFile)
+                println "Bundle renamed to: $newFileName"
+            }
+        }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
