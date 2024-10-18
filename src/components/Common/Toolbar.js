@@ -42,9 +42,6 @@ export const WriteListToolbar = ({ bo_table }) => {
             <Icon name="create" size={24} color={getThemedTextColor()} />
           </TouchableOpacity>
         )}
-        <TouchableOpacity style={styles.iconButton}>
-          <Icon name="ellipsis-vertical" size={24} color={getThemedTextColor()} />
-        </TouchableOpacity>
       </View>
       <SearchInput onetable={bo_table}/>
     </View>
