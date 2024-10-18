@@ -68,7 +68,7 @@ export const WritePasswordModal = ({
     } catch (error) {
       console.error(error);
       if (error.response.status === 403) {
-        alert(error.response.data.detail);
+        alert(error.response.data.error.description);
       }
     }
   };
@@ -107,7 +107,7 @@ export const CommentPasswordModal = ({
     } catch (error) {
       console.error(error);
       if (error.response.status === 403) {
-        alert(error.response.data.detail);
+        alert(error.response.data.error.description);
       }
     }
   };
