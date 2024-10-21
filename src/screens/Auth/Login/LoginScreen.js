@@ -124,8 +124,6 @@ const LoginScreen = ({ navigation }) => {
       }
 
       AsyncStorage.setItem('login_method', 'naver');
-      AsyncStorage.setItem('mb_id', profileData.id);
-      AsyncStorage.setItem('mb_email', profileData.email);
 
       handleAfterLogin();
     } catch (error) {
@@ -154,8 +152,6 @@ const LoginScreen = ({ navigation }) => {
           }
 
           AsyncStorage.setItem('login_method', 'naver');
-          AsyncStorage.setItem('mb_id', profileData.id);
-          AsyncStorage.setItem('mb_email', profileData.email);
 
           handleAfterLogin();
         } catch (error) {
@@ -194,7 +190,6 @@ const LoginScreen = ({ navigation }) => {
       }
 
       AsyncStorage.setItem('login_method', 'kakao');
-      AsyncStorage.setItem('mb_id', profileData.id);
 
       handleAfterLogin();
     } catch (error) {
@@ -223,7 +218,6 @@ const LoginScreen = ({ navigation }) => {
           }
 
           AsyncStorage.setItem('login_method', 'kakao');
-          AsyncStorage.setItem('mb_id', profileData.id);
 
           handleAfterLogin();
         } catch (error) {
@@ -275,8 +269,6 @@ const LoginScreen = ({ navigation }) => {
       }
 
       AsyncStorage.setItem('login_method', 'google');
-      AsyncStorage.setItem('mb_id', userInfo.data.user.id);
-      AsyncStorage.setItem('mb_email', userInfo.data.user.email);
 
       handleAfterLogin();
     } catch (error) {
@@ -305,8 +297,6 @@ const LoginScreen = ({ navigation }) => {
           }
 
           AsyncStorage.setItem('login_method', 'google');
-          AsyncStorage.setItem('mb_id', userInfo.data.user.id);
-          AsyncStorage.setItem('mb_email', userInfo.data.user.email);
 
           handleAfterLogin();
         } catch (error) {
