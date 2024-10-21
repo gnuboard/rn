@@ -204,6 +204,24 @@ const WriteScreen = ({ navigation, route }) => {
     });
   }, []);
 
+  const WrLink = ({ wr_link }) => {
+    if (!wr_link) {
+      return null;
+    }
+
+    return (
+      <View style={styles.linkContainer}>
+        <Icon name="link" style={styles.wrLink} />
+        <Text
+          style={styles.linkText}
+          onPress={() => {Linking.openURL(`${adaptHttps(wr_link)}`)}}
+        >
+          {adaptHttps(wr_link)}
+        </Text>
+      </View>
+    )
+  }
+
   if (!write) {
     return (
       <View style={[styles.container, bgThemedColor]}>
@@ -285,32 +303,8 @@ const WriteScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         ))
       }
-      {
-        write.wr_link1 && (
-          <View style={styles.linkContainer}>
-            <Icon name="link" style={styles.wrLink} />
-            <Text
-              style={[styles.linkText, textThemedColor]}
-              onPress={() => {Linking.openURL(`${adaptHttps(write.wr_link1)}`)}}
-            >
-              {adaptHttps(write.wr_link1)}
-            </Text>
-          </View>
-        )
-      }
-      {
-        write.wr_link2 && (
-          <View style={styles.linkContainer}>
-            <Icon name="link" style={styles.wrLink} />
-            <Text
-              style={styles.linkText}
-              onPress={() => {Linking.openURL(`${adaptHttps(write.wr_link2)}`)}}
-            >
-              {adaptHttps(write.wr_link2)}
-            </Text>
-          </View>
-        )
-      }
+      <WrLink wr_link={write.wr_link1} />
+      <WrLink wr_link={write.wr_link2} />
       <View style={styles.commentContainer}>
         <Text style={[styles.commentHeaderText, textThemedColor]}>댓글</Text>
         {comments.length > 0
