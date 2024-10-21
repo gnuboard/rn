@@ -24,3 +24,13 @@ export const removeQuotes = (value) => {
 export const adaptLineBreaks = (text) => {
   return text?.replace(/\\n/g, '\n') || '';
 }
+
+export const adaptHttps = (url) => {
+  if (!url.startsWith('http')) {
+    return `https://${url}`;
+  } else if (url.startsWith('http://')) {
+    return url.replace('http://', 'https://');
+  } else {
+    return url;
+  }
+}

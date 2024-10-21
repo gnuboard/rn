@@ -20,6 +20,7 @@ import { useTheme } from '../../../context/theme/ThemeContext';
 import { useHandleWrite } from '../../../utils/hooks';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 import { getTokens } from '../../../utils/authFunc';
+import { adaptHttps } from '../../../utils/stringFunc';
 import { Pagination } from '../../../components/Pagination/Pagination';
 
 const WriteScreen = ({ navigation, route }) => {
@@ -290,9 +291,9 @@ const WriteScreen = ({ navigation, route }) => {
             <Icon name="link" style={styles.wrLink} />
             <Text
               style={[styles.linkText, textThemedColor]}
-              onPress={() => {Linking.openURL(`${write.wr_link1}`)}}
+              onPress={() => {Linking.openURL(`${adaptHttps(write.wr_link1)}`)}}
             >
-              {write.wr_link1}
+              {adaptHttps(write.wr_link1)}
             </Text>
           </View>
         )
@@ -303,9 +304,9 @@ const WriteScreen = ({ navigation, route }) => {
             <Icon name="link" style={styles.wrLink} />
             <Text
               style={styles.linkText}
-              onPress={() => {Linking.openURL(`${write.wr_link2}`)}}
+              onPress={() => {Linking.openURL(`${adaptHttps(write.wr_link2)}`)}}
             >
-              {write.wr_link2}
+              {adaptHttps(write.wr_link2)}
             </Text>
           </View>
         )
