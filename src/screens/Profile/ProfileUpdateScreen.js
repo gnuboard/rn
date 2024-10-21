@@ -11,6 +11,7 @@ import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
 import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
+import { adaptLineBreaks } from '../../utils/stringFunc';
 
 const ProfileUpdateScreen = ({ navigation, route }) => {
   let imgFormData = new FormData();
@@ -28,7 +29,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
     mb_addr2: route.params.mb_addr2,
     mb_icon_path: getMemberIconUri(route.params),
     mb_image_path: getMemberImageUri(route.params),
-    mb_profile: route.params.mb_profile,
+    mb_profile: adaptLineBreaks(route.params.mb_profile),
     mb_open: route.params.mb_open == "1" ? true : false,
     mb_sms: route.params.mb_sms == "1" ? true : false,
     mb_mailing: route.params.mb_mailing == "1" ? true : false,

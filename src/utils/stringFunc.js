@@ -19,3 +19,8 @@ export const removeQuotes = (value) => {
   }
   return value;
 };
+
+// \n 문자열을 개행문자로 변환
+export const adaptLineBreaks = (text) => {
+  return text?.replace(/\\n/g, '\n') || '';
+}

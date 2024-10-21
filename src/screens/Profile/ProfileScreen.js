@@ -4,7 +4,7 @@ import {
   SafeAreaView, TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { removeQuotes } from '../../utils/stringFunc';
+import { removeQuotes, adaptLineBreaks } from '../../utils/stringFunc';
 import { useAuth } from '../../context/auth/AuthContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { Colors } from '../../constants/theme';
@@ -23,6 +23,7 @@ const ProfileScreen = ({ navigation }) => {
         const data = Object.fromEntries(
           results.map(([key, value]) => [key, removeQuotes(value)])
         );
+        data.mb_profile = adaptLineBreaks(data.mb_profile);
         setProfileData(data);
       } catch (error) {
         console.error('Error fetching profile data:', error);
@@ -70,7 +71,14 @@ const ProfileScreen = ({ navigation }) => {
         <View style={styles.infoContainer}>
           <Text style={[styles.name, textThemedColor]}>{profileData.mb_name}</Text>
           <Text style={[styles.username, textThemedColor]}>@{profileData.mb_nick}</Text>
-          <Text style={[styles.bio, textThemedColor]}>{profileData.mb_profile}</Text>
+          <ScrollView
+            style={styles.bioContainer}
+            showsVerticalScrollIndicator={true}
+            scrollEventThrottle={16}
+          >
+            <Text style={[styles.bio, textThemedColor]}>{profileData.mb_profile}</Text>
+          </ScrollView>
+          
 
           <View style={styles.detailsContainer}>
             <View style={styles.detailRowContainer}>
@@ -160,6 +168,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginBottom: 10,
+  },
+  bioContainer: {
+    maxHeight: 100,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    elevation: 2,
   },
   bio: {
     fontSize: 16,
