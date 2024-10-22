@@ -239,6 +239,7 @@ android {
             keyPassword project.env.get('KEY_PASSWORD')
         }
     }
+    namespace 'com.gnuboard_react_native'
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
