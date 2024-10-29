@@ -255,6 +255,11 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 4,
     marginRight: 5,
+    height: 48,
+    width: 55,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
   },
   replyButton: {
     backgroundColor: Colors.btn_green,
@@ -269,7 +274,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
   },
   commentBody: {
     marginTop: 5,
@@ -280,6 +285,12 @@ const styles = StyleSheet.create({
   },
   commentText: {
     marginLeft: 5,
+  },
+  iconButton: {
+    width: 48,
+    height: 48,
+    marginLeft: -30,
+    alignItems: 'flex-end',
   },
 });
 

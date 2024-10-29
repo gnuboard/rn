@@ -75,5 +75,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: Colors.border_gray,
+    height: 48,
   },
 });

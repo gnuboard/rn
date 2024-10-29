@@ -106,7 +106,15 @@ const AppNavigator = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <Drawer.Navigator>
+      <Drawer.Navigator
+        screenOptions={{
+          drawerItemStyle: {
+            height: 48,
+            alignContent: 'center',
+            justifyContent: 'center',
+          },
+        }}
+      >
         <Stack.Screen name="홈" component={MainStack} options={{headerShown: false}} />
         {isLoggedIn
           ? <Drawer.Screen

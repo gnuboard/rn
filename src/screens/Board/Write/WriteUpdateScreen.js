@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {
   ScrollView, StyleSheet, TextInput, View,
-  Dimensions, TouchableOpacity, Text, Alert
+  Dimensions, TouchableOpacity, Text, Alert,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import CheckBox from '@react-native-community/checkbox';
@@ -311,19 +312,23 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 tintColors={{ false: Colors.checkbox_border }}
                 accessibilityLabel={formValue.notice ? "Notice checkbox checked" : "Notice checkbox not checked"}
               />
+              <TouchableWithoutFeedback onPress={() => setFormValue({ ...formValue, notice: !formValue.notice })}>
                 <Text style={[styles.checkboxText, textThemedColor]}>공지글</Text>
+              </TouchableWithoutFeedback>
             </View>
           )}
           <View style={styles.checkboxInnerContainer}>
             <CheckBox
               name="secret"
               value={formValue.secret}
-
+              style={styles.checkbox}
               onValueChange={() => setFormValue({ ...formValue, secret: !formValue.secret })}
               tintColors={{ false: Colors.checkbox_border }}
               accessibilityLabel={formValue.secret ? "Secret checkbox checked" : "Secret checkbox not checked"}
             />
+            <TouchableWithoutFeedback onPress={() => setFormValue({ ...formValue, secret: !formValue.secret })}>
               <Text style={[styles.checkboxText, textThemedColor]}>비밀글</Text>
+            </TouchableWithoutFeedback>
           </View>
         </View>
         <TextInput
@@ -431,7 +436,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   input: {
-    height: 40,
+    height: 48,
     borderColor: '#ccc',
     borderWidth: 1,
     marginBottom: 10,
@@ -466,6 +471,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     borderRadius: 5,
+    height: 48,
     width: '45%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -482,7 +488,7 @@ const styles = StyleSheet.create({
   },
   fileButton: {
     width: '100%',
-    height: 40,
+    height: 48,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,

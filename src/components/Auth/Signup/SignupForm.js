@@ -238,7 +238,9 @@ export const SignupForm = ({ navigation }) => {
           tintColors={{ false: Colors.checkbox_border }}
           accessibilityLabel={formData.mb_mailling ? "Receiving mail agreement checkbox checked" : "Receiving mail agreement checkbox not checked"}
         />
-        <Text style={styles.label}>정보 메일을 받겠습니다.</Text>
+        <TouchableWithoutFeedback onPress={() => handleInputChange('mb_mailling', !formData.mb_mailling)}>
+          <Text style={styles.label}>정보 메일을 받겠습니다.</Text>
+        </TouchableWithoutFeedback>
       </View>
       <View style={styles.checkboxContainer}>
         <CheckBox
@@ -248,9 +250,11 @@ export const SignupForm = ({ navigation }) => {
           tintColors={{ false: Colors.checkbox_border }}
           accessibilityLabel={formData.mb_open ? "Reveal personal information agreement checkbox checked" : "Reveal personal information agreement checkbox not checked"}
         />
-        <Text style={styles.label}>
-          다른분들이 나의 정보를 {'\n'}볼 수 있도록 합니다.
-        </Text>
+        <TouchableWithoutFeedback onPress={() => handleInputChange('mb_open', !formData.mb_open)}>
+          <Text style={styles.label}>
+            다른분들이 나의 정보를 {'\n'}볼 수 있도록 합니다.
+          </Text>
+        </TouchableWithoutFeedback>
       </View>
       <TouchableOpacity style={[styles.button, isSignupLoading && styles.disabledButton]} onPress={handleSubmit} disabled={isSignupLoading}>
         <Text style={styles.buttonText}>회원가입</Text>
@@ -278,7 +282,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   input: {
-    height: 40,
+    height: 48,
     borderColor: '#ddd',
     borderWidth: 1,
     marginBottom: 10,

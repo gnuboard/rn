@@ -136,6 +136,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
                 ...commentFormValue,
                 wr_secret_checked: value
               })}
+              style={styles.secretCommentSwitch}
             />
             <Text style={[styles.secretCommentText, textThemedColor]}>비밀 {commentFormKind}</Text>
           </View>
@@ -181,6 +182,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 8,
     width: '48%',
+    height: 48,
   },
   errorText: {
     color: 'red',
@@ -205,6 +207,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 4,
+    height: 48,
+    justifyContent: 'center',
   },
   updateButton: {
     backgroundColor: Colors.btn_green,
@@ -212,5 +216,9 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: 'white',
     fontSize: 14,
+  },
+  secretCommentSwitch: {
+    width: 48,
+    height: 48,
   },
 });

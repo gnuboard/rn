@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   input: {
-    height: 40,
+    height: 48,
     borderColor: '#ddd',
     borderWidth: 1,
     marginBottom: 10,

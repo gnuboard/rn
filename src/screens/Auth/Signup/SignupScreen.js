@@ -88,6 +88,8 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginTop: 10,
     width: '100%',
+    height: 48,
+    justifyContent: 'center',
   },
   buttonText: {
     color: Colors.btn_text_white,

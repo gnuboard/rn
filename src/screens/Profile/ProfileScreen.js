@@ -230,6 +230,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 3,
     marginTop: 10,
+    height: 48,
+    justifyContent: 'center',
   },
   buttonText: {
     color: Colors.btn_text_white,

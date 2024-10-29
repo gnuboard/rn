@@ -62,6 +62,7 @@ const BoardWrites = ({ title, bo_table, data }) => {
   return (
     <View style={[styles.section, bgThemedColor]}>
       <TouchableOpacity
+        style={styles.sectionTitleButton}
         onPress={() => navigation.navigate(
           'Boards',
           {
@@ -87,6 +88,9 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 30,
+  },
+  sectionTitleButton: {
+    height: 48,
   },
   sectionTitle: {
     fontSize: 18,

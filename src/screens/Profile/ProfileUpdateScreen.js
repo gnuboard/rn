@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import {
+  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  ScrollView, TouchableWithoutFeedback
+} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import DocumentPicker from 'react-native-document-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -333,7 +336,12 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
             onValueChange={() => handleChange('mb_open', !formValue.mb_open)}
             tintColors={{ false: Colors.checkbox_border }}
           />
-          <Text style={[styles.checkboxLabel, textThemedColor]}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
+          <TouchableWithoutFeedback
+            style={styles.checkboxLabelButton}
+            onPress={() => handleChange('mb_open', !formValue.mb_open)}
+          >
+            <Text style={[styles.checkboxLabel, textThemedColor]}>정보공개 (다른분들이 내정보를 볼수 있습니다)</Text>
+          </TouchableWithoutFeedback>
         </View>
         <TouchableOpacity disabled={!isSubmitReady} style={[styles.submitButton, !isSubmitReady && styles.disabledButton]} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>수정하기</Text>
@@ -373,7 +381,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     backgroundColor: '#f9f9f9',
-    height: 45,
+    height: 48,
     color: Colors.text_black,
   },
   multilineInput: {
@@ -386,7 +394,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginLeft: 10,
     justifyContent: 'center',
-    height: 45,
+    height: 48,
   },
   buttonText: {
     color: '#fff',

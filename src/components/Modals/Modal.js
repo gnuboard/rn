@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
     color: Colors.text_black,
   },
   textInput: {
-    width: 200,
-    height: 40,
+    width: 207,
+    height: 50,
     marginVertical: 15,
     borderWidth: 1,
     padding: 10,
@@ -164,12 +164,15 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '33%',
-    padding: 10
+    padding: 10,
+    height: 48,
+    justifyContent: 'center',
   },
   buttonText: {
     color: Colors.btn_text_white,
     textAlign: 'center',
     fontWeight: 'bold',
+    fontSize: 16,
   },
   submitButton: {
     backgroundColor: Colors.btn_blue,

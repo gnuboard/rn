@@ -52,8 +52,13 @@ const styles = StyleSheet.create({
   toolbar: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginBottom: -10,
+    marginRight: 10,
   },
   iconButton: {
-    marginHorizontal: 8,
+    height: 48,
+    width: 48,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
 });

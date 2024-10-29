@@ -275,6 +275,7 @@ const WriteScreen = ({ navigation, route }) => {
           accessible={true}
           accessibilityLabel="글 메뉴 열기"
           accessibilityRole="button"
+          style={styles.writeEllipsis}
         >
           <Icon name="ellipsis-vertical" size={20} color={getThemedTextColor()} />
         </TouchableOpacity>
@@ -379,7 +380,11 @@ const WriteContentWeVview = ({ width, write }) => {
   };
 
   return (
-    <View style={{ width: width }}>
+    <View style={{
+      width: width,
+      minHeight: 48,
+      marginVertical: 10
+    }}>
       <WebView
         ref={webViewRef}
         originWhitelist={['*']}
@@ -511,6 +516,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
     width: '98%',
+    height: 48,
   },
   buttonCommon: {
     paddingVertical: 3,
@@ -519,6 +525,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginRight: 10,
     width: 55,
+    height: 48,
+    justifyContent: 'center',
   },
   replyButton: {
     paddingVertical: 3,
@@ -557,8 +565,9 @@ const styles = StyleSheet.create({
   },
   bindedButton: {
     position: 'absolute',
-    top: 10,
+    top: 1,
     right: 15,
+    zIndex: 1,
   },
   metaContainer: {
     flexDirection: 'row',
@@ -671,6 +680,12 @@ const styles = StyleSheet.create({
   commentsPAgeContainer: {
     alignItems: 'center',
   },
+  writeEllipsis: {
+    height: 48,
+    width: 48,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  }
 });
 
 export default WriteScreen;
