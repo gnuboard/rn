@@ -154,6 +154,9 @@ function Comment({
                 setIsUpdateComment(false);
                 setIsEditFormVisible(!isEditFormVisible);
               }}
+              accessible={true}
+              accessibilityLabel={`댓글 아이디 ${comment.wr_id}에 답변하기`}
+              accessibilityRole="button"
             >
               <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
@@ -178,7 +181,13 @@ function Comment({
             ): null}
           </View>
         )}
-        <TouchableOpacity style={styles.iconButton} onPress={() => setItemVisible(!itemVisible)}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => setItemVisible(!itemVisible)}
+          accessible={true}
+          accessibilityLabel={`댓글 아이디 ${comment.wr_id} 메뉴 열기`}
+          accessibilityRole="button"
+        >
           <Icon name="ellipsis-vertical" size={20} color={getThemedTextColor()} />
         </TouchableOpacity>
       </View>

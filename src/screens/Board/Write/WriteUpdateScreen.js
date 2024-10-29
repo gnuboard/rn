@@ -311,6 +311,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 value={formValue.notice}
                 onValueChange={() => setFormValue({ ...formValue, notice: !formValue.notice })}
                 tintColors={{ false: Colors.checkbox_border }}
+                accessibilityLabel={formValue.notice ? "Notice checkbox checked" : "Notice checkbox not checked"}
               />
               <Text style={[styles.checkboxText, textThemedColor]}>공지글</Text>
             </View>
@@ -322,6 +323,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
               
               onValueChange={() => setFormValue({ ...formValue, secret: !formValue.secret })}
               tintColors={{ false: Colors.checkbox_border }}
+              accessibilityLabel={formValue.secret ? "Secret checkbox checked" : "Secret checkbox not checked"}
             />
             <Text style={[styles.checkboxText, textThemedColor]}>비밀글</Text>
           </View>

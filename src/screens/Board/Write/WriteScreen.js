@@ -243,6 +243,9 @@ const WriteScreen = ({ navigation, route }) => {
             <TouchableOpacity
               style={[styles.buttonCommon, styles.replyButton]}
               onPress={() => handleReply(bo_table, write, navigation)}
+              accessible={true}
+              accessibilityLabel="글 답변"
+              accessibilityRole="button"
             >
               <Text style={styles.buttonText}>답변</Text>
             </TouchableOpacity>
@@ -267,7 +270,12 @@ const WriteScreen = ({ navigation, route }) => {
             ): null}
           </View>
         )}
-        <TouchableOpacity onPress={() => setItemVisible(!itemVisible)}>
+        <TouchableOpacity
+          onPress={() => setItemVisible(!itemVisible)}
+          accessible={true}
+          accessibilityLabel="글 메뉴 열기"
+          accessibilityRole="button"
+        >
           <Icon name="ellipsis-vertical" size={20} color={getThemedTextColor()} />
         </TouchableOpacity>
       </View>

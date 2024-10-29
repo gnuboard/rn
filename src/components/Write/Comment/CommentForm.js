@@ -22,6 +22,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
     comment_id: comment?.wr_id ? comment.wr_id : 0,
   });
   const { textThemedColor } = useTheme();
+  const commentFormKind = comment ? "대댓글" : "댓글";
 
   async function submitComment() {
     const dataToSend = {
@@ -90,7 +91,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
         style={[styles.input, textThemedColor]}
         multiline
         numberOfLines={3}
-        placeholder="댓글내용을 입력해주세요"
+        placeholder={`${commentFormKind}내용을 입력해주세요`}
         placeholderTextColor={Colors.text_placeholder_black}
         value={commentFormValue.wr_content}
         onChangeText={(text) => setCommentFormValue({
@@ -103,7 +104,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
           <View style={styles.nonLoginInputs}>
             <TextInput
               style={[styles.smallInput, textThemedColor]}
-              placeholder="작성자 이름"
+              placeholder={`${commentFormKind} 작성자 이름`}
               placeholderTextColor={Colors.text_placeholder_black}
               value={commentFormValue.wr_name}
               onChangeText={(text) => setCommentFormValue({
@@ -113,7 +114,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
             />
             <TextInput
               style={[styles.smallInput, textThemedColor]}
-              placeholder="비밀번호"
+              placeholder={`${commentFormKind} 비밀번호`}
               placeholderTextColor={Colors.text_placeholder_black}
               secureTextEntry
               value={commentFormValue.wr_password}
@@ -136,13 +137,13 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
                 wr_secret_checked: value
               })}
             />
-            <Text style={[styles.secretCommentText, textThemedColor]}>비밀댓글</Text>
+            <Text style={[styles.secretCommentText, textThemedColor]}>비밀 {commentFormKind}</Text>
           </View>
           <TouchableOpacity
             style={styles.submitButton}
             onPress={() => submitComment(bo_table, wr_id, commentFormValue)}
           >
-            <Text style={styles.submitButtonText}>{isUpdateComment ? "댓글수정" : "댓글등록"}</Text>
+            <Text style={styles.submitButtonText}>{isUpdateComment ? `${commentFormKind}수정`  : `${commentFormKind}등록`}</Text>
           </TouchableOpacity>
         </View>
       </View>

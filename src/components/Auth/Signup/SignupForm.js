@@ -44,6 +44,7 @@ export const Agreement = ({
           value={policySignup}
           onValueChange={setPolicySignup}
           tintColors={{ false: Colors.checkbox_border }}
+          accessibilityLabel={policySignup ? "Policy signup checkbox checked" : "Policy signup checkbox not checked"}
         />
         <TouchableWithoutFeedback onPress={() => setPolicySignup(!policySignup)}>
           <Text style={styles.label}>회원가입약관에 동의합니다.</Text>
@@ -73,6 +74,7 @@ export const Agreement = ({
           value={policyPrivacy}
           onValueChange={setPolicyPrivacy}
           tintColors={{ false: Colors.checkbox_border }}
+          accessibilityLabel={policyPrivacy ? "Policy privacy checkbox checked" : "Policy privacy checkbox not checked"}
         />
         <TouchableWithoutFeedback onPress={() => setPolicyPrivacy(!policyPrivacy)}>
           <Text style={styles.label}>개인정보처리방침에 동의합니다.</Text>
@@ -83,6 +85,7 @@ export const Agreement = ({
           value={allAgreed}
           onValueChange={toggleAll}
           tintColors={{ false: Colors.checkbox_border }}
+          accessibilityLabel={allAgreed ? "Agree all checkbox checked" : "Agree all checkbox not checked"}
         />
         <TouchableWithoutFeedback onPress={() => toggleAll(!allAgreed)}>
           <Text style={styles.label}>위 내용에 모두 동의합니다.</Text>
@@ -233,6 +236,7 @@ export const SignupForm = ({ navigation }) => {
           value={formData.mb_mailling}
           onValueChange={() => handleInputChange('mb_mailling', !formData.mb_mailling)}
           tintColors={{ false: Colors.checkbox_border }}
+          accessibilityLabel={formData.mb_mailling ? "Receiving mail agreement checkbox checked" : "Receiving mail agreement checkbox not checked"}
         />
         <Text style={styles.label}>정보 메일을 받겠습니다.</Text>
       </View>
@@ -242,6 +246,7 @@ export const SignupForm = ({ navigation }) => {
           value={formData.mb_open}
           onValueChange={() => handleInputChange('mb_open', !formData.mb_open)}
           tintColors={{ false: Colors.checkbox_border }}
+          accessibilityLabel={formData.mb_open ? "Reveal personal information agreement checkbox checked" : "Reveal personal information agreement checkbox not checked"}
         />
         <Text style={styles.label}>
           다른분들이 나의 정보를 {'\n'}볼 수 있도록 합니다.
