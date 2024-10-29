@@ -7,7 +7,6 @@ import { WebView } from 'react-native-webview';
 import CheckBox from '@react-native-community/checkbox';
 import { Picker } from '@react-native-picker/picker';
 import DocumentPicker from 'react-native-document-picker';
-import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import {
   fetchBoardConfigRequest, createWriteRequest, createGuestWriteRequest,
   updateWriteRequest, uploadFilesRequest, fetchSecretWriteRequest
@@ -248,7 +247,6 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 
   return (
     <View style={[styles.container, bgThemedColor]}>
-      <HeaderBackwardArrow navigation={navigation} />
       <ScrollView style={styles.scrollContainer}>
         {boardInfo.bo_use_category === 1 && (
           <View style={styles.pickerContainer}>
@@ -313,19 +311,19 @@ const WriteUpdateScreen = ({ navigation, route }) => {
                 tintColors={{ false: Colors.checkbox_border }}
                 accessibilityLabel={formValue.notice ? "Notice checkbox checked" : "Notice checkbox not checked"}
               />
-              <Text style={[styles.checkboxText, textThemedColor]}>공지글</Text>
+                <Text style={[styles.checkboxText, textThemedColor]}>공지글</Text>
             </View>
           )}
           <View style={styles.checkboxInnerContainer}>
             <CheckBox
               name="secret"
               value={formValue.secret}
-              
+
               onValueChange={() => setFormValue({ ...formValue, secret: !formValue.secret })}
               tintColors={{ false: Colors.checkbox_border }}
               accessibilityLabel={formValue.secret ? "Secret checkbox checked" : "Secret checkbox not checked"}
             />
-            <Text style={[styles.checkboxText, textThemedColor]}>비밀글</Text>
+              <Text style={[styles.checkboxText, textThemedColor]}>비밀글</Text>
           </View>
         </View>
         <TextInput
@@ -408,7 +406,7 @@ const CKEditorForm = ({ webViewRef, handleMessage }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
+    paddingTop: 15,
     width: '100%',
   },
   pickerContainer: {

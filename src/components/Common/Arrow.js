@@ -19,5 +19,7 @@ const styles = StyleSheet.create({
     left: 2,
     zIndex: 1,
     padding: 10,
+    height: 48,
+    width: 48,
   },
 });
