@@ -23,6 +23,8 @@ const ModalComponent = ({ title, visible, password, setPassword, handlePasswordS
             style={styles.textInput}
             onChangeText={setPassword}
             value={password}
+            placeholder={`${title} 비밀번호`}
+            placeholderTextColor={Colors.text_placeholder_black}
           />
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={[styles.button, styles.submitButton]} onPress={handlePasswordSubmit}>

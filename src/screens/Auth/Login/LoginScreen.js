@@ -406,13 +406,31 @@ const LoginScreen = ({ navigation }) => {
             }
           </TouchableOpacity>
           <View style={styles.socialLoginGroupContainer}>
-            <TouchableOpacity onPress={naverLogin} disabled={loading}>
+            <TouchableOpacity
+              onPress={naverLogin}
+              disabled={loading}
+              accessible={true}
+              accessibilityLabel="네이버 로그인"
+              accessibilityRole="button"
+            >
               <Image source={naverLogoCircle} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={kakaoLogin} disabled={loading}>
+            <TouchableOpacity
+              onPress={kakaoLogin}
+              disabled={loading}
+              accessible={true}
+              accessibilityLabel="카카오 로그인"
+              accessibilityRole="button"
+            >
               <Image source={kakaoLogo} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={googleLogin} disabled={loading}>
+            <TouchableOpacity
+              onPress={googleLogin}
+              disabled={loading}
+              accessible={true}
+              accessibilityLabel="구글 로그인"
+              accessibilityRole="button"
+            >
               <Image source={googleLogo} style={styles.socialLoginLogo} resizeMode="cover" />
             </TouchableOpacity>
           </View>
