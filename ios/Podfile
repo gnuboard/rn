@@ -7,6 +7,9 @@ install! 'cocoapods', :deterministic_uuids => false
 target 'gnuboard_react_native' do
   config = use_native_modules!
 
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+
   # Flags change depending on the env values.
   flags = get_default_flags()
 
