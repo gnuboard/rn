@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet, Switch
+  View, Text, TextInput, TouchableOpacity, StyleSheet, Switch,
+  ActivityIndicator
 } from 'react-native';
 import { Colors } from '../../../constants/theme';
 import { useAuth } from '../../../context/auth/AuthContext';
@@ -21,6 +22,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
     wr_secret_checked: false,
     comment_id: comment?.wr_id ? comment.wr_id : 0,
   });
+  const [ isLoading, setIsLoading ] = useState(false);
   const { textThemedColor } = useTheme();
   const commentFormKind = comment ? "대댓글" : "댓글";
 
@@ -45,6 +47,8 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
       setError('댓글을 입력해주세요.');
       return;
     }
+
+    setIsLoading(true);
 
     try {
       let response;
@@ -81,6 +85,8 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
         }
       }
       console.error("submitComment - CommentForm", error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -143,8 +149,18 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
           <TouchableOpacity
             style={styles.submitButton}
             onPress={submitComment}
+            disabled={isLoading}
           >
-            <Text style={styles.submitButtonText}>{isUpdateComment ? `${commentFormKind}수정`  : `${commentFormKind}등록`}</Text>
+            {
+              isLoading
+              ? <ActivityIndicator color={Colors.white} />
+              : (
+                  <Text style={styles.submitButtonText}>
+                    {isUpdateComment ? `${commentFormKind}수정`  : `${commentFormKind}등록`}
+                  </Text>
+                )
+            }
+            
           </TouchableOpacity>
         </View>
       </View>
@@ -208,7 +224,9 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 4,
     height: 48,
+    width: 90,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   updateButton: {
     backgroundColor: Colors.btn_green,
