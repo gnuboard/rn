@@ -142,7 +142,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
           </View>
           <TouchableOpacity
             style={styles.submitButton}
-            onPress={() => submitComment(bo_table, wr_id, commentFormValue)}
+            onPress={submitComment}
           >
             <Text style={styles.submitButtonText}>{isUpdateComment ? `${commentFormKind}수정`  : `${commentFormKind}등록`}</Text>
           </TouchableOpacity>
