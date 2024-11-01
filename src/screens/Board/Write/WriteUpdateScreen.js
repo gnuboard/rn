@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import {
   ScrollView, StyleSheet, TextInput, View,
   Dimensions, TouchableOpacity, Text, Alert,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback, ActivityIndicator
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import CheckBox from '@react-native-community/checkbox';
@@ -44,6 +44,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
     wr_link2: write ? write.wr_link2 : '',
     wr_parent: wr_parent ? wr_parent : 0,
   });
+  const [ isLoading, setIsLoading ] = useState(false);
   const [ uploadFiles, setUploadFiles ] = useState({});
   const uploadedFiles = write ? write.images.concat(write.normal_files) : [];
 
@@ -71,6 +72,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
   const getContent = async () => {
     // CKEditor에서 작성한 내용을 가져오기
     // handleMessage 내의 submit case에서, 가져와진 내용에 따라 작성/수정 요청을 보낸다.
+    setIsLoading(true);
     webViewRef.current.injectJavaScript(`getEditorContent();`);
   };
 
@@ -167,6 +169,8 @@ const WriteUpdateScreen = ({ navigation, route }) => {
       } else {
         console.error('Error creating new write:', error);
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -388,8 +392,12 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           <TouchableOpacity
             style={[styles.button, styles.buttonSubmit]}
             onPress={getContent}
+            disabled={isLoading}
           >
-            <Text style={styles.buttnText}>작성완료</Text>
+            {isLoading
+              ? <ActivityIndicator size="small" />
+              : <Text style={styles.buttnText}>작성완료</Text>
+            }
           </TouchableOpacity>
         </View>
       </ScrollView>
