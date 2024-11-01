@@ -148,8 +148,8 @@ android {
         applicationId "com.gnuboard_react_native"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0"
+        versionCode 4
+        versionName "1.0.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         def kakaoNativeAppKey = project.env.get('KAKAO_NATIVE_APP_KEY')
