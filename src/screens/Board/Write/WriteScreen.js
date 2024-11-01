@@ -127,30 +127,21 @@ const WriteScreen = ({ navigation, route }) => {
         console.error("fetchWriteTotally - !error.response", error);
         return;
       }
-      if (error.response.status === 404) {
-        refreshWriteList(bo_table);
-        Alert.alert(
-          "Notification",
-          "게시물이 존재하지 않습니다.",
-          [
-            {
-              text: "확인",
-              onPress: () => {
-                navigation.navigate(
-                  'Boards',
-                  {
-                    screen: 'WriteList',
-                    params: { bo_table: bo_table },
-                    initial: false,
-                  }
-                );
-              },
+
+      refreshWriteList(bo_table);
+      Alert.alert(
+        "Notification",
+        error.response.data.error.description,
+        [
+          {
+            text: "확인",
+            onPress: () => {
+              navigation.goBack();
             },
-          ],
-          { cancelable: false }
-        )
-        return;
-      }
+          },
+        ],
+        { cancelable: false }
+      );
     }
   }
 
