@@ -7,6 +7,13 @@ export const useHandleWrite = () => {
   const { getCurrentUserData } = useAuth();
   const { boardsConfig } = useBoards();
 
+  const checkSearchWriteAllowed = async (bo_table, setSearchAllowed) => {
+    const { bo_use_search } = boardsConfig[bo_table];
+    if (bo_use_search == 1) {
+      setSearchAllowed(true);
+    }
+  }
+
   const checkCreateWriteAllowed = async (bo_table, setWriteAllowed) => {
     const userData = await getCurrentUserData();
     const { bo_write_level } = boardsConfig[bo_table];
@@ -46,5 +53,10 @@ export const useHandleWrite = () => {
     }
   }
 
-  return { checkCreateWriteAllowed, handleReply, handleReadWrite };
+  return {
+    checkSearchWriteAllowed,
+    checkCreateWriteAllowed,
+    handleReply,
+    handleReadWrite,
+  };
 }

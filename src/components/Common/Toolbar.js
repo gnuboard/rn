@@ -11,10 +11,12 @@ export const WriteListToolbar = ({ bo_table }) => {
   const navigation = useNavigation();
   const { getThemedTextColor } = useTheme();
   const { isSearchInputActive, setIsSearchInputActive } = useSearchWrites();
+  const [ searchAllowed, setSearchAllowed ] = useState(false);
   const [ writeAllowed, setWriteAllowed ] = useState(false);
-  const { checkCreateWriteAllowed } = useHandleWrite();
+  const { checkSearchWriteAllowed, checkCreateWriteAllowed } = useHandleWrite();
 
   useEffect(() => {
+    checkSearchWriteAllowed(bo_table, setSearchAllowed);
     checkCreateWriteAllowed(bo_table, setWriteAllowed);
   }, [bo_table]);
 
@@ -31,9 +33,11 @@ export const WriteListToolbar = ({ bo_table }) => {
   return (
     <View>
       <View style={styles.toolbar}>
-        <TouchableOpacity style={styles.iconButton} onPress={onSearchPress}>
-          <Icon name="search" size={24} color={getThemedTextColor()} />
-        </TouchableOpacity>
+        {searchAllowed && (
+          <TouchableOpacity style={styles.iconButton} onPress={onSearchPress}>
+            <Icon name="search" size={24} color={getThemedTextColor()} />
+          </TouchableOpacity>
+        )}
         {writeAllowed && (
           <TouchableOpacity
             style={styles.iconButton}
