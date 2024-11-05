@@ -272,40 +272,42 @@ const WriteUpdateScreen = ({ navigation, route }) => {
           </View>
         )}
         {!isLoggedIn && (
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={[styles.input, styles.innerInput, textThemedColor]}
-              placeholder="이름"
-              placeholderTextColor={Colors.text_placeholder_black}
-              value={formValue.wr_name}
-              onChangeText={text => setFormValue({ ...formValue, wr_name: text })}
-            />
-            <TextInput
-              style={[styles.input, styles.innerInput, textThemedColor]}
-              placeholder="비밀번호"
-              placeholderTextColor={Colors.text_placeholder_black}
-              secureTextEntry={true}
-              value={formValue.wr_password}
-              onChangeText={text => setFormValue({ ...formValue, wr_password: text })}
-            />
-          </View>
+          <>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[styles.input, styles.innerInput, textThemedColor]}
+                placeholder="이름"
+                placeholderTextColor={Colors.text_placeholder_black}
+                value={formValue.wr_name}
+                onChangeText={text => setFormValue({ ...formValue, wr_name: text })}
+              />
+              <TextInput
+                style={[styles.input, styles.innerInput, textThemedColor]}
+                placeholder="비밀번호"
+                placeholderTextColor={Colors.text_placeholder_black}
+                secureTextEntry={true}
+                value={formValue.wr_password}
+                onChangeText={text => setFormValue({ ...formValue, wr_password: text })}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={[styles.input, styles.innerInput, textThemedColor]}
+                placeholder="이메일"
+                placeholderTextColor={Colors.text_placeholder_black}
+                value={formValue.wr_email}
+                onChangeText={text => setFormValue({ ...formValue, wr_email: text })}
+              />
+              <TextInput
+                style={[styles.input, styles.innerInput, textThemedColor]}
+                placeholder="홈페이지"
+                placeholderTextColor={Colors.text_placeholder_black}
+                value={formValue.wr_homepage}
+                onChangeText={text => setFormValue({ ...formValue, wr_homepage: text })}
+              />
+            </View>
+          </>
         )}
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={[styles.input, styles.innerInput, textThemedColor]}
-            placeholder="이메일"
-            placeholderTextColor={Colors.text_placeholder_black}
-            value={formValue.wr_email}
-            onChangeText={text => setFormValue({ ...formValue, wr_email: text })}
-          />
-          <TextInput
-            style={[styles.input, styles.innerInput, textThemedColor]}
-            placeholder="홈페이지"
-            placeholderTextColor={Colors.text_placeholder_black}
-            value={formValue.wr_homepage}
-            onChangeText={text => setFormValue({ ...formValue, wr_homepage: text })}
-          />
-        </View>
         <View style={styles.checkBoxContainer}>
           {isLoggedIn && (
             <View style={styles.checkboxInnerContainer}>
