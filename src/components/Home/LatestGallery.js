@@ -7,6 +7,7 @@ import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/Refre
 import { useTheme } from '../../context/theme/ThemeContext';
 import { useHandleWrite } from '../../utils/hooks';
 import { WritePasswordModal } from '../Modals/Modal';
+import no_image_available from '../../assets/img/commons/no_image_available.jpg';
 
 const { width } = Dimensions.get('window');
 const ITEM_WIDTH = width*0.9;
@@ -57,7 +58,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
     >
       <View style={styles.itemContainer}>
         <Image
-          source={{ uri: item.imageUrl }}
+          source={item.imageUrl ? { uri: item.imageUrl } : no_image_available}
           style={styles.image}
           resizeMode="cover"
         />
