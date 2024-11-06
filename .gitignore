@@ -72,6 +72,7 @@ buck-out/
 
 # google-services
 google-services.json
+google-services*
 
 # deployment
 index.android.bundle
