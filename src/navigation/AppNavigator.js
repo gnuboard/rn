@@ -70,7 +70,19 @@ const TabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: "메인화면" }} />
-      <Tab.Screen name="Boards" component={BoardStackScreen} options={{ tabBarLabel: "게시판", unmountOnBlur: true }} />
+      <Tab.Screen
+        name="Boards"
+        component={BoardStackScreen}
+        options={{ tabBarLabel: "게시판", unmountOnBlur: true }}
+        listeners={({ navigation }) => ({
+          tabPress: () => {
+            navigation.navigate(
+              'Boards',
+              {screen: 'BoardListScreen'},
+            );
+          }
+        })}
+      />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: "프로필" }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ tabBarLabel: "환경설정" }} />
     </Tab.Navigator>
