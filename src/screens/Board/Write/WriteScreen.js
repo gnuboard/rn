@@ -355,7 +355,7 @@ const WriteContentWeVview = ({ width, write }) => {
       </head>
       <body>
         ${write?.images.map(image =>
-          `<img src="${image.bf_file}" style="max-width: ${width}px; height: auto;" />`
+          `<img src="${image.original}" style="max-width: ${width}px; height: auto;" />`
         )}
         ${write?.wr_content}
         <script>
