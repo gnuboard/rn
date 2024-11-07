@@ -18,6 +18,7 @@ export const WriteListToolbar = ({ bo_table }) => {
   useEffect(() => {
     checkSearchWriteAllowed(bo_table, setSearchAllowed);
     checkCreateWriteAllowed(bo_table, setWriteAllowed);
+    setIsSearchInputActive(false);
   }, [bo_table]);
 
   useEffect(() => {
