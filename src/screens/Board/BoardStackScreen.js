@@ -10,7 +10,25 @@ const BoardStack = createStackNavigator();
 
 const BoardStackScreen = () => {
   return (
-    <BoardStack.Navigator>
+    <BoardStack.Navigator
+      screenOptions={{
+        animation: 'none',
+        transitionSpec: {
+          open: {
+            animation: 'timing',
+            config: {
+              duration: 0,
+            },
+          },
+          close: {
+            animation: 'timing',
+            config: {
+              duration: 0,
+            },
+          },
+        },
+      }}
+    >
       <BoardStack.Screen
         name="BoardListScreen"
         component={BoardListScreen}
