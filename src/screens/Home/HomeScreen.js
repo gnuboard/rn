@@ -133,8 +133,10 @@ const HomeScreen = () => {
               )}
               activeOpacity={1}
             >
-              <Latest title="자유게시판" bo_table="free" rows={2}/>
+              <Latest title="자유게시판" bo_table="free" rows={5}/>
             </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
             <TouchableOpacity
               style={styles.column}
               onPress={() => navigation.navigate(
@@ -147,7 +149,7 @@ const HomeScreen = () => {
               )}
               activeOpacity={1}
             >
-              <Latest title="공지사항" bo_table="notice" rows={2}/>
+              <Latest title="공지사항" bo_table="notice" rows={5}/>
             </TouchableOpacity>
           </View>
           <View style={styles.column}>

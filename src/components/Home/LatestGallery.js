@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
     paddingHorizontal: 16,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 16,
     marginRight: 8,
   },
   itemDate: {

@@ -50,7 +50,7 @@ const Latest = ({ title, bo_table, rows }) => {
           <View style={styles.subjectHeader}>
           {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" />}
             <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
-              {truncateText(write.wr_subject, 10)}
+              {truncateText(write.wr_subject, 25)}
             </Text>
             <Text style={styles.itemDate}>{dateToMonthDay(write.wr_datetime)}</Text>
           </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
     color: Colors.text_black,
@@ -94,10 +94,12 @@ const styles = StyleSheet.create({
   item: {
     paddingVertical: 6,
     borderBottomWidth: 1,
+    height: 48,
+    justifyContent: 'center',
     borderBottomColor: '#e0e0e0',
   },
   itemTitle: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.text_black,
   },
   itemDate: {
