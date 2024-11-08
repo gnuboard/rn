@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { debounce } from 'lodash';
 import { Colors } from '../../styles/colors';
 import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { searchBoardWritesRequest } from '../../services/api/ServerApi';
+import { Styles } from '../../styles/styles';
 
 export const SearchInput = ({ onetable }) => {
   const { isSearchInputActive, setSearchedWrites, searchingData, setSearchingData } = useSearchWrites();
@@ -66,15 +67,4 @@ export const SearchInput = ({ onetable }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  searchInput: {
-    marginTop: 15,
-    marginHorizontal: 8,
-    padding: 8,
-    paddingHorizontal: 15,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: Colors.border_gray,
-    height: 48,
-  },
-});
+const styles = new Styles.Inputs();

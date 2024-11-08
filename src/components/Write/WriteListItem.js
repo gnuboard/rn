@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "../../context/theme/ThemeContext";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -7,6 +7,7 @@ import { WritePasswordModal } from "../Modals/Modal";
 import { getReplyPrefix } from "../../utils/writeFunc";
 import { useHandleWrite } from "../../utils/hooks";
 import { Colors } from "../../styles/colors";
+import { Styles } from "../../styles/styles";
 
 const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const [ modalVisible, setModalVisible ] = useState(false);
@@ -84,54 +85,6 @@ const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  writeContainer: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  writeMainContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  wrMainArg: {
-    marginRight: 5,
-  },
-  writeSubContainer: {
-    flexDirection: 'row',
-  },
-  wrSubArg: {
-    marginRight: 10,
-    fontSize: 11,
-  },
-  wrCommentText: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    backgroundColor: Colors.comment_count_bg,
-    width: 16,
-    height: 16,
-    fontSize: 11,
-    color: Colors.text_black,
-  },
-  wrLink: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    backgroundColor: Colors.link_icon_bg,
-    width: 16,
-    height: 16,
-    fontSize: 11,
-    color: Colors.text_black,
-  },
-  wrFile: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    backgroundColor: Colors.file_icon_bg,
-    width: 16,
-    height: 16,
-    fontSize: 11,
-    color: Colors.text_black,
-  },
-});
+const styles = new Styles.WriteListItem();
 
 export default WriteListItem;

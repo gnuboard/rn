@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet,
+  View, Text, TouchableOpacity,
   Image, Alert, Animated
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -12,6 +12,7 @@ import { useTheme } from '../../../context/theme/ThemeContext';
 import { getMemberIconUri } from '../../../utils/fileFunc';
 import { CommentPasswordModal } from '../../Modals/Modal';
 import { getReplyPrefix } from '../../../utils/writeFunc';
+import { Styles } from '../../../styles/styles';
 
 function Comment({
   comment,
@@ -213,85 +214,6 @@ function Comment({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 10,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#e0e0e0',
-    marginBottom: 10,
-  },
-  commentHeader: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  commentContent: {
-    flex: 1,
-  },
-  commentInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    marginBottom: 5,
-  },
-  authorName: {
-    fontWeight: 'bold',
-    marginRight: 10,
-  },
-  dateTime: {
-    fontSize: 12,
-    marginRight: 10,
-  },
-  button: {
-    backgroundColor: '#2196F3',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    marginRight: 5,
-    height: 48,
-    width: 55,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1,
-  },
-  replyButton: {
-    backgroundColor: Colors.btn_green,
-    marginBottom: 5,
-  },
-  updateButton: {
-    backgroundColor: Colors.btn_blue,
-    marginBottom: 5,
-  },
-  deleteButton: {
-    backgroundColor: Colors.btn_gray,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 14,
-  },
-  commentBody: {
-    marginTop: 5,
-  },
-  secretComment: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  commentText: {
-    marginLeft: 5,
-  },
-  iconButton: {
-    width: 48,
-    height: 48,
-    marginLeft: -30,
-    alignItems: 'flex-end',
-  },
-});
+const styles = new Styles.Comment();
 
 export default Comment;

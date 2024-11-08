@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Modal, View, Text, TextInput, TouchableOpacity, StyleSheet
+  Modal, View, Text, TextInput, TouchableOpacity
 } from 'react-native';
 import { Colors } from '../../styles/colors';
 import {
   fetchSecretCommentRequest, fetchSecretWriteRequest
 } from '../../services/api/ServerApi';
 import { useNavigation } from '@react-navigation/native';
+import { Styles } from '../../styles/styles';
 
 const ModalComponent = ({ title, visible, password, setPassword, handlePasswordSubmit, onClose }) => {
   return (
@@ -126,59 +127,4 @@ export const CommentPasswordModal = ({
   )
 };
 
-const styles = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  modalDescription: {
-    color: Colors.text_black,
-  },
-  textInput: {
-    width: 207,
-    height: 50,
-    marginVertical: 15,
-    borderWidth: 1,
-    padding: 10,
-    color: Colors.text_black,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-  },
-  button: {
-    width: '33%',
-    padding: 10,
-    height: 48,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: Colors.btn_text_white,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  submitButton: {
-    backgroundColor: Colors.btn_blue,
-    marginRight: 10,
-  },
-  cancelButton: {
-    backgroundColor: Colors.btn_gray,
-  }
-});
+const styles = new Styles.Modal();

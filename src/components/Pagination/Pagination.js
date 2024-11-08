@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { Colors } from '../../styles/colors';
+import { Styles } from '../../styles/styles';
 
 export const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   const { textThemedColor } = useTheme();
@@ -99,22 +100,4 @@ export const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  paginationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  pageContainer: {
-    borderRadius: 5,
-    padding: 3
-  },
-  pageText: {
-    fontSize: 14,
-    marginHorizontal: 10,
-  },
-  currentPageText: {
-    fontWeight: 'bold',
-    color: 'red',
-  },
-});
+const styles = new Styles.Pagination();

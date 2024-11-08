@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import {
-  View, Text, TextInput, StyleSheet, ScrollView,
+  View, Text, TextInput,ScrollView,
   TouchableOpacity, TouchableWithoutFeedback, Alert
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { signupRequest } from '../../../services/api/ServerApi';
 import { Colors } from '../../../styles/colors';
+import { Styles } from '../../../styles/styles';
 
 export const Agreement = ({ 
   allAgreed, setAllAgreed, policySignup, setPolicySignup, policyPrivacy, setPolicyPrivacy
@@ -263,125 +264,4 @@ export const SignupForm = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  
-  formContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 5,
-    width: '100%',
-    maxWidth: 300,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginBottom: 15,
-  },
-  input: {
-    height: 48,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 3,
-    width: '100%',
-    color: Colors.text_black,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  label: {
-    marginLeft: 8,
-  },
-  agreementContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  snsButton: {
-    backgroundColor: '#4267B2',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: Colors.text_black,
-  },
-  agreementScroll: {
-    height: 100,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 10,
-  },
-  agreementText: {
-    fontSize: 13,
-    color: Colors.text_black,
-  },
-  tableContainer: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 10,
-  },
-  tableRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: '#ccc',
-  },
-  tableCell: {
-    flex: 1,
-    padding: 5,
-    fontSize: 12,
-    color: Colors.text_black,
-  },
-  tableHeader: {
-    fontWeight: 'bold',
-    backgroundColor: '#f0f0f0',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  checkbox: {
-    borderColor: Colors.text_black,
-    borderWidth: 1,
-  },
-  label: {
-    marginLeft: 8,
-    fontSize: 14,
-    color: Colors.text_black,
-  },
-  button: {
-    backgroundColor: Colors.btn_blue,
-    padding: 10,
-    borderRadius: 3,
-    marginTop: 10,
-    width: '100%',
-  },
-  buttonText: {
-    color: Colors.btn_text_white,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  disabledButton: {
-    backgroundColor: '#cccccc',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 12,
-    marginBottom: 10,
-  },
-});
+const styles = new Styles.SignupForm();

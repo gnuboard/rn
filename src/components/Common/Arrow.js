@@ -1,7 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '../../context/theme/ThemeContext';
+import { Styles } from '../../styles/styles';
 
 export const HeaderBackwardArrow = ({ navigation }) => {
   const { getThemedTextColor } = useTheme();
@@ -12,14 +13,4 @@ export const HeaderBackwardArrow = ({ navigation }) => {
   );
 }
 
-const styles = StyleSheet.create({
-  backButton: {
-    position: 'absolute',
-    top: 8,
-    left: 2,
-    zIndex: 1,
-    padding: 10,
-    height: 48,
-    width: 48,
-  },
-});
+const styles = new Styles.Arrow();

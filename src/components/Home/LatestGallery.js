@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { dateToMonthDay } from '../../utils/stringFunc';
 import { useNavigation } from '@react-navigation/native';
@@ -8,10 +8,7 @@ import { useTheme } from '../../context/theme/ThemeContext';
 import { useHandleWrite } from '../../utils/hooks';
 import { WritePasswordModal } from '../Modals/Modal';
 import no_image_available from '../../assets/img/commons/no_image_available.jpg';
-
-const { width } = Dimensions.get('window');
-const ITEM_WIDTH = width*0.9;
-const ITEM_HEIGHT = ITEM_WIDTH * 0.75;
+import { Styles } from '../../styles/styles';
 
 const LatestGallery = ({ bo_table, view_type, rows }) => {
   const [ boardWrites, setBoardWrites ] = useState([]);
@@ -93,7 +90,7 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
         keyExtractor={(item, index) => `galley-${item.wr_id}-${index}`}
         horizontal
         showsHorizontalScrollIndicator={false}
-        snapToInterval={ITEM_WIDTH + 10} // Width + marginRight
+        snapToInterval={Styles.ITEM_WIDTH + 10} // Width + marginRight
         decelerationRate="fast"
         pagingEnabled
       />
@@ -107,39 +104,6 @@ const LatestGallery = ({ bo_table, view_type, rows }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    paddingHorizontal: 16,
-  },
-  itemContainer: {
-    width: ITEM_WIDTH,
-    marginRight: 10,
-  },
-  image: {
-    width: ITEM_WIDTH,
-    height: ITEM_HEIGHT,
-    borderRadius: 8,
-  },
-  textContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 8,
-  },
-  itemTitle: {
-    flex: 1,
-    fontSize: 16,
-    marginRight: 8,
-  },
-  itemDate: {
-    fontSize: 12,
-  },
-});
+const styles = new Styles.LatestGallery();
 
 export default LatestGallery;

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
+import { View, TouchableOpacity, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 import { useHandleWrite } from '../../utils/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { SearchInput } from './Inputs';
+import { Styles } from '../../styles/styles';
 
 export const WriteListToolbar = ({ bo_table }) => {
   const navigation = useNavigation();
@@ -53,17 +54,4 @@ export const WriteListToolbar = ({ bo_table }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  toolbar: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginBottom: -10,
-    marginRight: 10,
-  },
-  iconButton: {
-    height: 48,
-    width: 48,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-});
+const styles = new Styles.Toolbar();

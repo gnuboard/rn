@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { dateToMonthDay, truncateText } from '../../utils/stringFunc';
@@ -7,7 +7,7 @@ import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { useHandleWrite } from '../../utils/hooks';
 import { WritePasswordModal } from '../Modals/Modal';
-import { Colors } from '../../styles/colors';
+import { Styles } from '../../styles/styles';
 
 const Latest = ({ title, bo_table, rows }) => {
   const [ boardWrites, setBoardWrites ] = useState([]);
@@ -67,51 +67,6 @@ const Latest = ({ title, bo_table, rows }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    color: Colors.text_black,
-  },
-  subjectHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  item: {
-    paddingVertical: 6,
-    borderBottomWidth: 1,
-    height: 48,
-    justifyContent: 'center',
-    borderBottomColor: '#e0e0e0',
-  },
-  itemTitle: {
-    fontSize: 16,
-    color: Colors.text_black,
-  },
-  itemDate: {
-    fontSize: 12,
-    color: Colors.text_black,
-    marginTop: 2,
-  },
-  itemSource: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 2,
-  },
-});
+const styles = new Styles.Latest();
 
 export default Latest;

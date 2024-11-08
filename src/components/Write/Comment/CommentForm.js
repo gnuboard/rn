@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet, Switch,
+  View, Text, TextInput, TouchableOpacity, Switch,
   ActivityIndicator
 } from 'react-native';
 import { Colors } from '../../../styles/colors';
@@ -10,6 +10,7 @@ import { useTheme } from '../../../context/theme/ThemeContext';
 import { 
   createCommentRequest, updateCommentRequest, createGuestCommentRequest
 } from '../../../services/api/ServerApi';
+import { Styles } from '../../../styles/styles';
 
 export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, isUpdateComment }) {
   const { isLoggedIn } = useAuth();
@@ -168,75 +169,4 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#e0e0e0',
-    marginBottom: 10,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 4,
-    padding: 8,
-    marginBottom: 10,
-  },
-  formFooter: {
-    marginTop: 10,
-  },
-  nonLoginInputs: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  smallInput: {
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 4,
-    padding: 8,
-    width: '48%',
-    height: 48,
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  formActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  secretCommentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  secretCommentText: {
-    marginLeft: 8,
-    fontSize: 14,
-  },
-  submitButton: {
-    backgroundColor: Colors.btn_blue,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 4,
-    height: 48,
-    width: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  updateButton: {
-    backgroundColor: Colors.btn_green,
-  },
-  submitButtonText: {
-    color: 'white',
-    fontSize: 14,
-  },
-  secretCommentSwitch: {
-    width: 48,
-    height: 48,
-  },
-});
+const styles = new Styles.CommentForm();
