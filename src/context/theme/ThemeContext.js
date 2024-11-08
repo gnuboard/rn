@@ -1,5 +1,5 @@
 import React, { useState, useContext, createContext, useEffect } from 'react';
-import { Colors } from '../../constants/theme';
+import { Colors } from '../../styles/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 

@@ -4,7 +4,7 @@ import {
   Keyboard, ScrollView
 } from 'react-native';
 import { Agreement, SignupForm } from '../../../components/Auth/Signup/SignupForm';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 import { useTheme } from '../../../context/theme/ThemeContext';
 
 const SignupScreen = ({ navigation }) => {

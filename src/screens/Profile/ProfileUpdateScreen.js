@@ -12,7 +12,7 @@ import { useAuth } from '../../context/auth/AuthContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
-import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../constants/theme';
+import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../styles/colors';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 import { adaptLineBreaks } from '../../utils/stringFunc';
 

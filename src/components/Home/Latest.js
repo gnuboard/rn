@@ -7,7 +7,7 @@ import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteRefresh, useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { useHandleWrite } from '../../utils/hooks';
 import { WritePasswordModal } from '../Modals/Modal';
-import { Colors } from '../../constants/theme';
+import { Colors } from '../../styles/colors';
 
 const Latest = ({ title, bo_table, rows }) => {
   const [ boardWrites, setBoardWrites ] = useState([]);

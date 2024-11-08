@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { WritePasswordModal } from "../Modals/Modal";
 import { getReplyPrefix } from "../../utils/writeFunc";
 import { useHandleWrite } from "../../utils/hooks";
-import { Colors } from "../../constants/theme";
+import { Colors } from "../../styles/colors";
 
 const WriteListItem = ({ bo_table, write, isNotice, isSearched }) => {
   const [ modalVisible, setModalVisible ] = useState(false);

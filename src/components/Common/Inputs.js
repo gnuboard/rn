@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { debounce } from 'lodash';
-import { Colors } from '../../constants/theme';
+import { Colors } from '../../styles/colors';
 import { useSearchWrites } from '../../context/writes/SearchWritesContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { searchBoardWritesRequest } from '../../services/api/ServerApi';

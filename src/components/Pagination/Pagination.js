@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTheme } from '../../context/theme/ThemeContext';
-import { Colors } from '../../constants/theme';
+import { Colors } from '../../styles/colors';
 
 export const Pagination = ({ totalPages, currentPage, onPageChange }) => {
   const { textThemedColor } = useTheme();

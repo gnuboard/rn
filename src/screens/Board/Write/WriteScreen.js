@@ -7,7 +7,7 @@ import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNFetchBlob from 'rn-fetch-blob';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';

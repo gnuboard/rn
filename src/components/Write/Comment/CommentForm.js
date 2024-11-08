@@ -3,7 +3,7 @@ import {
   View, Text, TextInput, TouchableOpacity, StyleSheet, Switch,
   ActivityIndicator
 } from 'react-native';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { useTheme } from '../../../context/theme/ThemeContext';

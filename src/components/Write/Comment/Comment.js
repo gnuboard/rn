@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CommentForm } from './CommentForm';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 import { deleteCommentRequest } from '../../../services/api/ServerApi';
 import { useWriteRefresh } from '../../../context/writes/RefreshContext';
 import { useTheme } from '../../../context/theme/ThemeContext';

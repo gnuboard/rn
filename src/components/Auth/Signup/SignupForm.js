@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { signupRequest } from '../../../services/api/ServerApi';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 
 export const Agreement = ({ 
   allAgreed, setAllAgreed, policySignup, setPolicySignup, policyPrivacy, setPolicyPrivacy

@@ -15,7 +15,7 @@ import {
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   const { isLoggedIn } = useAuth();

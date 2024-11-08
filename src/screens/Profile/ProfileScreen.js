@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { removeQuotes, adaptLineBreaks } from '../../utils/stringFunc';
 import { useAuth } from '../../context/auth/AuthContext';
 import { useTheme } from '../../context/theme/ThemeContext';
-import { Colors } from '../../constants/theme';
+import { Colors } from '../../styles/colors';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 import { profileKeys } from '../../constants/profile';
 

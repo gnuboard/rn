@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Modal, View, Text, TextInput, TouchableOpacity, StyleSheet
 } from 'react-native';
-import { Colors } from '../../constants/theme';
+import { Colors } from '../../styles/colors';
 import {
   fetchSecretCommentRequest, fetchSecretWriteRequest
 } from '../../services/api/ServerApi';

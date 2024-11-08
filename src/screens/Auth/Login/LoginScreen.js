@@ -19,7 +19,7 @@ import {
 } from '../../../utils/authFunc';
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
-import { Colors } from '../../../constants/theme';
+import { Colors } from '../../../styles/colors';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
 import kakaoLogo from '../../../assets/img/socialLogin/kakao/logo.png'
 import googleLogo from '../../../assets/img/socialLogin/google/logo.png'

@@ -1,4 +1,4 @@
-import { emptyAvatarUri } from "../constants/theme";
+import { emptyAvatarUri } from "../styles/colors";
 
 export function getMemberIconUri(data) {
   if (data.mb_icon_path) {
