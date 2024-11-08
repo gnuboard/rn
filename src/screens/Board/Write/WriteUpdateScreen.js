@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {
-  ScrollView, StyleSheet, TextInput, View,
-  Dimensions, TouchableOpacity, Text, Alert,
+  ScrollView, TextInput, View,
+  TouchableOpacity, Text, Alert,
   TouchableWithoutFeedback, ActivityIndicator
 } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -16,6 +16,7 @@ import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/Re
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
 import { Colors } from '../../../styles/colors';
+import { Styles } from '../../../styles/styles';
 
 const WriteUpdateScreen = ({ navigation, route }) => {
   const { isLoggedIn } = useAuth();
@@ -418,100 +419,6 @@ const CKEditorForm = ({ webViewRef, handleMessage }) => {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    width: '100%',
-  },
-  pickerContainer: {
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    height: 50,
-    marginBottom: 10,
-    justifyContent: 'center',
-  },
-  scrollContainer: {
-    width: '100%',
-    paddingHorizontal: 20,
-    contentContainerStyle: {
-      alignItems: 'center',
-      justifyContent: 'center',
-    }
-  },
-  inputContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  input: {
-    height: 48,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-  },
-  innerInput: {
-    width: '48%',
-  },
-  webViewContainer: {
-    height: Dimensions.get('window').height * 0.5,
-    width: '100%',
-  },
-  checkBoxContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
-  },
-  checkboxInnerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '48%',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    marginBottom: 40,
-    paddingHorizontal: 10,
-    height: 50,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    height: 48,
-    width: '45%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonCancel: {
-    backgroundColor: Colors.btn_gray,
-  },
-  buttonSubmit: {
-    backgroundColor: Colors.btn_blue,
-  },
-  buttnText: {
-    color: Colors.btn_text_white,
-    fontWeight: 'bold',
-  },
-  fileButton: {
-    width: '100%',
-    height: 48,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-  },
-  fileButtonText: {
-    color: Colors.text_black,
-  },
-  checkboxText: {
-    color: Colors.text_black,
-  }
-});
+const styles = new Styles.WriteUpdateScreen();
 
 export default WriteUpdateScreen;

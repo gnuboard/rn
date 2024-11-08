@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, StyleSheet, Image, ScrollView,
+  View, Text, Image, ScrollView,
   SafeAreaView, TouchableOpacity
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +8,7 @@ import { removeQuotes, adaptLineBreaks } from '../../utils/stringFunc';
 import { useAuth } from '../../context/auth/AuthContext';
 import { useTheme } from '../../context/theme/ThemeContext';
 import { Colors } from '../../styles/colors';
+import { Styles } from '../../styles/styles';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 import { profileKeys } from '../../constants/profile';
 
@@ -116,126 +117,6 @@ const ProfileScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollView: {
-    flexGrow: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: 18,
-    color: '#888',
-  },
-  header: {
-    height: 150,
-    position: 'relative',
-  },
-  coverImage: {
-    width: '100%',
-    height: '100%',
-  },
-  avatarContainer: {
-    position: 'absolute',
-    bottom: -30,
-    left: 20,
-    borderRadius: 75,
-    borderWidth: 5,
-    borderColor: '#fff',
-    elevation: 5,
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-  },
-  infoContainer: {
-    paddingTop: 60,
-    paddingHorizontal: 20,
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  username: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 10,
-  },
-  bioContainer: {
-    maxHeight: 100,
-    marginBottom: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    elevation: 2,
-  },
-  bio: {
-    fontSize: 16,
-    color: '#444',
-    marginBottom: 20,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    elevation: 2,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statValue: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  statLabel: {
-    fontSize: 14,
-    color: '#666',
-  },
-  detailsContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 15,
-    elevation: 2,
-    marginBottom: 20,
-  },
-  detailRowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  detailLabel: {
-    fontSize: 14,
-    color: '#666',
-    width: 50,
-  },
-  detailValue: {
-    fontSize: 14,
-    color: '#333',
-  },
-  button: {
-    backgroundColor: Colors.btn_blue,
-    padding: 10,
-    borderRadius: 3,
-    marginTop: 10,
-    height: 48,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: Colors.btn_text_white,
-  }
-});
+const styles = new Styles.ProfileScreen();
 
 export default ProfileScreen;

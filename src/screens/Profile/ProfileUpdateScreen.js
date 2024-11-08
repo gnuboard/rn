@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  View, Text, TextInput, TouchableOpacity,
   ScrollView, TouchableWithoutFeedback
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
@@ -13,6 +13,7 @@ import { useTheme } from '../../context/theme/ThemeContext';
 import { fetchPersonalInfo } from '../../utils/componentsFunc';
 import { ImageWithDeleteButton } from '../../components/Common/Delete';
 import { Colors, emptyAvatarPath, emptyAvatarUri } from '../../styles/colors';
+import { Styles } from '../../styles/styles';
 import { getMemberIconUri, getMemberImageUri } from '../../utils/fileFunc';
 import { adaptLineBreaks } from '../../utils/stringFunc';
 
@@ -355,107 +356,6 @@ function isEmptyAvatar(uri) {
   return uri.includes(emptyAvatarPath);
 }
 
-const styles = StyleSheet.create({
-  contentContainer: {
-    paddingBottom: 50,
-  },
-  container: {
-    flex: 1,
-    padding: 30,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    padding: 15,
-    textAlign: 'center',
-  },
-  inputContainer: {
-    flexDirection: 'row',
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-    backgroundColor: '#f9f9f9',
-    height: 48,
-    color: Colors.text_black,
-  },
-  multilineInput: {
-    height: 100,
-    textAlignVertical: 'top',
-  },
-  button: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 5,
-    marginLeft: 10,
-    justifyContent: 'center',
-    height: 48,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-  },
-  fileContainer: {
-    flexDirection: 'row',
-  },
-  fileButton: {
-    backgroundColor: '#f0f0f0',
-    padding: 15,
-    borderRadius: 5,
-    marginBottom: 10,
-    marginRight: 10,
-    width: '80%',
-  },
-  fileButtonText: {
-    color: '#333',
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 3,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  checkboxInner: {
-    width: 12,
-    height: 12,
-    backgroundColor: 'transparent',
-  },
-  checkboxChecked: {
-    backgroundColor: '#4CAF50',
-  },
-  checkboxLabel: {
-    flex: 1,
-    fontSize: 13,
-  },
-  submitButton: {
-    backgroundColor: Colors.btn_blue,
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 18,
-  },
-  disabledButton: {
-    backgroundColor: '#A9A9A9',
-    opacity: 0.6,
-  },
-});
+const styles = new Styles.ProfileUpdateScreen();
 
 export default ProfileUpdateScreen;

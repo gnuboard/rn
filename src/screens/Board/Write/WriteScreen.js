@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, Image, Linking,
+  View, Text, ScrollView, Image, Linking,
   useWindowDimensions, TouchableOpacity, Alert
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNFetchBlob from 'rn-fetch-blob';
 import { fetchBoardConfigRequest } from '../../../services/api/ServerApi';
-import { Colors } from '../../../styles/colors';
+import { Styles } from '../../../styles/styles';
 import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/RefreshContext';
 import Comment from '../../../components/Write/Comment/Comment';
 import { CommentForm } from '../../../components/Write/Comment/CommentForm';
@@ -496,187 +496,6 @@ const downloadFile = async (file) => {
     });
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  subjectWithButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-    width: '98%',
-    height: 48,
-  },
-  buttonCommon: {
-    paddingVertical: 3,
-    paddingHorizontal: 16,
-    borderRadius: 4,
-    marginBottom: 10,
-    marginRight: 10,
-    width: 55,
-    height: 48,
-    justifyContent: 'center',
-  },
-  replyButton: {
-    paddingVertical: 3,
-    paddingHorizontal: 16,
-    backgroundColor: Colors.btn_green,
-    borderRadius: 4,
-    marginBottom: 10,
-    marginRight: 10,
-    width: 55,
-  },
-  updateButton: {
-    paddingVertical: 3,
-    paddingHorizontal: 16,
-    backgroundColor: Colors.btn_blue,
-    borderRadius: 4,
-    marginBottom: 10,
-    marginRight: 10,
-    width: 55,
-  },
-  buttonText: {
-    color: Colors.btn_text_white,
-  },
-  deleteButton: {
-    paddingVertical: 3,
-    paddingHorizontal: 16,
-    backgroundColor: Colors.btn_gray,
-    borderRadius: 4,
-    marginBottom: 10,
-    width: 55,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    width: '80%',
-  },
-  bindedButton: {
-    position: 'absolute',
-    top: 1,
-    right: 15,
-    zIndex: 1,
-  },
-  metaContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  authorAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#5e3aee',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 20,
-  },
-  avatarText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  metaInfo: {
-    justifyContent: 'center',
-  },
-  author: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  date: {
-    fontSize: 14,
-  },
-  content: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  commentContainer: {
-    marginTop: 50,
-    paddingBottom: 100,
-  },
-  commentHeaderText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  noCommentText: {
-    textAlign: 'center',
-  },
-  linkContainer: {
-    flexDirection: 'row',
-    borderWidth: 0.5,
-    borderRadius: 5,
-    borderColor: 'gray',
-    padding: 5,
-    marginBottom: 10,
-    height: 45,
-    alignItems: 'center',
-  },
-  wrLink: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    backgroundColor: Colors.link_icon_bg,
-    width: 30,
-    height: 30,
-    fontSize: 17,
-    marginRight: 10,
-  },
-  fileContainer: {
-    flexDirection: 'row',
-    borderWidth: 0.5,
-    borderRadius: 5,
-    borderColor: 'gray',
-    padding: 5,
-    marginBottom: 10,
-    height: 45,
-    alignItems: 'center',
-  },
-  wrFile: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    backgroundColor: Colors.file_icon_bg,
-    width: 30,
-    height: 30,
-    fontSize: 17,
-    marginRight: 10,
-  },
-  linkText: {
-    fontWeight: 'bold',
-    color: Colors.text_black,
-  },
-  fileSubject: {
-    flexDirection: 'row',
-    marginBottom: 3,
-  },
-  fileName: {
-    fontWeight: 'bold',
-    color: Colors.text_black,
-  },
-  fileSize: {
-    color: Colors.text_black,
-  },
-  fileDownload:{
-    color: Colors.text_black,
-  },
-  loading_text: {
-    fontSize: 24,
-  },
-  commentsPAgeContainer: {
-    alignItems: 'center',
-  },
-  writeEllipsis: {
-    height: 48,
-    width: 48,
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  }
-});
+const styles = new Styles.WriteScreen();
 
 export default WriteScreen;

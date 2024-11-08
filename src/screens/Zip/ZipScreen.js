@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import { HeaderBackwardArrow } from '../../components/Common/Arrow';
+import { Styles } from '../../styles/styles';
 
 const ZipScreen = ({ navigation }) => {
   return (
@@ -20,11 +21,6 @@ const ZipScreen = ({ navigation }) => {
   )
 };
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: '15%',
-    height: '85%',
-  },
-});
+const styles = new Styles.ZipScreen();
 
 export default ZipScreen;

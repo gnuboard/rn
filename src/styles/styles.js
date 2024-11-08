@@ -613,4 +613,816 @@ export class Styles {
       });
     }
   }
+
+  static LoginScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        backButton: {
+          position: 'absolute',
+          top: 8,
+          left: 2,
+          zIndex: 1,
+          padding: 10,
+        },
+        formContainer: {
+          backgroundColor: 'white',
+          padding: 20,
+          borderRadius: 5,
+          width: '80%',
+          maxWidth: 300,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        },
+        title: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          marginBottom: 20,
+          textAlign: 'left',
+        },
+        input: {
+          height: 48,
+          borderColor: '#ddd',
+          borderWidth: 1,
+          marginBottom: 10,
+          paddingHorizontal: 10,
+          borderRadius: 3,
+          width: '100%',
+          color: Colors.text_black,
+        },
+        checkboxContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+        },
+        label: {
+          margin: 2,
+          color: Colors.text_black,
+        },
+        loginButton: {
+          backgroundColor: Colors.btn_blue,
+          padding: 10,
+          borderRadius: 3,
+          marginTop: 10,
+          width: '100%',
+        },
+        loginButtonLoading: {
+          backgroundColor: Colors.btn_gray,
+          padding: 10,
+          borderRadius: 3,
+          marginTop: 10,
+          width: '100%',
+        },
+        socialLoginGroupContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginTop: 20,
+        },
+        socialLoginLogo: {
+          width: 35,
+          height: 35,
+        },
+        loginButtonText: {
+          color: Colors.btn_text_white,
+          textAlign: 'center',
+          fontWeight: 'bold',
+        },
+        forgotPassword: {
+          color: Colors.btn_blue,
+          textAlign: 'center',
+          marginTop: 15,
+          fontSize: 12,
+        },
+        errorText: {
+          color: 'red'
+        }
+      });
+    }
+  }
+
+  static SignupScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flexGrow: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#f5f5f5',
+          padding: 20,
+        },
+        formContainer: {
+          backgroundColor: 'white',
+          padding: 20,
+          borderRadius: 5,
+          width: '100%',
+          maxWidth: 300,
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        },
+        button: {
+          backgroundColor: Colors.btn_blue,
+          padding: 10,
+          borderRadius: 3,
+          marginTop: 10,
+          width: '100%',
+          height: 48,
+          justifyContent: 'center',
+        },
+        buttonText: {
+          color: Colors.btn_text_white,
+          textAlign: 'center',
+          fontWeight: 'bold',
+        },
+        disabledButton: {
+          backgroundColor: '#cccccc',
+        },
+        outlineButton: {
+          backgroundColor: 'transparent',
+          borderColor: Colors.btn_blue,
+          borderWidth: 1,
+        },
+        outlineButtonText: {
+          color: Colors.btn_blue,
+          textAlign: 'center',
+          fontWeight: 'bold',
+        },
+        snsButton: {
+          backgroundColor: '#4267B2',
+          padding: 10,
+          borderRadius: 5,
+        },
+        snsButtonText: {
+          color: 'white',
+          textAlign: 'center',
+          fontWeight: 'bold',
+        },
+      });
+    }
+  }
+
+  static WriteListScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          padding: 10
+        },
+        listHeader: {
+          backgroundColor: '#FFF6FA',
+        },
+        noticeItem: {
+          padding: 10,
+          borderBottomWidth: 1,
+        },
+        indicatorFooter: {
+          padding: 10,
+        },
+        noWritesContainer: {
+          flex: 0.5,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        noWritesText: {
+          fontSize: 16,
+        }
+      });
+    }
+  }
+
+  static WriteScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          padding: 16,
+        },
+        subjectWithButton: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+          width: '98%',
+          height: 48,
+        },
+        buttonCommon: {
+          paddingVertical: 3,
+          paddingHorizontal: 16,
+          borderRadius: 4,
+          marginBottom: 10,
+          marginRight: 10,
+          width: 55,
+          height: 48,
+          justifyContent: 'center',
+        },
+        replyButton: {
+          paddingVertical: 3,
+          paddingHorizontal: 16,
+          backgroundColor: Colors.btn_green,
+          borderRadius: 4,
+          marginBottom: 10,
+          marginRight: 10,
+          width: 55,
+        },
+        updateButton: {
+          paddingVertical: 3,
+          paddingHorizontal: 16,
+          backgroundColor: Colors.btn_blue,
+          borderRadius: 4,
+          marginBottom: 10,
+          marginRight: 10,
+          width: 55,
+        },
+        buttonText: {
+          color: Colors.btn_text_white,
+        },
+        deleteButton: {
+          paddingVertical: 3,
+          paddingHorizontal: 16,
+          backgroundColor: Colors.btn_gray,
+          borderRadius: 4,
+          marginBottom: 10,
+          width: 55,
+        },
+        title: {
+          fontSize: 24,
+          fontWeight: 'bold',
+          marginBottom: 16,
+          width: '80%',
+        },
+        bindedButton: {
+          position: 'absolute',
+          top: 1,
+          right: 15,
+          zIndex: 1,
+        },
+        metaContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 16,
+        },
+        authorAvatar: {
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: '#5e3aee',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 12,
+        },
+        avatarImage: {
+          width: '100%',
+          height: '100%',
+          borderRadius: 20,
+        },
+        avatarText: {
+          color: 'white',
+          fontSize: 18,
+          fontWeight: 'bold',
+        },
+        metaInfo: {
+          justifyContent: 'center',
+        },
+        author: {
+          fontSize: 16,
+          fontWeight: 'bold',
+        },
+        date: {
+          fontSize: 14,
+        },
+        content: {
+          fontSize: 16,
+          lineHeight: 24,
+        },
+        commentContainer: {
+          marginTop: 50,
+          paddingBottom: 100,
+        },
+        commentHeaderText: {
+          fontSize: 16,
+          fontWeight: 'bold',
+        },
+        noCommentText: {
+          textAlign: 'center',
+        },
+        linkContainer: {
+          flexDirection: 'row',
+          borderWidth: 0.5,
+          borderRadius: 5,
+          borderColor: 'gray',
+          padding: 5,
+          marginBottom: 10,
+          height: 45,
+          alignItems: 'center',
+        },
+        wrLink: {
+          textAlign: 'center',
+          textAlignVertical: 'center',
+          backgroundColor: Colors.link_icon_bg,
+          width: 30,
+          height: 30,
+          fontSize: 17,
+          marginRight: 10,
+        },
+        fileContainer: {
+          flexDirection: 'row',
+          borderWidth: 0.5,
+          borderRadius: 5,
+          borderColor: 'gray',
+          padding: 5,
+          marginBottom: 10,
+          height: 45,
+          alignItems: 'center',
+        },
+        wrFile: {
+          textAlign: 'center',
+          textAlignVertical: 'center',
+          backgroundColor: Colors.file_icon_bg,
+          width: 30,
+          height: 30,
+          fontSize: 17,
+          marginRight: 10,
+        },
+        linkText: {
+          fontWeight: 'bold',
+          color: Colors.text_black,
+        },
+        fileSubject: {
+          flexDirection: 'row',
+          marginBottom: 3,
+        },
+        fileName: {
+          fontWeight: 'bold',
+          color: Colors.text_black,
+        },
+        fileSize: {
+          color: Colors.text_black,
+        },
+        fileDownload:{
+          color: Colors.text_black,
+        },
+        loading_text: {
+          fontSize: 24,
+        },
+        commentsPAgeContainer: {
+          alignItems: 'center',
+        },
+        writeEllipsis: {
+          height: 48,
+          width: 48,
+          justifyContent: 'center',
+          alignItems: 'flex-end',
+        }
+      });
+    }
+  }
+
+  static WriteUpdateScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          paddingTop: 15,
+          width: '100%',
+        },
+        pickerContainer: {
+          borderColor: '#ccc',
+          borderWidth: 1,
+          borderRadius: 5,
+          height: 50,
+          marginBottom: 10,
+          justifyContent: 'center',
+        },
+        scrollContainer: {
+          width: '100%',
+          paddingHorizontal: 20,
+          contentContainerStyle: {
+            alignItems: 'center',
+            justifyContent: 'center',
+          }
+        },
+        inputContainer: {
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        },
+        input: {
+          height: 48,
+          borderColor: '#ccc',
+          borderWidth: 1,
+          marginBottom: 10,
+          paddingHorizontal: 10,
+          borderRadius: 5,
+        },
+        innerInput: {
+          width: '48%',
+        },
+        webViewContainer: {
+          height: Dimensions.get('window').height * 0.5,
+          width: '100%',
+        },
+        checkBoxContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 20,
+        },
+        checkboxInnerContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: '48%',
+        },
+        buttonContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 20,
+          marginBottom: 40,
+          paddingHorizontal: 10,
+          height: 50,
+        },
+        button: {
+          padding: 10,
+          borderRadius: 5,
+          height: 48,
+          width: '45%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        buttonCancel: {
+          backgroundColor: Colors.btn_gray,
+        },
+        buttonSubmit: {
+          backgroundColor: Colors.btn_blue,
+        },
+        buttnText: {
+          color: Colors.btn_text_white,
+          fontWeight: 'bold',
+        },
+        fileButton: {
+          width: '100%',
+          height: 48,
+          borderColor: '#ccc',
+          borderWidth: 1,
+          borderRadius: 5,
+          marginBottom: 10,
+          justifyContent: 'center',
+          paddingHorizontal: 10,
+        },
+        fileButtonText: {
+          color: Colors.text_black,
+        },
+        checkboxText: {
+          color: Colors.text_black,
+        }
+      });
+    }
+  }
+
+  static BoardScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          padding: 10,
+        },
+        section: {
+          marginBottom: 30,
+        },
+        sectionTitleButton: {
+          height: 48,
+        },
+        sectionTitle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          marginVertical: 10,
+        },
+        loading_text: {
+          fontSize: 24,
+        },
+      });
+    }
+  }
+
+  static HomeScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: '#f0f0f0',
+        },
+        header: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 16,
+          borderBottomWidth: 1,
+          borderBottomColor: '#e0e0e0',
+          position: 'relative',
+        },
+        menuButton: {
+          position: 'absolute',
+          left: 16,
+        },
+        content: {
+          padding: 16,
+        },
+        title: {
+          fontSize: 24,
+          fontWeight: 'bold',
+        },
+        row: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 16,
+        },
+        column: {
+          flex: 1,
+          marginHorizontal: 8,
+        },
+        sectionTitle: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          marginTop: 16,
+          marginBottom: 8,
+        },
+      });
+    }
+  }
+
+  static ProfileScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: '#f5f5f5',
+        },
+        scrollView: {
+          flexGrow: 1,
+        },
+        loadingContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        loadingText: {
+          fontSize: 18,
+          color: '#888',
+        },
+        header: {
+          height: 150,
+          position: 'relative',
+        },
+        coverImage: {
+          width: '100%',
+          height: '100%',
+        },
+        avatarContainer: {
+          position: 'absolute',
+          bottom: -30,
+          left: 20,
+          borderRadius: 75,
+          borderWidth: 5,
+          borderColor: '#fff',
+          elevation: 5,
+        },
+        avatar: {
+          width: 50,
+          height: 50,
+          borderRadius: 50,
+        },
+        infoContainer: {
+          paddingTop: 60,
+          paddingHorizontal: 20,
+        },
+        name: {
+          fontSize: 24,
+          fontWeight: 'bold',
+          color: '#333',
+        },
+        username: {
+          fontSize: 16,
+          color: '#666',
+          marginBottom: 10,
+        },
+        bioContainer: {
+          maxHeight: 100,
+          marginBottom: 20,
+          backgroundColor: '#fff',
+          borderRadius: 10,
+          paddingHorizontal: 15,
+          paddingVertical: 5,
+          elevation: 2,
+        },
+        bio: {
+          fontSize: 16,
+          color: '#444',
+          marginBottom: 20,
+        },
+        statsContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          marginBottom: 20,
+          backgroundColor: '#fff',
+          borderRadius: 10,
+          padding: 15,
+          elevation: 2,
+        },
+        statItem: {
+          alignItems: 'center',
+        },
+        statValue: {
+          fontSize: 18,
+          fontWeight: 'bold',
+          color: '#333',
+        },
+        statLabel: {
+          fontSize: 14,
+          color: '#666',
+        },
+        detailsContainer: {
+          backgroundColor: '#fff',
+          borderRadius: 10,
+          padding: 15,
+          elevation: 2,
+          marginBottom: 20,
+        },
+        detailRowContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 10,
+        },
+        detailLabel: {
+          fontSize: 14,
+          color: '#666',
+          width: 50,
+        },
+        detailValue: {
+          fontSize: 14,
+          color: '#333',
+        },
+        button: {
+          backgroundColor: Colors.btn_blue,
+          padding: 10,
+          borderRadius: 3,
+          marginTop: 10,
+          height: 48,
+          justifyContent: 'center',
+        },
+        buttonText: {
+          color: Colors.btn_text_white,
+        }
+      });
+    }
+  }
+
+  static ProfileUpdateScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        contentContainer: {
+          paddingBottom: 50,
+        },
+        container: {
+          flex: 1,
+          padding: 30,
+          backgroundColor: '#fff',
+        },
+        title: {
+          fontSize: 24,
+          fontWeight: 'bold',
+          padding: 15,
+          textAlign: 'center',
+        },
+        inputContainer: {
+          flexDirection: 'row',
+        },
+        input: {
+          flex: 1,
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 5,
+          padding: 10,
+          marginBottom: 10,
+          backgroundColor: '#f9f9f9',
+          height: 48,
+          color: Colors.text_black,
+        },
+        multilineInput: {
+          height: 100,
+          textAlignVertical: 'top',
+        },
+        button: {
+          backgroundColor: '#4CAF50',
+          padding: 10,
+          borderRadius: 5,
+          marginLeft: 10,
+          justifyContent: 'center',
+          height: 48,
+        },
+        buttonText: {
+          color: '#fff',
+          textAlign: 'center',
+        },
+        fileContainer: {
+          flexDirection: 'row',
+        },
+        fileButton: {
+          backgroundColor: '#f0f0f0',
+          padding: 15,
+          borderRadius: 5,
+          marginBottom: 10,
+          marginRight: 10,
+          width: '80%',
+        },
+        fileButtonText: {
+          color: '#333',
+        },
+        checkboxContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 10,
+        },
+        checkbox: {
+          width: 20,
+          height: 20,
+          borderWidth: 1,
+          borderColor: '#ccc',
+          borderRadius: 3,
+          marginRight: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        checkboxInner: {
+          width: 12,
+          height: 12,
+          backgroundColor: 'transparent',
+        },
+        checkboxChecked: {
+          backgroundColor: '#4CAF50',
+        },
+        checkboxLabel: {
+          flex: 1,
+          fontSize: 13,
+        },
+        submitButton: {
+          backgroundColor: Colors.btn_blue,
+          padding: 15,
+          borderRadius: 5,
+          alignItems: 'center',
+          marginTop: 20,
+        },
+        submitButtonText: {
+          color: '#fff',
+          fontSize: 18,
+        },
+        disabledButton: {
+          backgroundColor: '#A9A9A9',
+          opacity: 0.6,
+        },
+      });
+    }
+  }
+
+  static SettingsScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          flex: 1,
+        },
+        itemContainer: {
+          justifyContent: 'center',
+          borderWidth: 0.5,
+          borderColor: 'gray',
+          height: 80,
+          paddingLeft: 20,
+        },
+        text: {
+          fontSize: 20,
+        },
+      });
+    }
+  }
+
+  static ZipScreen = class {
+    constructor() {
+      return StyleSheet.create({
+        container: {
+          marginTop: '15%',
+          height: '85%',
+        },
+      });
+    }
+  }
 }

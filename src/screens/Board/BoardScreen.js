@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { fetchWriteListRequest } from '../../services/api/ServerApi';
 import { useWriteListRefresh } from '../../context/writes/RefreshContext';
 import { useTheme } from '../../context/theme/ThemeContext';
+import { Styles } from '../../styles/styles';
 import WriteListItem from '../../components/Write/WriteListItem';
 
 const PAGE_SIZE = 5;
@@ -81,25 +82,6 @@ const BoardWrites = ({ title, bo_table, data }) => {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10,
-  },
-  section: {
-    marginBottom: 30,
-  },
-  sectionTitleButton: {
-    height: 48,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  loading_text: {
-    fontSize: 24,
-  },
-});
+const styles = new Styles.BoardScreen();
 
 export default BoardListScreen;

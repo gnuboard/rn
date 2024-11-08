@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, TextInput, TouchableWithoutFeedback,
-  TouchableOpacity, Keyboard, StyleSheet, Image, ActivityIndicator
+  TouchableOpacity, Keyboard, Image, ActivityIndicator
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -20,6 +20,7 @@ import {
 import { useAuth } from '../../../context/auth/AuthContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
 import { Colors } from '../../../styles/colors';
+import { Styles } from '../../../styles/styles';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
 import kakaoLogo from '../../../assets/img/socialLogin/kakao/logo.png'
 import googleLogo from '../../../assets/img/socialLogin/google/logo.png'
@@ -444,95 +445,6 @@ const LoginScreen = ({ navigation }) => {
 };
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backButton: {
-    position: 'absolute',
-    top: 8,
-    left: 2,
-    zIndex: 1,
-    padding: 10,
-  },
-  formContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 5,
-    width: '80%',
-    maxWidth: 300,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'left',
-  },
-  input: {
-    height: 48,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 3,
-    width: '100%',
-    color: Colors.text_black,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  label: {
-    margin: 2,
-    color: Colors.text_black,
-  },
-  loginButton: {
-    backgroundColor: Colors.btn_blue,
-    padding: 10,
-    borderRadius: 3,
-    marginTop: 10,
-    width: '100%',
-  },
-  loginButtonLoading: {
-    backgroundColor: Colors.btn_gray,
-    padding: 10,
-    borderRadius: 3,
-    marginTop: 10,
-    width: '100%',
-  },
-  socialLoginGroupContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginTop: 20,
-  },
-  socialLoginLogo: {
-    width: 35,
-    height: 35,
-  },
-  loginButtonText: {
-    color: Colors.btn_text_white,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  forgotPassword: {
-    color: Colors.btn_blue,
-    textAlign: 'center',
-    marginTop: 15,
-    fontSize: 12,
-  },
-  errorText: {
-    color: 'red'
-  }
-});
+const styles = new Styles.LoginScreen();
 
 export default LoginScreen;

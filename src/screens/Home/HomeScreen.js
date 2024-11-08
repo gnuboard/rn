@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, Alert, Platform,
+  View, Text, ScrollView, Alert, Platform,
   SafeAreaView, TouchableOpacity, PermissionsAndroid
 } from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
@@ -13,6 +13,7 @@ import { useBoards } from '../../context/boards/BoardsContext';
 import { apiConfig } from '../../services/api/config/ServerApiConfig';
 import { requestStoragePermission } from '../../utils/os/android/permission';
 import { fetchBoardConfigRequest } from '../../services/api/ServerApi';
+import { Styles } from '../../styles/styles';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -161,46 +162,6 @@ const HomeScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    position: 'relative',
-  },
-  menuButton: {
-    position: 'absolute',
-    left: 16,
-  },
-  content: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  column: {
-    flex: 1,
-    marginHorizontal: 8,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-});
+const styles = new Styles.HomeScreen();
 
 export default HomeScreen;

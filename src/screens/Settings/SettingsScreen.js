@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
-  View, Text, StyleSheet, TouchableOpacity,
+  View, Text, TouchableOpacity,
   Platform, Linking, AppState
 } from 'react-native';
 import { Notifications } from 'react-native-notifications';
 import { useTheme } from '../../context/theme/ThemeContext';
+import { Styles } from '../../styles/styles';
 
 const SettingsScreen = () => {
   const { bgThemedColor, textThemedColor, isDarkMode, toggleTheme } = useTheme();
@@ -85,20 +86,6 @@ const SettingsScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  itemContainer: {
-    justifyContent: 'center',
-    borderWidth: 0.5,
-    borderColor: 'gray',
-    height: 80,
-    paddingLeft: 20,
-  },
-  text: {
-    fontSize: 20,
-  },
-});
+const styles = new Styles.SettingsScreen();
 
 export default SettingsScreen;

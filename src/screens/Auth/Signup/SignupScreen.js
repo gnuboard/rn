@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback,
+  View, Text, TouchableOpacity, TouchableWithoutFeedback,
   Keyboard, ScrollView
 } from 'react-native';
 import { Agreement, SignupForm } from '../../../components/Auth/Signup/SignupForm';
-import { Colors } from '../../../styles/colors';
+import { Styles } from '../../../styles/styles';
 import { useTheme } from '../../../context/theme/ThemeContext';
 
 const SignupScreen = ({ navigation }) => {
@@ -59,66 +59,6 @@ const SignupScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-  },
-  formContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 5,
-    width: '100%',
-    maxWidth: 300,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  button: {
-    backgroundColor: Colors.btn_blue,
-    padding: 10,
-    borderRadius: 3,
-    marginTop: 10,
-    width: '100%',
-    height: 48,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: Colors.btn_text_white,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  disabledButton: {
-    backgroundColor: '#cccccc',
-  },
-  outlineButton: {
-    backgroundColor: 'transparent',
-    borderColor: Colors.btn_blue,
-    borderWidth: 1,
-  },
-  outlineButtonText: {
-    color: Colors.btn_blue,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  snsButton: {
-    backgroundColor: '#4267B2',
-    padding: 10,
-    borderRadius: 5,
-  },
-  snsButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-});
+const styles = new Styles.SignupScreen();
 
 export default SignupScreen;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, FlatList, RefreshControl, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import { View, FlatList, RefreshControl, ActivityIndicator, Text } from 'react-native';
 import { WriteListToolbar } from '../../../components/Common/Toolbar';
 import { fetchWriteListRequest } from '../../../services/api/ServerApi';
 import WriteListItem from '../../../components/Write/WriteListItem';
@@ -7,6 +7,7 @@ import { useWriteRefresh, useWriteListRefresh } from '../../../context/writes/Re
 import { useCacheWrites } from '../../../context/writes/CacheWritesContext';
 import { useSearchWrites } from '../../../context/writes/SearchWritesContext';
 import { useTheme } from '../../../context/theme/ThemeContext';
+import { Styles } from '../../../styles/styles';
 
 const PAGE_SIZE = 10;
 
@@ -180,29 +181,6 @@ const WriteListScreen = ({ route }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 10
-  },
-  listHeader: {
-    backgroundColor: '#FFF6FA',
-  },
-  noticeItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-  },
-  indicatorFooter: {
-    padding: 10,
-  },
-  noWritesContainer: {
-    flex: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noWritesText: {
-    fontSize: 16,
-  }
-})
+const styles = new Styles.WriteListScreen();
 
 export default WriteListScreen;
