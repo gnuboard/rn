@@ -67,7 +67,7 @@ const SettingsScreen = () => {
       >
         <Text style={[styles.text, textThemedColor]}>
           밝기모드
-          <Text style={{fontSize: 24}} >{isDarkMode ? '🌙' : '☀️'}</Text>
+          <Text style={{fontSize: 20}} >{isDarkMode ? ' 🌙' : ' ☀️'}</Text>
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 0.5,
     borderColor: 'gray',
-    height: 100,
+    height: 80,
     paddingLeft: 20,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
   },
 });
 
