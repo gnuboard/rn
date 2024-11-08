@@ -6,6 +6,7 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.gnuboard_react_native.BuildConfig;
+import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends ReactActivity {
 
@@ -59,5 +60,11 @@ public class MainActivity extends ReactActivity {
         String naverAppName = BuildConfig.NAVER_APP_NAME;
         NaverIdLoginSDK.INSTANCE.initialize(getContext(), naverClient, naverSecret, naverAppName);
     }
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      SplashScreen.show(this);
+      super.onCreate(savedInstanceState);
   }
 }

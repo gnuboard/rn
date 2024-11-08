@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, TouchableWithoutFeedback, StyleSheet, Keyboard } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import AppNavigator from './src/navigation/AppNavigator';
 import { AuthProvider } from './src/context/auth/AuthContext';
 import { WriteListRefreshProvider, WriteRefreshProvider } from './src/context/writes/RefreshContext';
@@ -9,6 +10,12 @@ import { ThemeProvider } from './src/context/theme/ThemeContext';
 import { BoardsProvider } from './src/context/boards/BoardsContext';
 
 const App = () => {
+  useEffect(() => {
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
+  });
+
   return (
     <AuthProvider>
       <CacheWritesProvider>
