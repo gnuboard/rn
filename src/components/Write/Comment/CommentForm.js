@@ -110,7 +110,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
         {!isLoggedIn && (
           <View style={styles.nonLoginInputs}>
             <TextInput
-              style={[styles.smallInput, textThemedColor]}
+              style={[styles.halfInput, textThemedColor]}
               placeholder={`${commentFormKind} 작성자 이름`}
               placeholderTextColor={Colors.text_placeholder_black}
               value={commentFormValue.wr_name}
@@ -120,7 +120,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
               })}
             />
             <TextInput
-              style={[styles.smallInput, textThemedColor]}
+              style={[styles.halfInput, textThemedColor]}
               placeholder={`${commentFormKind} 비밀번호`}
               placeholderTextColor={Colors.text_placeholder_black}
               secureTextEntry

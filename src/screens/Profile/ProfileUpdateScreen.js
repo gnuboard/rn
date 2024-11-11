@@ -217,15 +217,13 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       <HeaderBackwardArrow navigation={navigation} />
       <Text style={[styles.title, textThemedColor]}>SiR</Text>
       <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.inputContainer}>
-          <TextInput 
-            style={styles.input}
-            placeholder="별명"
-            placeholderTextColor={Colors.text_placeholder_black}
-            value={formValue.mb_nick}
-            onChangeText={(value) => handleChange('mb_nick', value)}
-          />
-        </View>
+        <TextInput 
+          style={styles.input}
+          placeholder="별명"
+          placeholderTextColor={Colors.text_placeholder_black}
+          value={formValue.mb_nick}
+          onChangeText={(value) => handleChange('mb_nick', value)}
+        />
         <TextInput 
           style={styles.input}
           placeholder="이메일 주소"
@@ -241,18 +239,16 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
           value={formValue.mb_name}
           onChangeText={(value) => handleChange('mb_name', value)}
         />
+        <TextInput
+          style={styles.input}
+          placeholder="휴대폰번호"
+          placeholderTextColor={Colors.text_placeholder_black}
+          value={formValue.mb_hp}
+          onChangeText={(value) => handleChange('mb_hp', value)}
+        />
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.input}
-            placeholder="휴대폰번호"
-            placeholderTextColor={Colors.text_placeholder_black}
-            value={formValue.mb_hp}
-            onChangeText={(value) => handleChange('mb_hp', value)}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
+            style={styles.zipInput}
             placeholder="우편번호"
             placeholderTextColor={Colors.text_placeholder_black}
             value={formValue.mb_zip}

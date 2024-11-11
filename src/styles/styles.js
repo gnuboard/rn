@@ -2,6 +2,101 @@ import { Dimensions, StyleSheet } from 'react-native';
 import { Colors } from './colors';
 
 export class Styles {
+  static disabledButton = { backgroundColor: Colors.btn_gray };
+
+  static formContainer = {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 5,
+    width: '100%',
+    maxWidth: 300,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginBottom: 15,
+  }
+
+  static input = {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: '#f9f9f9',
+    height: 48,
+    color: Colors.text_black,
+  }
+
+  static get halfInput () {
+    return {
+      ...this.input,
+      width: '48%',
+    }
+  }
+
+  static button = {
+    padding: 10,
+    height: 48,
+    borderRadius: 3,
+    marginVertical: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+
+  static get button33() {
+    return {
+      ...this.button,
+      width: '33%',
+    }
+  }
+
+  static get submitButton() {
+    return {
+      ...this.button,
+      backgroundColor: Colors.btn_blue,
+    }
+  }
+
+  static get cancelButton() {
+    return {
+      ...this.button,
+      backgroundColor: Colors.btn_gray,
+    }
+  }
+
+  static get snsButton() {
+    return {
+      ...this.button,
+      backgroundColor: '#4267B2',
+    }
+  }
+
+  static get submitButton33() {
+    return {
+      ...this.button33,
+      backgroundColor: Colors.btn_blue,
+    }
+  }
+
+  static get cancelButton33() {
+    return {
+      ...this.button33,
+      backgroundColor: Colors.btn_gray,
+    }
+  }
+
+  static errorText = {
+    color: 'red',
+    textAlign: 'center',
+    fontSize: 15,
+    marginBottom: 10,
+  }
+
   static width = Dimensions.get('window').width;
 
   static get ITEM_WIDTH() {
@@ -15,32 +110,8 @@ export class Styles {
   static SignupForm = class {
     constructor() {
       return StyleSheet.create({
-        formContainer: {
-          backgroundColor: 'white',
-          padding: 20,
-          borderRadius: 5,
-          width: '100%',
-          maxWidth: 300,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          marginBottom: 15,
-        },
-        input: {
-          height: 48,
-          borderColor: '#ddd',
-          borderWidth: 1,
-          marginBottom: 10,
-          paddingHorizontal: 10,
-          borderRadius: 3,
-          width: '100%',
-          color: Colors.text_black,
-        },
+        formContainer: Styles.formContainer,
+        input: Styles.input,
         checkboxContainer: {
           flexDirection: 'row',
           alignItems: 'center',
@@ -57,12 +128,7 @@ export class Styles {
           fontWeight: 'bold',
           marginBottom: 15,
         },
-        snsButton: {
-          backgroundColor: '#4267B2',
-          padding: 10,
-          borderRadius: 5,
-          marginBottom: 15,
-        },
+        snsButton: Styles.snsButton,
         sectionTitle: {
           fontSize: 16,
           fontWeight: 'bold',
@@ -114,26 +180,14 @@ export class Styles {
           fontSize: 14,
           color: Colors.text_black,
         },
-        button: {
-          backgroundColor: Colors.btn_blue,
-          padding: 10,
-          borderRadius: 3,
-          marginTop: 10,
-          width: '100%',
-        },
+        button: Styles.submitButton,
         buttonText: {
           color: Colors.btn_text_white,
           textAlign: 'center',
           fontWeight: 'bold',
         },
-        disabledButton: {
-          backgroundColor: '#cccccc',
-        },
-        errorText: {
-          color: 'red',
-          fontSize: 12,
-          marginBottom: 10,
-        },
+        disabledButton: Styles.disabledButton,
+        errorText: Styles.errorText,
       });
     }
   }
@@ -190,16 +244,7 @@ export class Styles {
   static Inputs = class {
     constructor() {
       return StyleSheet.create({
-        searchInput: {
-          marginTop: 15,
-          marginHorizontal: 8,
-          padding: 8,
-          paddingHorizontal: 15,
-          borderRadius: 4,
-          borderWidth: 1,
-          borderColor: Colors.border_gray,
-          height: 48,
-        },
+        searchInput: Styles.input,
       });
     }
   }
@@ -360,6 +405,7 @@ export class Styles {
           padding: 10,
           height: 48,
           justifyContent: 'center',
+          marginHorizontal: 5,
         },
         buttonText: {
           color: Colors.btn_text_white,
@@ -367,13 +413,8 @@ export class Styles {
           fontWeight: 'bold',
           fontSize: 16,
         },
-        submitButton: {
-          backgroundColor: Colors.btn_blue,
-          marginRight: 10,
-        },
-        cancelButton: {
-          backgroundColor: Colors.btn_gray,
-        }
+        submitButton33: Styles.submitButton33,
+        cancelButton33: Styles.cancelButton33,
       });
     }
   }
@@ -513,19 +554,8 @@ export class Styles {
           justifyContent: 'space-between',
           marginBottom: 10,
         },
-        smallInput: {
-          borderWidth: 1,
-          borderColor: '#e0e0e0',
-          borderRadius: 4,
-          padding: 8,
-          width: '48%',
-          height: 48,
-        },
-        errorText: {
-          color: 'red',
-          textAlign: 'center',
-          marginBottom: 10,
-        },
+        halfInput: Styles.halfInput,
+        errorText: Styles.errorText,
         formActions: {
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -539,16 +569,7 @@ export class Styles {
           marginLeft: 8,
           fontSize: 14,
         },
-        submitButton: {
-          backgroundColor: Colors.btn_blue,
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-          borderRadius: 4,
-          height: 48,
-          width: 90,
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
+        submitButton: Styles.submitButton33,
         updateButton: {
           backgroundColor: Colors.btn_green,
         },
@@ -633,37 +654,14 @@ export class Styles {
           zIndex: 1,
           padding: 10,
         },
-        formContainer: {
-          backgroundColor: 'white',
-          padding: 20,
-          borderRadius: 5,
-          width: '80%',
-          maxWidth: 300,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        },
+        formContainer: Styles.formContainer,
         title: {
           fontSize: 18,
           fontWeight: 'bold',
           marginBottom: 20,
           textAlign: 'left',
         },
-        input: {
-          height: 48,
-          borderColor: '#ddd',
-          borderWidth: 1,
-          marginBottom: 10,
-          paddingHorizontal: 10,
-          borderRadius: 3,
-          width: '100%',
-          color: Colors.text_black,
-        },
+        input: Styles.input,
         checkboxContainer: {
           flexDirection: 'row',
           alignItems: 'center',
@@ -672,13 +670,7 @@ export class Styles {
           margin: 2,
           color: Colors.text_black,
         },
-        loginButton: {
-          backgroundColor: Colors.btn_blue,
-          padding: 10,
-          borderRadius: 3,
-          marginTop: 10,
-          width: '100%',
-        },
+        loginButton: Styles.submitButton,
         loginButtonLoading: {
           backgroundColor: Colors.btn_gray,
           padding: 10,
@@ -706,9 +698,7 @@ export class Styles {
           marginTop: 15,
           fontSize: 12,
         },
-        errorText: {
-          color: 'red'
-        }
+        errorText: Styles.errorText,
       });
     }
   }
@@ -723,38 +713,14 @@ export class Styles {
           backgroundColor: '#f5f5f5',
           padding: 20,
         },
-        formContainer: {
-          backgroundColor: 'white',
-          padding: 20,
-          borderRadius: 5,
-          width: '100%',
-          maxWidth: 300,
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        },
-        button: {
-          backgroundColor: Colors.btn_blue,
-          padding: 10,
-          borderRadius: 3,
-          marginTop: 10,
-          width: '100%',
-          height: 48,
-          justifyContent: 'center',
-        },
+        formContainer: Styles.formContainer,
+        button: Styles.submitButton,
         buttonText: {
           color: Colors.btn_text_white,
           textAlign: 'center',
           fontWeight: 'bold',
         },
-        disabledButton: {
-          backgroundColor: '#cccccc',
-        },
+        disabledButton: Styles.disabledButton,
         outlineButton: {
           backgroundColor: 'transparent',
           borderColor: Colors.btn_blue,
@@ -765,11 +731,7 @@ export class Styles {
           textAlign: 'center',
           fontWeight: 'bold',
         },
-        snsButton: {
-          backgroundColor: '#4267B2',
-          padding: 10,
-          borderRadius: 5,
-        },
+        snsButton: Styles.snsButton,
         snsButtonText: {
           color: 'white',
           textAlign: 'center',
@@ -1024,17 +986,8 @@ export class Styles {
           flexDirection: 'row',
           justifyContent: 'space-between',
         },
-        input: {
-          height: 48,
-          borderColor: '#ccc',
-          borderWidth: 1,
-          marginBottom: 10,
-          paddingHorizontal: 10,
-          borderRadius: 5,
-        },
-        innerInput: {
-          width: '48%',
-        },
+        input: Styles.input,
+        halfInput: Styles.halfInput,
         webViewContainer: {
           height: Dimensions.get('window').height * 0.5,
           width: '100%',
@@ -1311,17 +1264,12 @@ export class Styles {
         },
         inputContainer: {
           flexDirection: 'row',
+          justifyContent: 'space-between',
         },
-        input: {
-          flex: 1,
-          borderWidth: 1,
-          borderColor: '#ccc',
-          borderRadius: 5,
-          padding: 10,
-          marginBottom: 10,
-          backgroundColor: '#f9f9f9',
-          height: 48,
-          color: Colors.text_black,
+        input: Styles.input,
+        zipInput: {
+          ...Styles.input,
+          width: '75%',
         },
         multilineInput: {
           height: 100,
@@ -1380,21 +1328,12 @@ export class Styles {
           flex: 1,
           fontSize: 13,
         },
-        submitButton: {
-          backgroundColor: Colors.btn_blue,
-          padding: 15,
-          borderRadius: 5,
-          alignItems: 'center',
-          marginTop: 20,
-        },
+        submitButton: Styles.submitButton,
         submitButtonText: {
           color: '#fff',
           fontSize: 18,
         },
-        disabledButton: {
-          backgroundColor: '#A9A9A9',
-          opacity: 0.6,
-        },
+        disabledButton: Styles.disabledButton,
       });
     }
   }
