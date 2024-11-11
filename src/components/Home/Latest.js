@@ -48,10 +48,12 @@ const Latest = ({ title, bo_table, rows }) => {
         >
         <View key={write.wr_id} style={styles.item}>
           <View style={styles.subjectHeader}>
-          {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" />}
-            <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
-              {truncateText(write.wr_subject, 25)}
-            </Text>
+            <View style={styles.titleContainer}>
+              {write.wr_option.includes('secret') && <Icon name="lock-closed" size={15} color="#000" />}
+              <Text style={styles.itemTitle} numberOfLines={1} ellipsizeMode="tail">
+                {truncateText(write.wr_subject, 25)}
+              </Text>
+            </View>
             <Text style={styles.itemDate}>{dateToMonthDay(write.wr_datetime)}</Text>
           </View>
         </View>

@@ -249,6 +249,10 @@ export class Styles {
           alignItems: 'center',
           marginBottom: 8,
         },
+        titleContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+        },
         item: {
           paddingVertical: 6,
           borderBottomWidth: 1,
