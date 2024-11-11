@@ -28,10 +28,10 @@ const ModalComponent = ({ title, visible, password, setPassword, handlePasswordS
             placeholderTextColor={Colors.text_placeholder_black}
           />
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={[styles.submitButton33, {marginRight: 10}]} onPress={handlePasswordSubmit}>
+            <TouchableOpacity style={styles.submitButton} onPress={handlePasswordSubmit}>
               <Text style={styles.buttonText}>확인</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.cancelButton33} onPress={onClose}>
+            <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.buttonText}>취소</Text>
             </TouchableOpacity>
           </View>

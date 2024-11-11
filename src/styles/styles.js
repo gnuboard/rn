@@ -48,27 +48,6 @@ export class Styles {
     alignItems: 'center',
   }
 
-  static get button33() {
-    return {
-      ...this.button,
-      width: '33%',
-    }
-  }
-
-  static get submitButton() {
-    return {
-      ...this.button,
-      backgroundColor: Colors.btn_blue,
-    }
-  }
-
-  static get cancelButton() {
-    return {
-      ...this.button,
-      backgroundColor: Colors.btn_gray,
-    }
-  }
-
   static get snsButton() {
     return {
       ...this.button,
@@ -76,17 +55,19 @@ export class Styles {
     }
   }
 
-  static get submitButton33() {
+  static submitButton(widthRate=100) {
     return {
-      ...this.button33,
+      ...this.button,
       backgroundColor: Colors.btn_blue,
+      width: `${widthRate}%`,
     }
   }
 
-  static get cancelButton33() {
+  static cancelButton(widthRate) {
     return {
-      ...this.button33,
+      ...this.button,
       backgroundColor: Colors.btn_gray,
+      width: `${widthRate}%`,
     }
   }
 
@@ -180,7 +161,7 @@ export class Styles {
           fontSize: 14,
           color: Colors.text_black,
         },
-        button: Styles.submitButton,
+        button: Styles.submitButton(),
         buttonText: {
           color: Colors.btn_text_white,
           textAlign: 'center',
@@ -400,21 +381,17 @@ export class Styles {
         buttonContainer: {
           flexDirection: 'row',
         },
-        button: {
-          width: '33%',
-          padding: 10,
-          height: 48,
-          justifyContent: 'center',
-          marginHorizontal: 5,
-        },
         buttonText: {
           color: Colors.btn_text_white,
           textAlign: 'center',
           fontWeight: 'bold',
           fontSize: 16,
         },
-        submitButton33: Styles.submitButton33,
-        cancelButton33: Styles.cancelButton33,
+        submitButton: {
+          ...Styles.submitButton(33),
+          marginRight: 10,
+        },
+        cancelButton: Styles.cancelButton(33),
       });
     }
   }
@@ -569,7 +546,7 @@ export class Styles {
           marginLeft: 8,
           fontSize: 14,
         },
-        submitButton: Styles.submitButton33,
+        submitButton: Styles.submitButton(33),
         updateButton: {
           backgroundColor: Colors.btn_green,
         },
@@ -670,7 +647,7 @@ export class Styles {
           margin: 2,
           color: Colors.text_black,
         },
-        loginButton: Styles.submitButton,
+        loginButton: Styles.submitButton(),
         loginButtonLoading: {
           backgroundColor: Colors.btn_gray,
           padding: 10,
@@ -714,7 +691,7 @@ export class Styles {
           padding: 20,
         },
         formContainer: Styles.formContainer,
-        button: Styles.submitButton,
+        button: Styles.submitButton(),
         buttonText: {
           color: Colors.btn_text_white,
           textAlign: 'center',
@@ -1010,20 +987,8 @@ export class Styles {
           paddingHorizontal: 10,
           height: 50,
         },
-        button: {
-          padding: 10,
-          borderRadius: 5,
-          height: 48,
-          width: '45%',
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-        buttonCancel: {
-          backgroundColor: Colors.btn_gray,
-        },
-        buttonSubmit: {
-          backgroundColor: Colors.btn_blue,
-        },
+        cancelButton: Styles.cancelButton(45),
+        submitButton: Styles.submitButton(45),
         buttnText: {
           color: Colors.btn_text_white,
           fontWeight: 'bold',
@@ -1231,12 +1196,8 @@ export class Styles {
           color: '#333',
         },
         button: {
-          backgroundColor: Colors.btn_blue,
-          padding: 10,
-          borderRadius: 3,
+          ...Styles.submitButton(50),
           marginTop: 10,
-          height: 48,
-          justifyContent: 'center',
         },
         buttonText: {
           color: Colors.btn_text_white,
@@ -1276,12 +1237,8 @@ export class Styles {
           textAlignVertical: 'top',
         },
         button: {
-          backgroundColor: '#4CAF50',
-          padding: 10,
-          borderRadius: 5,
-          marginLeft: 10,
-          justifyContent: 'center',
-          height: 48,
+          ...Styles.submitButton(20),
+          marginVertical: 0,
         },
         buttonText: {
           color: '#fff',
@@ -1328,7 +1285,7 @@ export class Styles {
           flex: 1,
           fontSize: 13,
         },
-        submitButton: Styles.submitButton,
+        submitButton: Styles.submitButton(),
         submitButtonText: {
           color: '#fff',
           fontSize: 18,

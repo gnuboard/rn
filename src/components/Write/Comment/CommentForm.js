@@ -148,7 +148,7 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
             <Text style={[styles.secretCommentText, textThemedColor]}>비밀 {commentFormKind}</Text>
           </View>
           <TouchableOpacity
-            style={styles.submitButton}
+            style={Styles.submitButton(33)}
             onPress={submitComment}
             disabled={isLoading}
           >

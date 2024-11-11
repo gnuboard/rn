@@ -372,7 +372,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={[styles.button, styles.buttonCancel]}
+            style={styles.cancelButton}
             onPress={() => (
               Alert.alert(
                 '작성취소',
@@ -393,7 +393,7 @@ const WriteUpdateScreen = ({ navigation, route }) => {
             <Text style={styles.buttnText}>취소</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.button, styles.buttonSubmit]}
+            style={styles.submitButton}
             onPress={getContent}
             disabled={isLoading}
           >
