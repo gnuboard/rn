@@ -76,3 +76,6 @@ google-services*
 
 # deployment
 index.android.bundle
+
+# iOS
+ios/tmp.xcconfig
