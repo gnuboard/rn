@@ -1,0 +1,11 @@
+//
+//  Config.xcconfig
+//  gnuboard_react_native
+//
+//  Created by sir on 11/14/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include? "tmp.xcconfig"
