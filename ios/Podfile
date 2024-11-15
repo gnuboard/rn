@@ -4,10 +4,10 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
-$RNFirebaseAsStaticFramework = true
 
 target 'gnuboard_react_native' do
   use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
   config = use_native_modules!
 
   pod 'FirebaseCoreInternal', :modular_headers => true
