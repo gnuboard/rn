@@ -338,9 +338,37 @@ const WriteScreen = ({ navigation, route }) => {
   );
 };
 
+const getImageDimensions = (url, maxWidth) => 
+  new Promise((resolve, reject) => {
+    Image.getSize(
+      url,
+      (srcWidth, srcHeight) => {
+        const ratio = srcHeight / srcWidth;
+        const imgWidth = srcWidth > maxWidth ? maxWidth * 0.93 : srcWidth * 0.93;
+        const imgHeight = imgWidth * ratio;
+        resolve({ imgWidth, imgHeight });
+      },
+      (error) => reject(error)
+    );
+  });
+
 const WriteContentWeVview = ({ width, write }) => {
   const [ webViewHeight, setWebViewHeight ] = useState(0);
+  const [ imageHtml, setImageHtml ] = useState('');
   const webViewRef = useRef(null);
+
+  const imageHtmlPromises = write?.images.map(async (image) => {
+      const { imgWidth, imgHeight } = await getImageDimensions(image.original, width);
+      return `<img
+        src="${image.original}"
+        style="width: ${imgWidth}px; height: ${imgHeight}px;"
+      />`;
+  });
+
+  Promise.all(imageHtmlPromises).then((imageHtmlArray) => {
+    const imageHtml = imageHtmlArray.join('');
+    setImageHtml(imageHtml);
+  });
 
   const htmlContent = `
     <html>
@@ -354,9 +382,7 @@ const WriteContentWeVview = ({ width, write }) => {
         </style>
       </head>
       <body>
-        ${write?.images.map(image =>
-          `<img src="${image.original}" style="max-width: ${width}px; height: auto;" />`
-        )}
+        ${imageHtml}
         ${write?.wr_content}
         <script>
           window.ReactNativeWebView.postMessage(document.body.scrollHeight);
