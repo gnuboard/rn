@@ -92,9 +92,7 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
       ...prevState,
       [name]: file,
     }));
-    if (isEmptyAvatar(file.uri)) {
-      handleChange(name + '_path', '선택된 파일 없음');
-    } else {
+    if (!isEmptyAvatar(file.uri)) {
       handleChange(name + '_path', file.uri);
     }
   };
