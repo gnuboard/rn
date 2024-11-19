@@ -398,6 +398,7 @@ const WriteContentWeVview = ({ width, write }) => {
 
   return (
     <View style={{
+      zIndex: -1,
       width: width,
       minHeight: 48,
       marginVertical: 10
