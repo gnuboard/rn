@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import {
   ScrollView, TextInput, View,
-  TouchableOpacity, Text, Alert,
+  TouchableOpacity, Text, Alert, Platform,
   TouchableWithoutFeedback, ActivityIndicator
 } from 'react-native';
 import { WebView } from 'react-native-webview';
@@ -412,7 +412,10 @@ const CKEditorForm = ({ webViewRef, handleMessage }) => {
   return (
     <WebView
       ref={webViewRef}
-      source={{ uri: 'file:///android_asset/editor_form/ckeditor_form.html' }}
+      source={Platform.select({
+        ios: require('../../../assets/editor_form/ckeditor_form.html'),
+        android: { uri: 'file:///android_asset/editor_form/ckeditor_form.html' }
+      })}
       onMessage={handleMessage}
       style={styles.webViewContainer}
     />
