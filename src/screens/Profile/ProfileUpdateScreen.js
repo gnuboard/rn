@@ -287,14 +287,10 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
               }
             </Text>
           </TouchableOpacity>
-          {
-            mbImages.mb_icon && (
-              <ImageWithDeleteButton
-                imageUri={mbImages.mb_icon.uri ? mbImages.mb_icon.uri : mbImages.mb_icon}
-                onDelete={onDeleteIcon}
-              />
-            )
-          }
+          <ImageWithDeleteButton
+            imageUri={formValue.mb_icon_path}
+            onDelete={onDeleteIcon}
+          />
         </View>
         <View style={styles.fileContainer}>
           <TouchableOpacity 
@@ -309,14 +305,10 @@ const ProfileUpdateScreen = ({ navigation, route }) => {
               }
             </Text>
           </TouchableOpacity>
-          {
-            mbImages.mb_img && (
-              <ImageWithDeleteButton
-                imageUri={mbImages.mb_img.uri ? mbImages.mb_img.uri : mbImages.mb_img}
-                onDelete={onDeleteImg}
-              />
-            )
-          }
+          <ImageWithDeleteButton
+            imageUri={formValue.mb_image_path}
+            onDelete={onDeleteImg}
+          />
         </View>
         <TextInput 
           style={[styles.input, styles.multilineInput]} 

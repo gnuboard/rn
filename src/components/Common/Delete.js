@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, Text } from 'react-native';
 import { Styles } from '../../styles/styles';
+import { emptyAvatarUri } from '../../constants/theme';
 
 export const ImageWithDeleteButton = ({ imageUri, onDelete }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: imageUri }}
+        source={{ uri: imageUri || emptyAvatarUri }}
         style={styles.image}
       />
       <TouchableOpacity
