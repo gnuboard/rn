@@ -517,6 +517,7 @@ export class Styles {
           marginBottom: 10,
         },
         input: {
+          height: 80,
           borderWidth: 1,
           borderColor: '#e0e0e0',
           borderRadius: 4,
