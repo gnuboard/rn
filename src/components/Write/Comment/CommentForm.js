@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, Switch,
-  ActivityIndicator
+  ActivityIndicator, Platform
 } from 'react-native';
 import { Colors } from '../../../styles/colors';
 import { useAuth } from '../../../context/auth/AuthContext';
@@ -24,8 +24,25 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
     comment_id: comment?.wr_id ? comment.wr_id : 0,
   });
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ focused, onFocused ] = useState(false);
+  const [multilineEnabled, setMultilineEnabled] = useState(false);
   const { textThemedColor } = useTheme();
   const commentFormKind = comment ? "대댓글" : "댓글";
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (focused) {
+      setMultilineEnabled(true);
+    } else {
+      setMultilineEnabled(false)
+    }
+  }, [focused]);
+
+  useEffect(() => {
+    if (multilineEnabled) {
+      inputRef.current.focus();
+    }
+  }, [multilineEnabled]);
 
   async function submitComment() {
     const dataToSend = {
@@ -95,10 +112,13 @@ export function CommentForm({ bo_table, wr_id, comment, setIsEditFormVisible, is
     <View style={styles.container}>
       <View style={styles.divider} />
       <TextInput
+        ref={inputRef}
         style={[styles.input, textThemedColor]}
-        multiline
+        multiline={Platform.OS === 'ios' ? multilineEnabled : true}
         numberOfLines={3}
-        placeholder={`${commentFormKind}내용을 입력해주세요`}
+        onFocus={() => onFocused(true)}
+        onBlur={() => onFocused(false)}
+        placeholder={multilineEnabled ? '' : `${commentFormKind}내용을 입력해주세요`}
         placeholderTextColor={Colors.text_placeholder_black}
         value={commentFormValue.wr_content}
         onChangeText={(text) => setCommentFormValue({
