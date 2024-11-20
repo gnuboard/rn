@@ -4,6 +4,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <RNKakaoLogins.h>
 
 #import <React/RCTAppSetupUtils.h>
 
@@ -61,6 +62,15 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   [self.window makeKeyAndVisible];
   return YES;
 }
+
+- (BOOL)application:(UIApplication *)app
+    openURL:(NSURL *)url
+    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    if ([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
+        return [RNKakaoLogins handleOpenUrl: url];
+    }
+    return NO;
+  }
 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
 ///

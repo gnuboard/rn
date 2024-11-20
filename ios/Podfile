@@ -12,6 +12,7 @@ target 'gnuboard_react_native' do
 
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
+  pod 'KakaoSDK'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
