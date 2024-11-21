@@ -6,6 +6,7 @@ import {
 import CheckBox from '@react-native-community/checkbox';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import messaging from '@react-native-firebase/messaging';
+import Config from 'react-native-config';
 import { HeaderBackwardArrow } from '../../../components/Common/Arrow';
 import {
   loginRequest, socialLoginRequest, socialSignupRequest,
@@ -235,6 +236,7 @@ const LoginScreen = ({ navigation }) => {
 
     GoogleSignin.configure({
       scopes: ['profile', 'email'],
+      iosClientId: Config.GOOGLE_IOS_CLIENT_ID,
     });
 
     const hasPlayService = GoogleSignin.hasPlayServices();
