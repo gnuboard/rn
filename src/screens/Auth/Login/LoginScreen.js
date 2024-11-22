@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   View, Text, TextInput, TouchableWithoutFeedback, Alert,
-  TouchableOpacity, Keyboard, Image, ActivityIndicator
+  TouchableOpacity, Keyboard, Image, ActivityIndicator, Platform
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -55,12 +55,14 @@ const LoginScreen = ({ navigation }) => {
 
   async function handleAfterLogin () {
     // Backend 서버에 Firebase Cloud Messaging Token 등록
-    const fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      try {
-        await enrollFCMTokenRequest(fcmToken, 'android');
-      } catch (error) {
-        logJson(error.response, true);
+    if (Platform === 'android') {
+      const fcmToken = await messaging().getToken();
+      if (fcmToken) {
+        try {
+          await enrollFCMTokenRequest(fcmToken, 'android');
+        } catch (error) {
+          logJson(error.response, true);
+        }
       }
     }
 
