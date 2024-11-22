@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  View, Text, TextInput, TouchableWithoutFeedback,
+  View, Text, TextInput, TouchableWithoutFeedback, Alert,
   TouchableOpacity, Keyboard, Image, ActivityIndicator
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
@@ -31,6 +31,7 @@ import {
   login as getKakaoTokens,
   getProfile as getKakaoProfile,
 } from "@react-native-seoul/kakao-login";
+import NaverLogin from "@react-native-seoul/naver-login";
 
 const LoginScreen = ({ navigation }) => {
   const { setIsLoggedIn, loading, setLoading } = useAuth();
@@ -42,6 +43,16 @@ const LoginScreen = ({ navigation }) => {
   const [ saveLoginInfo, setSaveLoginInfo ] = useState(false);
   const [ errorDescription, setErrorDescription ] = useState(null);
   const passwordInputRef = useRef(null);
+
+    useEffect(() => {
+      NaverLogin.initialize({
+        appName: '그누보드',
+        consumerKey: Config.NAVER_CLIENT_ID,
+        consumerSecret: Config.NAVER_CLIENT_SECRET,
+        serviceUrlSchemeIOS: Config.NAVER_IOS_URL_SCHEMA,
+        disableNaverAppAuthIOS: true,
+      })
+    }, []);
 
   async function handleAfterLogin () {
     // Backend 서버에 Firebase Cloud Messaging Token 등록
@@ -100,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   async function naverLogin () {
-    const tokens = await getNaverTokens();
+    const { successResponse: tokens } = await NaverLogin.login();
     const socialAccssToken = tokens.accessToken;
     const socialRefreshToken = tokens.refreshToken;
     const profileData = await naverProfileRequest(socialAccssToken);
@@ -161,6 +172,12 @@ const LoginScreen = ({ navigation }) => {
         }
       } else {
         console.error("Naver login failed", error);
+        Alert.alert(
+          '로그인 실패',
+          error.response.data.error.description,
+          [{ text: '확인' }],
+          { cancelable: false },
+        );
       }
     }
   }

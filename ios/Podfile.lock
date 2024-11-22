@@ -153,6 +153,7 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
+  - naveridlogin-sdk-ios (4.2.3)
   - PromisesObjC (2.4.0)
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -484,6 +485,9 @@ PODS:
     - React-Core
   - RNKeychain (8.2.0):
     - React-Core
+  - RNNaverLogin (4.0.4):
+    - naveridlogin-sdk-ios (= 4.2.3)
+    - React-Core
   - RNReanimated (2.17.0):
     - DoubleConversion
     - FBLazyVector
@@ -573,6 +577,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNKeychain (from `../node_modules/react-native-keychain`)
+  - "RNNaverLogin (from `../node_modules/@react-native-seoul/naver-login`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -609,6 +614,7 @@ SPEC REPOS:
     - KakaoSDKUser
     - libevent
     - nanopb
+    - naveridlogin-sdk-ios
     - PromisesObjC
 
 EXTERNAL SOURCES:
@@ -710,6 +716,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-google-signin/google-signin"
   RNKeychain:
     :path: "../node_modules/react-native-keychain"
+  RNNaverLogin:
+    :path: "../node_modules/@react-native-seoul/naver-login"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -756,6 +764,7 @@ SPEC CHECKSUMS:
   KakaoSDKUser: 043bcd7e91454ebf3bf64f150c430e6f65f0a08d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
+  naveridlogin-sdk-ios: d9d46d02119d303023d7000cd5963864d5bb89e5
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 0080d0a6ebf2577475bda044aa59e2ca1f909cda
   RCTRequired: 2a96ea90ffddd10cc43115bd93803692e09b5d9a
@@ -799,6 +808,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 30704285c8ef803f7705f92dd9428261ed756e24
   RNGoogleSignin: 3e8b953338bcef2ed568420eb92cc24548bc3a6f
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
+  RNNaverLogin: 453f9d73953411a99d32d15512223f0f6cc082c1
   RNReanimated: bec7736122a268883bdede07f1bf9cf4b40158db
   RNScreens: afdbd43bcd6c81559917054da18ad101b4395000
   RNVectorIcons: 2460708549c727a3f69de7d4f0b4c7d84b8e84f5

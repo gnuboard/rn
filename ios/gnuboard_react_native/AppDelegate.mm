@@ -1,4 +1,6 @@
 #import "AppDelegate.h"
+#import "RNCConfig.h"
+#import <NaverThirdPartyLogin/NaverThirdPartyLoginConnection.h>
 # import <Firebase.h>
 
 #import <React/RCTBridge.h>
@@ -46,6 +48,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
 #endif
 
+  [[NaverThirdPartyLoginConnection getSharedInstance] setIsNaverAppOauthEnable:YES];
+  [[NaverThirdPartyLoginConnection getSharedInstance] setIsInAppOauthEnable:YES];
+
   NSDictionary *initProps = [self prepareInitialProps];
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"gnuboard_react_native", initProps);
 
@@ -66,8 +71,12 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 - (BOOL)application:(UIApplication *)app
     openURL:(NSURL *)url
     options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    NSString *naverIosURLSchema = [RNCConfig envFor:@"NAVER_IOS_URL_SCHEMA"];
     if ([RNKakaoLogins isKakaoTalkLoginUrl:url]) {
         return [RNKakaoLogins handleOpenUrl: url];
+    }
+    if ([url.scheme isEqualToString:naverIosURLSchema]) {
+      return [[NaverThirdPartyLoginConnection getSharedInstance] application:app openURL:url options:options];
     }
     return NO;
   }
