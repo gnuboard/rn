@@ -4,6 +4,8 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
 
+# Override Firebase SDK Version
+$FirebaseSDKVersion = '11.5.0'
 
 target 'gnuboard_react_native' do
   use_frameworks! :linkage => :static
