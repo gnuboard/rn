@@ -25,7 +25,6 @@ import { Styles } from '../../../styles/styles';
 import naverLogoCircle from '../../../assets/img/socialLogin/naver/logoCircle.png';
 import kakaoLogo from '../../../assets/img/socialLogin/kakao/logo.png'
 import googleLogo from '../../../assets/img/socialLogin/google/logo.png'
-import { getNaverTokens, naverProfileRequest } from '../../../services/api/NaverApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   login as getKakaoTokens,
@@ -114,7 +113,6 @@ const LoginScreen = ({ navigation }) => {
     const { successResponse: tokens } = await NaverLogin.login();
     const socialAccssToken = tokens.accessToken;
     const socialRefreshToken = tokens.refreshToken;
-    const profileData = await naverProfileRequest(socialAccssToken);
 
     try {
       // 소셜 로그인 서버 요청
