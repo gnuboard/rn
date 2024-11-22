@@ -45,3 +45,6 @@
 
 # Keep your app's network-related classes
 -keep class com.gnuboard_react_native.** { *; }
+
+# naver login
+-keep public class com.navercorp.nid.** {*; }
